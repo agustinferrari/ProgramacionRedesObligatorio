@@ -1,12 +1,14 @@
-﻿using System;
+﻿using GameLibraryServer.DataAccess;
+using System;
 
-namespace GameLibraryClient
+namespace GameLibraryServer
 {
     class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            TCPHandler tcpHandler = new TCPHandler("127.0.0.1", 6000);
+            tcpHandler.startConnection();
         }
     }
 }
