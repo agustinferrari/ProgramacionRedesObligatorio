@@ -1,7 +1,6 @@
-﻿using GameLibraryServer;
-using System;
+﻿using System;
 
-namespace GameLibraryClient
+namespace GameLibraryServer
 {
     class Program
     {

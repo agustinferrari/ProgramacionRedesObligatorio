@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace GameLibraryServer.DataAccess
+namespace GameLibraryClient.DataAccess
 {
     public class TCPHandler
     {

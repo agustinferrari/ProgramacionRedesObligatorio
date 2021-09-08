@@ -1,7 +1,6 @@
-﻿using GameLibraryServer.DataAccess;
-using System;
+﻿using GameLibraryClient.DataAccess;
 
-namespace GameLibraryServer
+namespace GameLibraryClient
 {
     class Program
     {
