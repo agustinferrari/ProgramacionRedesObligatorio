@@ -1,4 +1,5 @@
-﻿using ConsoleClient.Presentation;
+﻿using Common.NetworkUtils;
+using ConsoleClient.Presentation;
 using System;
 
 namespace ConsoleClient
@@ -7,7 +8,9 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-            ClientMenuRenderer.loadMainMenu();
+            SocketHandler socketHandler = new SocketHandler("127.0.0.1", 0);
+            socketHandler.Connect();
+            ClientMenuRenderer.LoadMainMenu();
             ClientMenuHandler.handleMainMenuResponse();
             Console.WriteLine("Hello World!");
         }

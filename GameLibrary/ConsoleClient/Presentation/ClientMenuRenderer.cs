@@ -6,7 +6,7 @@ namespace ConsoleClient.Presentation
 {
     public static class ClientMenuRenderer
     {
-        public static void loadMainMenu()
+        public static void LoadMainMenu()
         {
             Console.WriteLine("Bienvenido a Game Library!");
             Console.WriteLine("Por favor seleccione una opción:");
@@ -15,7 +15,7 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("Ingrese su opcion: ");
         }
 
-        public static void loadLoggedUserMenu()
+        public static void LoadLoggedUserMenu()
         {
             Console.WriteLine("Gracias por ingresar a Game Library!");
             Console.WriteLine("Por favor seleccione una opción:");

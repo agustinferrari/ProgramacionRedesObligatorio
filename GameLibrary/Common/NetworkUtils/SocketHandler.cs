@@ -5,19 +5,33 @@ using System.Text;
 
 namespace Common.NetworkUtils
 {
-    public static class SocketHandler
+    public class SocketHandler
     {
-        private static Socket _socket;
-        private static void createSocket()
+        protected Socket _socket;
+        protected string _ipAddress;
+        protected int _port;
+
+        public SocketHandler(string ipAddress, int port)
         {
+            _ipAddress = ipAddress;
+            _port = port;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _socket.Bind(new IPEndPoint(IPAddress.Parse("127.0.0.1"), 0));
-            _socket.Connect("127.0.0.1", 20000);
+            _socket.Bind(new IPEndPoint(IPAddress.Parse(_ipAddress), _port));
         }
 
-        public static void sendMessage(string headerConstant, int commandNumber, string message)
+        public void Connect()
         {
-            sendHeader(headerConstant, commandNumber, message.Length);
+            _socket.Connect(_ipAddress, _port);
+        }
+
+        public void Listen()
+        {
+            _socket.Listen(100);
+        }
+
+        public void SendMessage(string headerConstant, int commandNumber, string message)
+        {
+            SendHeader(headerConstant, commandNumber, message.Length);
 
             int sentBytes = 0;
             var bytesMessage = Encoding.UTF8.GetBytes(message);
@@ -28,7 +42,7 @@ namespace Common.NetworkUtils
             }
         }
 
-        public static void sendHeader(string headerConstant, int commandNumber, int messageLength)
+        public void SendHeader(string headerConstant, int commandNumber, int messageLength)
         {
             Header header = new Header(headerConstant, commandNumber, messageLength);
             byte[] data = header.GetRequest();

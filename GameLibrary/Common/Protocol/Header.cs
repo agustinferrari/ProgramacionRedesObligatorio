@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ProtocolLibrary
+namespace Common.Protocol
 {
     public class Header
     {

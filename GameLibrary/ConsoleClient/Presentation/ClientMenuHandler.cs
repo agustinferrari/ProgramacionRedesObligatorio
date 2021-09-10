@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Common.NetworkUtils;
+using Common.Protocol;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -25,6 +27,8 @@ namespace ConsoleClient.Presentation
         private static void handleLogin()
         {
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
+            string user = Console.ReadLine();
+            SocketHandler.sendMessage(HeaderConstants.Request, CommandConstants.Login, user);
         }
     }
 }
