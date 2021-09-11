@@ -10,7 +10,7 @@ namespace ConsoleServer
     public class ServerSocketHandler : SocketHandler
     {
         public static bool exit { get; set; }
-        private List<Socket> _clientsSockets { get; set; }
+        public static List<Socket> _clientsConnectedSockets { get; set; }
 
         public ServerSocketHandler(string ipAddress, int port) :
             base(ipAddress, port)
@@ -29,7 +29,7 @@ namespace ConsoleServer
         {
             exit = true;
             _socket.Close(0);
-            foreach (Socket client in _clientsSockets)
+            foreach (Socket client in _clientsConnectedSockets)
             {
                 client.Shutdown(SocketShutdown.Both);
                 client.Close();
@@ -40,12 +40,13 @@ namespace ConsoleServer
 
         private void ListenForConnections(Socket socketServer)
         {
+            _clientsConnectedSockets = new List<Socket>();
             while (!exit)
             {
                 try
                 {
                     Socket clientConnected = socketServer.Accept();
-                    _clientsSockets.Add(clientConnected);
+                    _clientsConnectedSockets.Add(clientConnected);
                     Console.WriteLine("Accepted new connection...");
                     Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnected));
                     threadcClient.Start();
@@ -58,6 +59,5 @@ namespace ConsoleServer
             }
             Console.WriteLine("Exiting....");
         }
-
-       
+    } 
 }
