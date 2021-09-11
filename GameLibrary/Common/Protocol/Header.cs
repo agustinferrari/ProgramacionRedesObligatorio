@@ -58,12 +58,19 @@ namespace Common.Protocol
         public bool DecodeData(byte[] data)
         {
             //Hacer try y catch si falla devolver false
-            _sDirection = Encoding.UTF8.GetString(data, 0, HeaderConstants.Request.Length);
-            var command = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
-            _iCommand = int.Parse(command);
-            var dataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
-            _iDataLength = int.Parse(dataLength);
-            return true;
+            try
+            {
+                _sDirection = Encoding.UTF8.GetString(data, 0, HeaderConstants.Request.Length);
+                string command = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
+                _iCommand = int.Parse(command);
+                string dataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
+                _iDataLength = int.Parse(dataLength);
+                return true;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
         }
     }
 }

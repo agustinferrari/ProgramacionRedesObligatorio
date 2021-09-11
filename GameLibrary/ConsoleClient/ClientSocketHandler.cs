@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Common.NetworkUtils;
 
-namespace Common.NetworkUtils
+
+namespace ConsoleClient
 {
     public class ClientSocketHandler : SocketHandler
     {

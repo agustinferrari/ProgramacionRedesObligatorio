@@ -8,10 +8,9 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-            SocketHandler socketHandler = new SocketHandler("127.0.0.1", 0);
-            socketHandler.Connect();
+            ClientSocketHandler socketHandler = new ClientSocketHandler("127.0.0.1", 0, 6000);
             ClientMenuRenderer.LoadMainMenu();
-            ClientMenuHandler.handleMainMenuResponse();
+            ClientMenuHandler.HandleMainMenuResponse(socketHandler);
             Console.WriteLine("Hello World!");
         }
     }

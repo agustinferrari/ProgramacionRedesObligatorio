@@ -1,5 +1,8 @@
 ﻿using Common.NetworkUtils;
+using ConsoleServer.Presentation;
 using System;
+using System.Net.Sockets;
+using System.Threading;
 
 namespace ConsoleServer
 {
@@ -7,9 +10,14 @@ namespace ConsoleServer
     {
         static void Main(string[] args)
         {
-            SocketHandler socketHandler = new SocketHandler("127.0.0.1", 6000);
-            socketHandler.Listen();
-            Console.WriteLine("Hello World!");
+            ServerSocketHandler socketHandler = new ServerSocketHandler("127.0.0.1", 6000);
+            socketHandler.CreateClientConectionThread();
+
+            ServerMenuRenderer.LoadMainMenu();
+            ServerMenuHandler.HandleMainMenuResponse(socketHandler);
+
+
+ 
         }
     }
 }

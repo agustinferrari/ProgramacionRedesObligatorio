@@ -8,13 +8,13 @@ namespace ConsoleClient.Presentation
 {
     public static class ClientMenuHandler
     {
-        public static void handleMainMenuResponse()
+        public static void HandleMainMenuResponse(SocketHandler clientSocket)
         {
             string selectedOption = Console.ReadLine();
             switch (selectedOption)
             {
                 case "1":
-                    handleLogin();
+                    HandleLogin(clientSocket);
                     break;
                 case "2":
                     break;
@@ -24,11 +24,11 @@ namespace ConsoleClient.Presentation
             }
         }
 
-        private static void handleLogin()
+        private static void HandleLogin(SocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
             string user = Console.ReadLine();
-            SocketHandler.sendMessage(HeaderConstants.Request, CommandConstants.Login, user);
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
         }
     }
 }

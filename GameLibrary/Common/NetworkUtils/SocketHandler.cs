@@ -19,16 +19,6 @@ namespace Common.NetworkUtils
             _socket.Bind(new IPEndPoint(IPAddress.Parse(_ipAddress), _port));
         }
 
-        public void Connect()
-        {
-            _socket.Connect(_ipAddress, _port);
-        }
-
-        public void Listen()
-        {
-            _socket.Listen(100);
-        }
-
         public void SendMessage(string headerConstant, int commandNumber, string message)
         {
             SendHeader(headerConstant, commandNumber, message.Length);
