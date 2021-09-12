@@ -1,5 +1,6 @@
 ﻿using Common.NetworkUtils;
-
+using System;
+using System.Net.Sockets;
 
 namespace ConsoleClient
 {
@@ -10,5 +11,7 @@ namespace ConsoleClient
         {
             _socket.Connect(_ipAddress, serverPort);
         }
+
+
     }
 }

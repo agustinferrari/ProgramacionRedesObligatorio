@@ -10,7 +10,7 @@ namespace ConsoleServer
     public class ServerSocketHandler : SocketHandler
     {
         public static bool exit { get; set; }
-        public static List<Socket> _clientsConnectedSockets { get; set; }
+        private List<SocketHandler> _clientsConnectedSockets { get; set; }
 
         public ServerSocketHandler(string ipAddress, int port) :
             base(ipAddress, port)
@@ -29,10 +29,9 @@ namespace ConsoleServer
         {
             exit = true;
             _socket.Close(0);
-            foreach (Socket client in _clientsConnectedSockets)
+            foreach (SocketHandler client in _clientsConnectedSockets)
             {
-                client.Shutdown(SocketShutdown.Both);
-                client.Close();
+                client.ShutdownSocket();
             }
             var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             fakeSocket.Connect("127.0.0.1", 20000);
@@ -40,15 +39,16 @@ namespace ConsoleServer
 
         private void ListenForConnections(Socket socketServer)
         {
-            _clientsConnectedSockets = new List<Socket>();
+            _clientsConnectedSockets = new List<SocketHandler>();
             while (!exit)
             {
                 try
                 {
                     Socket clientConnected = socketServer.Accept();
-                    _clientsConnectedSockets.Add(clientConnected);
+                    SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
+                    _clientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Accepted new connection...");
-                    Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnected));
+                    Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnectedHandler));
                     threadcClient.Start();
                 }
                 catch (Exception e)
@@ -59,5 +59,5 @@ namespace ConsoleServer
             }
             Console.WriteLine("Exiting....");
         }
-    } 
+    }
 }

@@ -29,8 +29,11 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
             string user = Console.ReadLine();
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
-            ClientMenuRenderer.LoadLoggedUserMenu();
-            HandleSecondaryMenu();
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            //ClientMenuRenderer.LoadLoggedUserMenu();
+            //HandleSecondaryMenu();
         }
 
         private static void HandleSecondaryMenu()

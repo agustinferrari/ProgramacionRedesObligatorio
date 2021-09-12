@@ -1,4 +1,5 @@
-﻿using Common.Protocol;
+﻿using Common.NetworkUtils;
+using Common.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -6,26 +7,27 @@ using System.Text;
 
 namespace ConsoleServer.Logic
 {
-    public static class  ClientHandler
+    public static class ClientHandler
     {
-        private static Dictionary<Socket, string> clientsLogged;
-        public static void HandleClient(Socket clientConnected)
+        private static Dictionary<SocketHandler, string> loggedClients;
+        public static void HandleClient(SocketHandler clientSocketHandler)
         {
-            clientsLogged = new Dictionary<Socket, string>();
+            loggedClients = new Dictionary<SocketHandler, string>();
             while (!ServerSocketHandler.exit)
             {
-                int headerLength = HeaderConstants.Request.Length + HeaderConstants.CommandLength +
+                /*int headerLength = HeaderConstants.Request.Length + HeaderConstants.CommandLength +
                                    HeaderConstants.DataLength;
-                byte[] buffer = new byte[headerLength];
+                byte[] buffer = new byte[headerLength];*/
                 try
                 {
-                    ReceiveData(clientConnected, headerLength, buffer);
+                    /*clientSocketHandler.ReceiveData(headerLength, buffer);
                     Header header = new Header();
-                    header.DecodeData(buffer);
+                    header.DecodeData(buffer);*/
+                    Header header = clientSocketHandler.ReceiveHeader();
                     switch (header.ICommand)
                     {
                         case CommandConstants.Login:
-                            HandleLogin(header, clientConnected);
+                            HandleLogin(header, clientSocketHandler);
                             break;
                         case CommandConstants.ListUsers:
                             Console.WriteLine("Not Implemented yet...");
@@ -33,7 +35,7 @@ namespace ConsoleServer.Logic
                         case CommandConstants.Message:
                             Console.WriteLine("Will receive message to display...");
                             var bufferData = new byte[header.IDataLength];
-                            ReceiveData(clientConnected, header.IDataLength, bufferData);
+                            clientSocketHandler.ReceiveData(header.IDataLength, bufferData);
                             Console.WriteLine("Message received: " + Encoding.UTF8.GetString(bufferData));
                             break;
                     }
@@ -45,29 +47,34 @@ namespace ConsoleServer.Logic
             }
         }
 
-        private static void HandleLogin(Header header, Socket clientConnected)
+        private static void HandleLogin(Header header, SocketHandler clientSocketHandler)
         {
-            byte[] bufferData = new byte[header.IDataLength];
-            ReceiveData(clientConnected, header.IDataLength, bufferData);
-            string userName = Encoding.UTF8.GetString(bufferData);
-            if (clientsLogged.ContainsValue(userName))
+            string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
+            if (loggedClients.ContainsValue(userName))
             {
-                Console.WriteLine("User already logged in! " );
+                Console.WriteLine("El usuario ya esta logeado!");
+                clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "El usuario ya esta logeado!");
             }
             else
             {
-                if (!clientsLogged.ContainsKey(clientConnected))
+                if (!loggedClients.ContainsKey(clientSocketHandler))
                 {
-                    clientsLogged.Add(clientConnected, userName);
-                    Console.WriteLine("New user logged in! " + userName);
+                    loggedClients.Add(clientSocketHandler, userName);
+                    Console.WriteLine("Nuevo usuario logeado " + userName);
+                    clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "Logeado correctamente");
                 }
                 else
-                    Console.WriteLine("Socket already in use!");
+                {
+                    Console.WriteLine("El socket ya esta en uso");
+                    clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "El socket ya esta en uso");
+                }
             }
         }
 
-        private static void ReceiveData(Socket clientSocket, int Length, byte[] buffer)
+        /*private static void ReceiveData(SocketHandler clientSocketHandler, int Length, byte[] buffer)
         {
+            //Ver si meter esto en socket asi _socket queda protected
+            Socket clientSocket = clientSocketHandler._socket;
             var iRecv = 0;
             while (iRecv < Length)
             {
@@ -95,7 +102,7 @@ namespace ConsoleServer.Logic
                     return;
                 }
             }
-        }
+        }*/
     }
 
 }
