@@ -8,8 +8,15 @@ namespace ConsoleClient.Presentation
 {
     public static class ClientMenuHandler
     {
-        public static void HandleMainMenuResponse(SocketHandler clientSocket)
+        public static void LoadMainMenu(SocketHandler clientSocket)
         {
+            ClientMenuRenderer.RenderMainMenu();
+            HandleMainMenuResponse(clientSocket);
+        }
+
+        private static void HandleMainMenuResponse(SocketHandler clientSocket)
+        {
+
             string selectedOption = Console.ReadLine();
             switch (selectedOption)
             {
@@ -32,15 +39,35 @@ namespace ConsoleClient.Presentation
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
-            //ClientMenuRenderer.LoadLoggedUserMenu();
-            //HandleSecondaryMenu();
+            if (header.ICommand == CommandConstants.LoginSuccess)
+            {
+                LoadLoggedUserMenu(clientSocket);
+            }
+            else
+            {
+                LoadMainMenu(clientSocket);
+            }
         }
 
-        private static void HandleSecondaryMenu()
+        private static void LoadLoggedUserMenu(SocketHandler clientSocket)
         {
-            while (true)
-            {
+            ClientMenuRenderer.RenderLoggedUserMenu();
+            HandleLoggedUserMenuResponse(clientSocket);
+        }
 
+        private static void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
+        {
+            string selectedOption = Console.ReadLine();
+            switch (selectedOption)
+            {
+                case "1":
+                    HandleLogin(clientSocket);
+                    break;
+                case "2":
+                    break;
+                default:
+                    Console.WriteLine("La opcion seleccionada es invalida.");
+                    break;
             }
         }
     }

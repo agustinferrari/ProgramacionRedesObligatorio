@@ -35,10 +35,13 @@ namespace ConsoleServer.Logic
         private static void HandleLogin(Header header, SocketHandler clientSocketHandler)
         {
             string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
+            string responseMessageResult;
+            int responseResult;
             if (loggedClients.ContainsValue(userName))
             {
                 Console.WriteLine("El usuario ya esta logeado!");
-                clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "El usuario ya esta logeado!");
+                responseMessageResult = "El usuario ya esta logeado!";
+                responseResult = CommandConstants.LoginError;
             }
             else
             {
@@ -46,14 +49,17 @@ namespace ConsoleServer.Logic
                 {
                     loggedClients.Add(clientSocketHandler, userName);
                     Console.WriteLine("Nuevo usuario logeado " + userName);
-                    clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "Logeado correctamente");
+                    responseMessageResult = "Logeado correctamente";
+                    responseResult = CommandConstants.LoginSuccess;
                 }
                 else
                 {
                     Console.WriteLine("El socket ya esta en uso");
-                    clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, "El socket ya esta en uso");
+                    responseMessageResult = "El socket ya esta en uso";
+                    responseResult = CommandConstants.LoginError;
                 }
             }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, responseResult, responseMessageResult);
         }
     }
 }
