@@ -15,9 +15,6 @@ namespace ConsoleServer
 
             ServerMenuRenderer.LoadMainMenu();
             ServerMenuHandler.HandleMainMenuResponse(socketHandler);
-
-
- 
         }
     }
 }
