@@ -59,7 +59,7 @@ namespace Common.NetworkUtils
                     var localRecv = _socket.Receive(buffer, iRecv, Length - iRecv, SocketFlags.None);
                     if (localRecv == 0) // Si recieve retorna 0 -> la conexion se cerro desde el endpoint remoto
                     {
-                        throw new Exception("No data received"); // Catchear en server y si el server sigue andando cerrar la conexion 
+                        throw new Exception("Connection has been closed"); // Catchear en server y si el server sigue andando cerrar la conexion 
                     }
                     iRecv += localRecv;
                 }

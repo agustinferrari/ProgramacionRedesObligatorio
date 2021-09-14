@@ -24,7 +24,6 @@ namespace ConsoleServer
             threadServer.Start();
         }
 
-
         public void CloseConections()
         {
             exit = true;

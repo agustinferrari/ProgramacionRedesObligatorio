@@ -13,7 +13,8 @@ namespace ConsoleServer.Logic
         public static void HandleClient(SocketHandler clientSocketHandler)
         {
             loggedClients = new Dictionary<SocketHandler, string>();
-            while (!ServerSocketHandler.exit)
+            bool isSocketActive = true;
+            while (!ServerSocketHandler.exit && isSocketActive)
             {
                 try
                 {
@@ -25,6 +26,11 @@ namespace ConsoleServer.Logic
                             break;
                         case CommandConstants.Logout:
                             HandleLogout(header, clientSocketHandler);
+                            break;
+                        case 0:
+                            isSocketActive = false;
+                            loggedClients.Remove(clientSocketHandler);
+                            clientSocketHandler.ShutdownSocket();
                             break;
                     }
                 }
