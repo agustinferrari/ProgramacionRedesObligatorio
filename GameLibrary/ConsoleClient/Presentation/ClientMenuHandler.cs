@@ -69,7 +69,7 @@ namespace ConsoleClient.Presentation
 
         private static void HandleLogout(SocketHandler clientSocket)
         {
-            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.Login, 0);
+            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.Logout, 0);
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
