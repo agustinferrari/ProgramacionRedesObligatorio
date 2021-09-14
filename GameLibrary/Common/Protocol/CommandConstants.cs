@@ -12,5 +12,7 @@ namespace Common.Protocol
         public const int Logout = 4;
         public const int LoginError = 5;
         public const int LoginSuccess = 6;
+        public const int LogoutError = 5;
+        public const int LogoutSuccess = 6;
     }
 }

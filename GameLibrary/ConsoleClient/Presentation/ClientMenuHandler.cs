@@ -40,13 +40,9 @@ namespace ConsoleClient.Presentation
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
             if (header.ICommand == CommandConstants.LoginSuccess)
-            {
                 LoadLoggedUserMenu(clientSocket);
-            }
             else
-            {
                 LoadMainMenu(clientSocket);
-            }
         }
 
         private static void LoadLoggedUserMenu(SocketHandler clientSocket)
@@ -61,7 +57,7 @@ namespace ConsoleClient.Presentation
             switch (selectedOption)
             {
                 case "1":
-                    HandleLogin(clientSocket);
+                    HandleLogout(clientSocket);
                     break;
                 case "2":
                     break;
@@ -69,6 +65,18 @@ namespace ConsoleClient.Presentation
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     break;
             }
+        }
+
+        private static void HandleLogout(SocketHandler clientSocket)
+        {
+            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.Login, 0);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            if (header.ICommand == CommandConstants.LogoutSuccess)
+                LoadMainMenu(clientSocket);
+            else
+                LoadLoggedUserMenu(clientSocket);
         }
     }
 }
