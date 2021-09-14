@@ -45,38 +45,31 @@ namespace ConsoleServer.Logic
         {
             string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
             string responseMessageResult;
-            int responseResult;
             if (loggedClients.ContainsValue(userName))
             {
-                responseMessageResult = "El usuario ya esta logeado!";
-                responseResult = CommandConstants.LoginError;
+                responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;
             }
             else
             {
                 if (!loggedClients.ContainsKey(clientSocketHandler))
                 {
                     loggedClients.Add(clientSocketHandler, userName);
-                    responseMessageResult = "Logeado correctamente";
-                    responseResult = CommandConstants.LoginSuccess;
+                    responseMessageResult = ResponseConstants.LoginSuccess;
                 }
                 else
                 {
-                    responseMessageResult = "El socket ya esta en uso";
-                    responseResult = CommandConstants.LoginError;
+                    responseMessageResult = ResponseConstants.LoginErrorSocketAlreadyInUse;
                 }
             }
-            clientSocketHandler.SendMessage(HeaderConstants.Response, responseResult, responseMessageResult);
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
         }
 
         private static void HandleLogout(Header header, SocketHandler clientSocketHandler)
         {
-            string responseMessageResult;
-            int responseResult;
             if (loggedClients.ContainsKey(clientSocketHandler))
                 loggedClients.Remove(clientSocketHandler);
-            responseMessageResult = "Se ha cerrado sesion correctamente";
-            responseResult = CommandConstants.LogoutSuccess;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, responseResult, responseMessageResult);
+            string responseMessageResult = ResponseConstants.LogoutSuccess;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
         }
     }
 }

@@ -39,7 +39,7 @@ namespace ConsoleClient.Presentation
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
-            if (header.ICommand == CommandConstants.LoginSuccess)
+            if (response == ResponseConstants.LoginSuccess)
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
@@ -73,7 +73,7 @@ namespace ConsoleClient.Presentation
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
-            if (header.ICommand == CommandConstants.LogoutSuccess)
+            if (response == ResponseConstants.LogoutSuccess)
                 LoadMainMenu(clientSocket);
             else
                 LoadLoggedUserMenu(clientSocket);
