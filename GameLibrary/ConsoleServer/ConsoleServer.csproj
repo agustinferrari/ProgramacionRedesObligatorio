@@ -9,8 +9,4 @@
 		<ProjectReference Include="..\Common\Common.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="BussinessLogic\" />
-	</ItemGroup>
-
 </Project>

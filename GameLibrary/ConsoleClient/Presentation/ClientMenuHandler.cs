@@ -24,6 +24,8 @@ namespace ConsoleClient.Presentation
                     HandleLogin(clientSocket);
                     break;
                 case "2":
+                    HandleGameList(clientSocket);
+                    LoadMainMenu(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
@@ -45,6 +47,15 @@ namespace ConsoleClient.Presentation
                 LoadMainMenu(clientSocket);
         }
 
+        private static void HandleGameList(SocketHandler clientSocket)
+        {
+            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.ListGames, 0);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine("Lista de juegos:");
+            Console.WriteLine(response);
+        }
+
         private static void LoadLoggedUserMenu(SocketHandler clientSocket)
         {
             ClientMenuRenderer.RenderLoggedUserMenu();
@@ -60,6 +71,8 @@ namespace ConsoleClient.Presentation
                     HandleLogout(clientSocket);
                     break;
                 case "2":
+                    HandleGameList(clientSocket);
+                    LoadLoggedUserMenu(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");

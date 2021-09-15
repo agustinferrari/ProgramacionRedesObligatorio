@@ -4,10 +4,13 @@ using System.Text;
 
 namespace ConsoleServer.Domain
 {
-    class Game
+    public class Game
     {
         public string Name { get; set; }
-        public string Rating { get; set; }
+        public int Rating { get; set; }
+        public string Genre { get; set; }
+        public string Synopsis { get; set; }
         public string PathToPhoto { get; set; }
+        public List<Review> Reviews { get; set; }
     }
 }

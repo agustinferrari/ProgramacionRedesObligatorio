@@ -1,5 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
+using ConsoleServer.BussinessLogic;
+using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -9,6 +11,9 @@ namespace ConsoleServer.Logic
 {
     public static class ClientHandler
     {
+        public static GameController gameController;
+        public static UserController userController;
+
         private static Dictionary<SocketHandler, string> loggedClients;
         public static void HandleClient(SocketHandler clientSocketHandler)
         {
@@ -25,7 +30,13 @@ namespace ConsoleServer.Logic
                             HandleLogin(header, clientSocketHandler);
                             break;
                         case CommandConstants.Logout:
-                            HandleLogout(header, clientSocketHandler);
+                            HandleLogout(clientSocketHandler);
+                            break;
+                        case CommandConstants.ListGames:
+                            HandleListGames(clientSocketHandler);
+                            break;
+                        case CommandConstants.BuyGame:
+                            HandleBuyGame(header, clientSocketHandler);
                             break;
                         case 0:
                             isSocketActive = false;
@@ -54,6 +65,7 @@ namespace ConsoleServer.Logic
                 if (!loggedClients.ContainsKey(clientSocketHandler))
                 {
                     loggedClients.Add(clientSocketHandler, userName);
+                    userController.TryAddUser(userName);
                     responseMessageResult = ResponseConstants.LoginSuccess;
                 }
                 else
@@ -64,12 +76,48 @@ namespace ConsoleServer.Logic
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
         }
 
-        private static void HandleLogout(Header header, SocketHandler clientSocketHandler)
+        private static void HandleLogout(SocketHandler clientSocketHandler)
         {
             if (loggedClients.ContainsKey(clientSocketHandler))
                 loggedClients.Remove(clientSocketHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
+        }
+
+        private static void HandleListGames(SocketHandler clientSocketHandler)
+        {
+            string gameList = gameController.GetGames();
+            string responseMessage = gameList;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
+        }
+
+        private static void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string username = "";
+            string responseMessageResult = "";
+            if (loggedClients.ContainsKey(clientSocketHandler))
+            {
+                username = loggedClients[clientSocketHandler];
+                try
+                {
+                    userController.BuyGame(username, gameName);
+                    responseMessageResult = ResponseConstants.BuyGameSuccess;
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessageResult = ResponseConstants.BuyGameSuccess;
+                }
+                catch (InvalidGameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidGameError;
+                }
+            }
+            else
+            {
+                responseMessageResult = ResponseConstants.AuthenticationError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
         }
     }
 }

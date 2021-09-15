@@ -8,5 +8,7 @@ namespace Common.Protocol
     {
         public const int Login = 1;
         public const int Logout = 2;
+        public const int ListGames = 3;
+        public const int BuyGame = 4;
     }
 }
