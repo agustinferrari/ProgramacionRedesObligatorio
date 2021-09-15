@@ -16,5 +16,11 @@ namespace ConsoleServer.Domain
                 return false;
             return this.Name == ((User)obj).Name;
         }
+
+        internal void AddGame(Game game)
+        {
+            //Ver si fijarnos si ya lo tiene
+            OwnedGames.Add(game);
+        }
     }
 }

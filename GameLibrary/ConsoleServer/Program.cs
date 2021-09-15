@@ -13,9 +13,6 @@ namespace ConsoleServer
     {
         static void Main(string[] args)
         {
-            ClientHandler.gameController = new GameController();
-            ClientHandler.userController = new UserController();
-            CatalogueLoader.AddGames(ClientHandler.gameController);
             ServerSocketHandler socketHandler = new ServerSocketHandler("127.0.0.1", 6000);
             socketHandler.CreateClientConectionThread();
 

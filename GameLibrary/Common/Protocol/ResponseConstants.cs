@@ -12,6 +12,9 @@ namespace Common.Protocol
         public static string LogoutSuccess = "Se ha cerrado sesion correctamente";
         public static string BuyGameSuccess = "Compra realizada exitosamente";
         public static string InvalidGameError = "El juego ingresado no se encuentra en el sistema, intente de nuevo";
+        public static string InvalidUsernameError = "El usuario no se encuentra en el sistema, intente de nuevo";
         public static string AuthenticationError = "Debe logearse para comprar un juego";
+
+
     }
 }

@@ -24,7 +24,7 @@ namespace ConsoleClient.Presentation
                     HandleLogin(clientSocket);
                     break;
                 case "2":
-                    HandleGameList(clientSocket);
+                    HandleListGames(clientSocket);
                     LoadMainMenu(clientSocket);
                     break;
                 default:
@@ -47,7 +47,7 @@ namespace ConsoleClient.Presentation
                 LoadMainMenu(clientSocket);
         }
 
-        private static void HandleGameList(SocketHandler clientSocket)
+        private static void HandleListGames(SocketHandler clientSocket)
         {
             clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.ListGames, 0);
             Header header = clientSocket.ReceiveHeader();
@@ -71,8 +71,11 @@ namespace ConsoleClient.Presentation
                     HandleLogout(clientSocket);
                     break;
                 case "2":
-                    HandleGameList(clientSocket);
+                    HandleListGames(clientSocket);
                     LoadLoggedUserMenu(clientSocket);
+                    break;
+                case "3":
+                    HandleBuyGame(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
@@ -90,6 +93,20 @@ namespace ConsoleClient.Presentation
                 LoadMainMenu(clientSocket);
             else
                 LoadLoggedUserMenu(clientSocket);
+        }
+
+        private static void HandleBuyGame(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Por favor ingrese el nombre del juego para comprar: ");
+            string gameName = Console.ReadLine();
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.BuyGame, gameName);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            if (response == ResponseConstants.BuyGameSuccess || response == ResponseConstants.InvalidGameError)
+                LoadLoggedUserMenu(clientSocket);
+            else
+                LoadMainMenu(clientSocket);
         }
     }
 }

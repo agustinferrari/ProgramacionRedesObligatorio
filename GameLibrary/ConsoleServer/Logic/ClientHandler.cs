@@ -11,12 +11,14 @@ namespace ConsoleServer.Logic
 {
     public static class ClientHandler
     {
-        public static GameController gameController;
-        public static UserController userController;
+        private static GameController _gameController;
+        private static UserController _userController;
 
         private static Dictionary<SocketHandler, string> loggedClients;
         public static void HandleClient(SocketHandler clientSocketHandler)
         {
+            _gameController = GameController.GetInstance();
+            _userController = UserController.GetInstance();
             loggedClients = new Dictionary<SocketHandler, string>();
             bool isSocketActive = true;
             while (!ServerSocketHandler.exit && isSocketActive)
@@ -65,7 +67,7 @@ namespace ConsoleServer.Logic
                 if (!loggedClients.ContainsKey(clientSocketHandler))
                 {
                     loggedClients.Add(clientSocketHandler, userName);
-                    userController.TryAddUser(userName);
+                    _userController.TryAddUser(userName);
                     responseMessageResult = ResponseConstants.LoginSuccess;
                 }
                 else
@@ -86,7 +88,7 @@ namespace ConsoleServer.Logic
 
         private static void HandleListGames(SocketHandler clientSocketHandler)
         {
-            string gameList = gameController.GetGames();
+            string gameList = _gameController.GetGames();
             string responseMessage = gameList;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
@@ -101,12 +103,12 @@ namespace ConsoleServer.Logic
                 username = loggedClients[clientSocketHandler];
                 try
                 {
-                    userController.BuyGame(username, gameName);
+                    _userController.BuyGame(username, gameName);
                     responseMessageResult = ResponseConstants.BuyGameSuccess;
                 }
                 catch (InvalidUsernameException e)
                 {
-                    responseMessageResult = ResponseConstants.BuyGameSuccess;
+                    responseMessageResult = ResponseConstants.InvalidUsernameError;
                 }
                 catch (InvalidGameException e)
                 {

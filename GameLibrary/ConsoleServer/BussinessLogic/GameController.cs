@@ -1,4 +1,5 @@
 ﻿using ConsoleServer.Domain;
+using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -7,11 +8,19 @@ namespace ConsoleServer.BussinessLogic
 {
     public class GameController
     {
-        List<Game> games;
+        private static GameController _instance;
+        private List<Game> games;
 
-        public GameController()
+        private GameController()
         {
             games = new List<Game>();
+        }
+
+        public static GameController GetInstance()
+        {
+            if (_instance == null)
+                _instance = new GameController();
+            return _instance;
         }
 
         public void AddGame(Game gameToAdd)
@@ -31,6 +40,13 @@ namespace ConsoleServer.BussinessLogic
                     result += "\n";
             }
             return result;
+        }
+
+        public Game GetGame(string gameName)
+        {
+            if (games.Exists(game => game.Name == gameName))
+                return games.Find(game => game.Name == gameName);
+            throw new InvalidGameException();
         }
     }
 }
