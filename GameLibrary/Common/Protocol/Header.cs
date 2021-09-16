@@ -47,7 +47,7 @@ namespace Common.Protocol
 
         public byte[] GetRequest()
         {
-            var header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength];
+            byte[] header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength];
             Array.Copy(_direction, 0, header, 0, 3);
             Array.Copy(_command, 0, header, HeaderConstants.Request.Length, 2);
             Array.Copy(_dataLength, 0, header, HeaderConstants.Request.Length + HeaderConstants.CommandLength, 4);
@@ -75,6 +75,27 @@ namespace Common.Protocol
         public static int GetImageLength()
         {
             return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
+        }
+
+        public byte[] CreateImageHeader(string fileName, long fileSize)
+        {
+            byte[] header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength + GetImageLength()];
+            byte[] fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
+            if (fileNameData.Length != Specification.FixedFileNameLength)
+                throw new Exception("There is something wrong with the file name");
+            
+            byte[] fileSizeData = BitConverter.GetBytes(fileSize);
+
+            int offset = 0;
+            Array.Copy(_direction, 0, header, 0, 3);
+            offset += HeaderConstants.Request.Length;
+            Array.Copy(_command, 0, header, offset, 2);
+            offset += HeaderConstants.CommandLength;
+            Array.Copy(fileNameData, 0, header, offset, Specification.FixedFileNameLength);
+            offset += Specification.FixedFileNameLength;
+            Array.Copy(fileSizeData, 0, header, offset, Specification.FixedFileSizeLength);
+
+            return header;
         }
     }
 }
