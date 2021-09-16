@@ -1,4 +1,6 @@
-﻿using Common.FileHandler.Interfaces;
+﻿
+using Common.FileUtils;
+using Common.FileUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Net;
@@ -12,15 +14,20 @@ namespace Common.NetworkUtils
         public Socket _socket;
         protected string _ipAddress;
         protected int _port;
-        private readonly IFileStreamHandler _fileStreamHandler;
+        private  IFileHandler _fileHandler;
+        private  IFileStreamHandler _fileStreamHandler;
 
         public SocketHandler(Socket socket)
         {
             _socket = socket;
+            _fileHandler = new FileHandler();
+            _fileStreamHandler = new FileStreamHandler();
         }
 
         public SocketHandler(string ipAddress, int port)
         {
+            _fileHandler = new FileHandler();
+            _fileStreamHandler = new FileStreamHandler();
             _ipAddress = ipAddress;
             _port = port;
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -29,21 +36,21 @@ namespace Common.NetworkUtils
 
         public void SendMessage(string headerConstant, int commandNumber, string message)
         {
-            SendHeader(headerConstant, commandNumber, message.Length);
-
-            int sentBytes = 0;
+            Header header = new Header(headerConstant, commandNumber, message.Length);
+            SendHeader(header);
             var bytesMessage = Encoding.UTF8.GetBytes(message);
-            while (sentBytes < bytesMessage.Length)
-            {
-                sentBytes += _socket.Send(bytesMessage, sentBytes, bytesMessage.Length - sentBytes,
-                    SocketFlags.None);
-            }
+            SendData(bytesMessage);
+          
         }
 
-        public void SendHeader(string headerConstant, int commandNumber, int messageLength)
+        public void SendHeader(Header header)
         {
-            Header header = new Header(headerConstant, commandNumber, messageLength);
             byte[] data = header.GetRequest();
+            SendData(data);
+        }
+
+        public void SendData(byte[] data)
+        {
             int sentBytes = 0;
             while (sentBytes < data.Length)
             {
@@ -94,15 +101,17 @@ namespace Common.NetworkUtils
 
         public string ReceiveImage(int dataLength)
         {
-
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
             // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
             byte[] buffer = new byte[Header.GetImageLength()];
             ReceiveData(Header.GetImageLength(), buffer);
-            int fileNameSize = BitConverter.ToInt32(buffer, 0);
-            long fileSize = BitConverter.ToInt64(buffer, Specification.FixedFileNameLength);
-
+            string dataLengthString = Encoding.UTF8.GetString(buffer);
+            string fileNameBytes = dataLengthString.Substring(0, 4);
+            string fileSizeBytes = dataLengthString.Substring(4, 8);
+            int fileNameSize = (Int32.Parse(fileNameBytes));
+            long fileSize = (Int64.Parse(fileSizeBytes));
+           
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
 
@@ -129,6 +138,44 @@ namespace Common.NetworkUtils
                 currentPart++;
             }
             return fileName;
+        }
+
+        public void SendFile(string path)
+        {
+            // El envio del archivo se compone de las siguientes etapas:
+            // 1) Creo un paquete de datos que tiene esta estructura XXXX YYYYYYYY <NOMBRE>
+            //          a) XXXX -> Largo del nombre del archivo
+            //          b) YYYYYYYY -> Tamaño en bytes del archivo
+            //          c) <NOMBRE> -> Nombre del archivo
+
+            long fileSize = _fileHandler.GetFileSize(path); //Obtenemos el tamaño del archivo
+            string fileName = _fileHandler.GetFileName(path); //Obtenemos el nombre del archivo
+            SendData(Encoding.UTF8.GetBytes(fileName));
+           
+            // 2) Calculo tamaño y cantidad de partes a enviar
+            var parts = SpecificationHelper.GetParts(fileSize);
+            long offset = 0;
+            long currentPart = 1;
+
+            // 3) Mientras tengo partes, envio
+            while (fileSize > offset)
+            {
+                byte[] data;
+                if (currentPart == parts)
+                {
+                    int lastPartSize = (int)(fileSize - offset);
+                    data = _fileStreamHandler.Read(path, offset, lastPartSize);
+                    offset += lastPartSize;
+                }
+                else
+                {
+                    data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
+                    offset += Specification.MaxPacketSize;
+                }
+
+                SendData(data);
+                currentPart++;
+            }
         }
 
         public void ShutdownSocket()

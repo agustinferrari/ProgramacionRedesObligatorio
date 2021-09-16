@@ -1,4 +1,6 @@
-﻿using Common.NetworkUtils;
+﻿using Common.FileUtils;
+using Common.FileUtils.Interfaces;
+using Common.NetworkUtils;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -8,10 +10,13 @@ namespace ConsoleClient.Presentation
 {
     public static class ClientMenuHandler
     {
+        private static IFileHandler _fileHandler;
         public static void LoadMainMenu(SocketHandler clientSocket)
         {
+            _fileHandler = new FileHandler();
             ClientMenuRenderer.RenderMainMenu();
             HandleMainMenuResponse(clientSocket);
+           
         }
 
         private static void HandleMainMenuResponse(SocketHandler clientSocket)
@@ -27,10 +32,26 @@ namespace ConsoleClient.Presentation
                     HandleListGames(clientSocket);
                     LoadMainMenu(clientSocket);
                     break;
+                case "3":
+                    HandleSendImage(clientSocket);
+                    break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     break;
             }
+        }
+
+        private static void HandleSendImage(SocketHandler clientSocket)
+        {
+            string path = "C:\\Users\\Fran\\Documents\\ORT\\Semestre6\\ProgramacionRedes\\Practico\\SenderReciver\\FileSender_y_TcpWrappersExamples.zip";
+            string fileName = _fileHandler.GetFileName(path);
+            long fileSize = _fileHandler.GetFileSize(path);
+            Header header = new Header(fileName, fileSize, HeaderConstants.Request, CommandConstants.UploadGame);
+            clientSocket.SendHeader(header);
+            clientSocket.SendFile(path);
+            Console.WriteLine("Image send");
+            LoadMainMenu(clientSocket);
+
         }
 
         private static void HandleLogin(SocketHandler clientSocket)
@@ -49,9 +70,10 @@ namespace ConsoleClient.Presentation
 
         private static void HandleListGames(SocketHandler clientSocket)
         {
-            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.ListGames, 0);
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, 0);
+            clientSocket.SendHeader(header);
+            Header recivedHeader = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
             Console.WriteLine("Lista de juegos:");
             Console.WriteLine(response);
         }
@@ -85,9 +107,10 @@ namespace ConsoleClient.Presentation
 
         private static void HandleLogout(SocketHandler clientSocket)
         {
-            clientSocket.SendHeader(HeaderConstants.Request, CommandConstants.Logout, 0);
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
+            clientSocket.SendHeader(header);
+            Header recivedHEader = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(recivedHEader.IDataLength);
             Console.WriteLine(response);
             if (response == ResponseConstants.LogoutSuccess)
                 LoadMainMenu(clientSocket);

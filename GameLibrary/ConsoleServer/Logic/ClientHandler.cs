@@ -40,6 +40,9 @@ namespace ConsoleServer.Logic
                         case CommandConstants.BuyGame:
                             HandleBuyGame(header, clientSocketHandler);
                             break;
+                        case CommandConstants.UploadGame:
+                            HandleUploadGame(header, clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
                             loggedClients.Remove(clientSocketHandler);
@@ -52,6 +55,12 @@ namespace ConsoleServer.Logic
                     Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
                 }
             }
+        }
+
+        private static void HandleUploadGame(Header header, SocketHandler clientSocketHandler)
+        {
+            clientSocketHandler.ReceiveImage(header.IDataLength);
+            Console.WriteLine("Server says image arraived");
         }
 
         private static void HandleLogin(Header header, SocketHandler clientSocketHandler)

@@ -34,6 +34,7 @@ namespace Common.Protocol
 
         public Header()
         {
+
         }
 
         public Header(string direction, int command, int datalength)
@@ -43,6 +44,25 @@ namespace Common.Protocol
             _command = Encoding.UTF8.GetBytes(stringCommand);
             var stringData = datalength.ToString("D4");  // 0 < Largo <= 9999 
             _dataLength = Encoding.UTF8.GetBytes(stringData);
+        }
+
+        public Header(string fileName, long fileSize, string direction, int command)
+        {
+            ValidateImageName(fileName);
+            _direction = Encoding.UTF8.GetBytes(direction);
+            string stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2 cifras, completo con 0s a la izquierda 
+            _command = Encoding.UTF8.GetBytes(stringCommand);
+            string data = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
+            data += fileSize.ToString("D" + Specification.FixedFileSizeLength);
+            _dataLength = Encoding.UTF8.GetBytes(data);
+        }
+
+        private void ValidateImageName(string fileName)
+        {
+            byte[] fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
+            if (fileNameData.Length != Specification.FixedFileNameLength)
+                throw new Exception("There is something wrong with the file name");
+
         }
 
         public byte[] GetRequest()
@@ -77,25 +97,6 @@ namespace Common.Protocol
             return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
         }
 
-        public byte[] CreateImageHeader(string fileName, long fileSize)
-        {
-            byte[] header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength + GetImageLength()];
-            byte[] fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
-            if (fileNameData.Length != Specification.FixedFileNameLength)
-                throw new Exception("There is something wrong with the file name");
-            
-            byte[] fileSizeData = BitConverter.GetBytes(fileSize);
-
-            int offset = 0;
-            Array.Copy(_direction, 0, header, 0, 3);
-            offset += HeaderConstants.Request.Length;
-            Array.Copy(_command, 0, header, offset, 2);
-            offset += HeaderConstants.CommandLength;
-            Array.Copy(fileNameData, 0, header, offset, Specification.FixedFileNameLength);
-            offset += Specification.FixedFileNameLength;
-            Array.Copy(fileSizeData, 0, header, offset, Specification.FixedFileSizeLength);
-
-            return header;
-        }
+       
     }
 }

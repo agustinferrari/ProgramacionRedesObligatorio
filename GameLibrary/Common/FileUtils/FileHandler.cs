@@ -1,8 +1,8 @@
-using System;
+﻿using System;
 using System.IO;
-using Common.FileHandler.Interfaces;
+using Common.FileUtils.Interfaces;
 
-namespace Common.FileHandler
+namespace Common.FileUtils
 {
     public class FileHandler : IFileHandler
     {

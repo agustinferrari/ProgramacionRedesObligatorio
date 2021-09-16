@@ -1,4 +1,5 @@
 ﻿using ConsoleServer.Domain;
+using ConsoleServer.Utils;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,7 @@ namespace ConsoleServer.BussinessLogic
         private GameController()
         {
             games = new List<Game>();
+            CatalogueLoader.AddGames(this);
         }
 
         public static GameController GetInstance()

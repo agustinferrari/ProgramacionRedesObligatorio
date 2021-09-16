@@ -20,6 +20,8 @@ namespace ConsoleServer.Domain
         internal void AddGame(Game game)
         {
             //Ver si fijarnos si ya lo tiene
+            if (OwnedGames == null)
+                OwnedGames = new List<Game>();
             OwnedGames.Add(game);
         }
     }
