@@ -1,4 +1,5 @@
-﻿using Common.Protocol;
+﻿using Common.FileHandler.Interfaces;
+using Common.Protocol;
 using System;
 using System.Net;
 using System.Net.Sockets;
@@ -11,6 +12,7 @@ namespace Common.NetworkUtils
         public Socket _socket;
         protected string _ipAddress;
         protected int _port;
+        private readonly IFileStreamHandler _fileStreamHandler;
 
         public SocketHandler(Socket socket)
         {
@@ -88,6 +90,45 @@ namespace Common.NetworkUtils
             this.ReceiveData(dataLength, bufferData);
             string data = Encoding.UTF8.GetString(bufferData);
             return data;
+        }
+
+        public string ReceiveImage(int dataLength)
+        {
+
+            // 1) Recibo 12 bytes
+            // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
+            // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
+            byte[] buffer = new byte[Header.GetImageLength()];
+            ReceiveData(Header.GetImageLength(), buffer);
+            int fileNameSize = BitConverter.ToInt32(buffer, 0);
+            long fileSize = BitConverter.ToInt64(buffer, Specification.FixedFileNameLength);
+
+            // 4) Recibo el nombre del archivo
+            string fileName = ReceiveString(fileNameSize);
+
+            // 5) Calculo la cantidad de partes a recibir
+            long parts = SpecificationHelper.GetParts(fileSize);
+            long offset = 0;
+            long currentPart = 1;
+
+            while (fileSize > offset)
+            {
+                byte[] data = new byte[fileSize];
+                if (currentPart == parts)
+                {
+                    int lastPartSize = (int)(fileSize - offset);
+                    ReceiveData(lastPartSize, data);
+                    offset += lastPartSize;
+                }
+                else
+                {
+                    ReceiveData(Specification.MaxPacketSize, data);
+                    offset += Specification.MaxPacketSize;
+                }
+                _fileStreamHandler.Write(fileName, data);
+                currentPart++;
+            }
+            return fileName;
         }
 
         public void ShutdownSocket()

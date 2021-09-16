@@ -38,7 +38,6 @@ namespace Common.Protocol
 
         public Header(string direction, int command, int datalength)
         {
-
             _direction = Encoding.UTF8.GetBytes(direction);
             var stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2 cifras, completo con 0s a la izquierda 
             _command = Encoding.UTF8.GetBytes(stringCommand);
@@ -71,6 +70,11 @@ namespace Common.Protocol
             {
                 return false;
             }
+        }
+
+        public static int GetImageLength()
+        {
+            return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
         }
     }
 }
