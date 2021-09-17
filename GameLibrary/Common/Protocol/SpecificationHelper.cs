@@ -5,8 +5,13 @@ namespace Common.Protocol
     {
         public static long GetParts(long fileSize)
         {
-            var parts = fileSize / Specification.MaxPacketSize;
+            long parts = fileSize / Specification.MaxPacketSize;
             return parts * Specification.MaxPacketSize == fileSize ? parts : parts + 1;
+        }
+
+        public static int GetImageLength()
+        {
+            return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
         }
     }
 }

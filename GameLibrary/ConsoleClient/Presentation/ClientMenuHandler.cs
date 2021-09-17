@@ -4,6 +4,7 @@ using Common.NetworkUtils;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
+using System.Net.Sockets;
 using System.Text;
 
 namespace ConsoleClient.Presentation
@@ -15,26 +16,33 @@ namespace ConsoleClient.Presentation
         {
             ClientMenuRenderer.RenderMainMenu();
             HandleMainMenuResponse(clientSocket);
-           
+
         }
 
         private static void HandleMainMenuResponse(SocketHandler clientSocket)
         {
 
             string selectedOption = Console.ReadLine();
-            switch (selectedOption)
+            try
             {
-                case "1":
-                    HandleLogin(clientSocket);
-                    break;
-                case "2":
-                    HandleListGames(clientSocket);
-                    LoadMainMenu(clientSocket);
-                    break;
-                default:
-                    Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadMainMenu(clientSocket);
-                    break;
+                switch (selectedOption)
+                {
+                    case "1":
+                        HandleLogin(clientSocket);
+                        break;
+                    case "2":
+                        HandleListGames(clientSocket);
+                        LoadMainMenu(clientSocket);
+                        break;
+                    default:
+                        Console.WriteLine("La opcion seleccionada es invalida.");
+                        LoadMainMenu(clientSocket);
+                        break;
+                }
+            }
+            catch (SocketException se)
+            {
+                Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
         }
 

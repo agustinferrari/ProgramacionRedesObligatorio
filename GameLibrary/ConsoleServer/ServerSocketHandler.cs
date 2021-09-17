@@ -9,12 +9,17 @@ namespace ConsoleServer
 {
     public class ServerSocketHandler : SocketHandler
     {
-        public static bool exit { get; set; }
+        public bool exit { get; set; }
         private List<SocketHandler> _clientsConnectedSockets { get; set; }
+        private ManualResetEvent _manualResetEvent;
+        private string _ipAddress;
+        private int _port;
 
         public ServerSocketHandler(string ipAddress, int port) :
             base(ipAddress, port)
         {
+            _ipAddress = ipAddress;
+            _port = port;
             _socket.Listen(100);
         }
 
@@ -26,18 +31,20 @@ namespace ConsoleServer
 
         public void CloseConections()
         {
+            _manualResetEvent.Set();
             exit = true;
-            _socket.Close(0);
             foreach (SocketHandler client in _clientsConnectedSockets)
             {
                 client.ShutdownSocket();
             }
             var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            fakeSocket.Connect("127.0.0.1", 20000);
+            fakeSocket.Connect(_ipAddress, _port);
+            _socket.Close(0);
         }
 
         private void ListenForConnections(Socket socketServer)
         {
+            _manualResetEvent = new ManualResetEvent(false);
             _clientsConnectedSockets = new List<SocketHandler>();
             while (!exit)
             {
@@ -47,7 +54,7 @@ namespace ConsoleServer
                     SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
                     _clientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Accepted new connection...");
-                    Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnectedHandler));
+                    Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnectedHandler, _manualResetEvent));
                     threadcClient.Start();
                 }
                 catch (Exception e)

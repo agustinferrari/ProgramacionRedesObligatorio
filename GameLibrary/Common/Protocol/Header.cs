@@ -9,7 +9,6 @@ namespace Common.Protocol
         private byte[] _direction;
         private byte[] _command;
         private byte[] _dataLength;
-        
 
         private String _sDirection;
         private int _iCommand;
@@ -39,7 +38,6 @@ namespace Common.Protocol
             get => _sDataLength;
             set => _sDataLength = value;
         }
-
 
         public Header()
         {
@@ -109,11 +107,6 @@ namespace Common.Protocol
             }
         }
 
-        public static int GetImageLength()
-        {
-            return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
-        }
 
-       
     }
 }

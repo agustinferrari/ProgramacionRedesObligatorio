@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 
 namespace ConsoleServer.Logic
 {
@@ -13,15 +14,18 @@ namespace ConsoleServer.Logic
     {
         private static GameController _gameController;
         private static UserController _userController;
+        private static bool stopHandling;
 
         private static Dictionary<SocketHandler, string> loggedClients;
-        public static void HandleClient(SocketHandler clientSocketHandler)
+        public static void HandleClient(SocketHandler clientSocketHandler, ManualResetEvent manualResetEvent)
         {
             _gameController = GameController.GetInstance();
             _userController = UserController.GetInstance();
             loggedClients = new Dictionary<SocketHandler, string>();
             bool isSocketActive = true;
-            while (!ServerSocketHandler.exit && isSocketActive)
+            stopHandling = false;
+            StopHandlingClients(manualResetEvent);
+            while (!stopHandling && isSocketActive)
             {
                 try
                 {
@@ -129,6 +133,12 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
+        }
+
+        private static void StopHandlingClients(ManualResetEvent manualResetEvent)
+        {
+            manualResetEvent.WaitOne();
+            stopHandling = true;
         }
     }
 }
