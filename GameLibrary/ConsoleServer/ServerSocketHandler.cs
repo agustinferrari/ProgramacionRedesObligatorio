@@ -11,7 +11,6 @@ namespace ConsoleServer
     {
         public bool exit { get; set; }
         private List<SocketHandler> _clientsConnectedSockets { get; set; }
-        private ManualResetEvent _manualResetEvent;
         private string _ipAddress;
         private int _port;
 
@@ -31,7 +30,7 @@ namespace ConsoleServer
 
         public void CloseConections()
         {
-            _manualResetEvent.Set();
+            ClientHandler.stopHandling = true;
             exit = true;
             foreach (SocketHandler client in _clientsConnectedSockets)
             {
@@ -44,17 +43,17 @@ namespace ConsoleServer
 
         private void ListenForConnections(Socket socketServer)
         {
-            _manualResetEvent = new ManualResetEvent(false);
             _clientsConnectedSockets = new List<SocketHandler>();
             while (!exit)
             {
                 try
                 {
+                    ClientHandler clientHandler = new ClientHandler();
                     Socket clientConnected = socketServer.Accept();
                     SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
                     _clientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Accepted new connection...");
-                    Thread threadcClient = new Thread(() => ClientHandler.HandleClient(clientConnectedHandler, _manualResetEvent));
+                    Thread threadcClient = new Thread(() => clientHandler.HandleClient(clientConnectedHandler));
                     threadcClient.Start();
                 }
                 catch (Exception e)

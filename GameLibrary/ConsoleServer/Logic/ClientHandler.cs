@@ -10,21 +10,25 @@ using System.Threading;
 
 namespace ConsoleServer.Logic
 {
-    public static class ClientHandler
+    public class ClientHandler
     {
-        private static GameController _gameController;
-        private static UserController _userController;
-        private static bool stopHandling;
+        private GameController _gameController;
+        private UserController _userController;
+        public static bool stopHandling;
 
-        private static Dictionary<SocketHandler, string> loggedClients;
-        public static void HandleClient(SocketHandler clientSocketHandler, ManualResetEvent manualResetEvent)
+        private Dictionary<SocketHandler, string> loggedClients;
+
+        public ClientHandler()
         {
             _gameController = GameController.GetInstance();
             _userController = UserController.GetInstance();
             loggedClients = new Dictionary<SocketHandler, string>();
-            bool isSocketActive = true;
             stopHandling = false;
-            StopHandlingClients(manualResetEvent);
+        }
+
+        public void HandleClient(SocketHandler clientSocketHandler)
+        {
+            bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
             {
                 try
@@ -61,13 +65,13 @@ namespace ConsoleServer.Logic
             }
         }
 
-        private static void HandleUploadGame(Header header, SocketHandler clientSocketHandler)
+        private void HandleUploadGame(Header header, SocketHandler clientSocketHandler)
         {
             clientSocketHandler.ReceiveImage(header.SDataLength);
             Console.WriteLine("Server says image arraived");
         }
 
-        private static void HandleLogin(Header header, SocketHandler clientSocketHandler)
+        private void HandleLogin(Header header, SocketHandler clientSocketHandler)
         {
             string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
             string responseMessageResult;
@@ -91,7 +95,7 @@ namespace ConsoleServer.Logic
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
         }
 
-        private static void HandleLogout(SocketHandler clientSocketHandler)
+        private void HandleLogout(SocketHandler clientSocketHandler)
         {
             if (loggedClients.ContainsKey(clientSocketHandler))
                 loggedClients.Remove(clientSocketHandler);
@@ -99,14 +103,14 @@ namespace ConsoleServer.Logic
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
         }
 
-        private static void HandleListGames(SocketHandler clientSocketHandler)
+        private void HandleListGames(SocketHandler clientSocketHandler)
         {
             string gameList = _gameController.GetGames();
             string responseMessage = gameList;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
 
-        private static void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
+        private void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string username = "";
@@ -133,12 +137,6 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
-        }
-
-        private static void StopHandlingClients(ManualResetEvent manualResetEvent)
-        {
-            manualResetEvent.WaitOne();
-            stopHandling = true;
         }
     }
 }
