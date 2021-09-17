@@ -57,13 +57,20 @@ namespace Common.Protocol
 
         public Header(string fileName, long fileSize, string direction, int command)
         {
-            ValidateImageName(fileName);
-            _direction = Encoding.UTF8.GetBytes(direction);
-            string stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2 cifras, completo con 0s a la izquierda 
-            _command = Encoding.UTF8.GetBytes(stringCommand);
-            string data = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
-            data += fileSize.ToString("D" + Specification.FixedFileSizeLength);
-            _dataLength = Encoding.UTF8.GetBytes(data);
+            try
+            {
+                ValidateImageName(fileName);
+                _direction = Encoding.UTF8.GetBytes(direction);
+                string stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2 cifras, completo con 0s a la izquierda 
+                _command = Encoding.UTF8.GetBytes(stringCommand);
+                string data = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
+                data += fileSize.ToString("D" + Specification.FixedFileSizeLength);
+                _dataLength = Encoding.UTF8.GetBytes(data);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ruta equivocada, ingresar nuevamente. Cambiar de lugar catch");
+            }
 
         }
 
