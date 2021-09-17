@@ -13,7 +13,6 @@ namespace ConsoleClient.Presentation
         private static IFileHandler _fileHandler;
         public static void LoadMainMenu(SocketHandler clientSocket)
         {
-            _fileHandler = new FileHandler();
             ClientMenuRenderer.RenderMainMenu();
             HandleMainMenuResponse(clientSocket);
            
@@ -31,9 +30,6 @@ namespace ConsoleClient.Presentation
                 case "2":
                     HandleListGames(clientSocket);
                     LoadMainMenu(clientSocket);
-                    break;
-                case "3":
-                    HandleSendImage(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
@@ -82,6 +78,7 @@ namespace ConsoleClient.Presentation
 
         private static void LoadLoggedUserMenu(SocketHandler clientSocket)
         {
+            _fileHandler = new FileHandler();
             ClientMenuRenderer.RenderLoggedUserMenu();
             HandleLoggedUserMenuResponse(clientSocket);
         }
@@ -100,6 +97,9 @@ namespace ConsoleClient.Presentation
                     break;
                 case "3":
                     HandleBuyGame(clientSocket);
+                    break;
+                case "4":
+                    HandleSendImage(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
