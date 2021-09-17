@@ -9,10 +9,12 @@ namespace Common.Protocol
         private byte[] _direction;
         private byte[] _command;
         private byte[] _dataLength;
+        
 
         private String _sDirection;
         private int _iCommand;
         private int _iDataLength;
+        private string _sDataLength;
 
         public string SDirection
         {
@@ -31,6 +33,13 @@ namespace Common.Protocol
             get => _iDataLength;
             set => _iDataLength = value;
         }
+
+        public string SDataLength
+        {
+            get => _sDataLength;
+            set => _sDataLength = value;
+        }
+
 
         public Header()
         {
@@ -55,6 +64,7 @@ namespace Common.Protocol
             string data = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
             data += fileSize.ToString("D" + Specification.FixedFileSizeLength);
             _dataLength = Encoding.UTF8.GetBytes(data);
+
         }
 
         private void ValidateImageName(string fileName)
@@ -68,9 +78,9 @@ namespace Common.Protocol
         public byte[] GetRequest()
         {
             byte[] header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength];
-            Array.Copy(_direction, 0, header, 0, 3);
-            Array.Copy(_command, 0, header, HeaderConstants.Request.Length, 2);
-            Array.Copy(_dataLength, 0, header, HeaderConstants.Request.Length + HeaderConstants.CommandLength, 4);
+            Array.Copy(_direction, 0, header, 0, HeaderConstants.Request.Length);
+            Array.Copy(_command, 0, header, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
+            Array.Copy(_dataLength, 0, header, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
             return header;
         }
 
@@ -82,8 +92,8 @@ namespace Common.Protocol
                 _sDirection = Encoding.UTF8.GetString(data, 0, HeaderConstants.Request.Length);
                 string command = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
                 _iCommand = int.Parse(command);
-                string dataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
-                _iDataLength = int.Parse(dataLength);
+                _sDataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
+                _iDataLength = int.Parse(_sDataLength);
                 return true;
             }
             catch (Exception e)

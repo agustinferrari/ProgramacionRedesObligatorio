@@ -9,6 +9,7 @@ namespace Common.FileUtils
         public byte[] Read(string path, long offset, int length)
         {
             var data = new byte[length];
+
             using (var fs = new FileStream(path, FileMode.Open))
             {
                 fs.Position = offset;

@@ -99,18 +99,17 @@ namespace Common.NetworkUtils
             return data;
         }
 
-        public string ReceiveImage(int dataLength)
+        public string ReceiveImage(string dataLength)
         {
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
             // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
             byte[] buffer = new byte[Header.GetImageLength()];
-            ReceiveData(Header.GetImageLength(), buffer);
-            string dataLengthString = Encoding.UTF8.GetString(buffer);
-            string fileNameBytes = dataLengthString.Substring(0, 4);
-            string fileSizeBytes = dataLengthString.Substring(4, 8);
+            string fileNameBytes = dataLength.Substring(0, 4);
+            string fileSizeBytes = dataLength.Substring(4, 8);
             int fileNameSize = (Int32.Parse(fileNameBytes));
             long fileSize = (Int64.Parse(fileSizeBytes));
+            ReceiveData(Header.GetImageLength(), buffer);
            
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);

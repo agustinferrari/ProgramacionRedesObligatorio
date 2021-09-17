@@ -59,7 +59,7 @@ namespace ConsoleServer.Logic
 
         private static void HandleUploadGame(Header header, SocketHandler clientSocketHandler)
         {
-            clientSocketHandler.ReceiveImage(header.IDataLength);
+            clientSocketHandler.ReceiveImage(header.SDataLength);
             Console.WriteLine("Server says image arraived");
         }
 
