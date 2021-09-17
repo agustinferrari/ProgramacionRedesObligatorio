@@ -33,23 +33,9 @@ namespace ConsoleClient.Presentation
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
+                    LoadMainMenu(clientSocket);
                     break;
             }
-        }
-
-        private static void HandleSendImage(SocketHandler clientSocket)
-        {
-            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir");
-            //string path = Console.ReadLine();
-            string path = "C:\\Users\\Fran\\Documents\\ORT\\Semestre6\\ProgramacionRedes\\Practico\\SenderReciver\\FileSender_y_TcpWrappersExamples.zip";
-            string fileName = _fileHandler.GetFileName(path);
-            long fileSize = _fileHandler.GetFileSize(path);
-            Header header = new Header(fileName, fileSize, HeaderConstants.Request, CommandConstants.UploadGame);
-            clientSocket.SendHeader(header);
-            clientSocket.SendFile(path);
-            Console.WriteLine("Image send");
-            LoadMainMenu(clientSocket);
-
         }
 
         private static void HandleLogin(SocketHandler clientSocket)
@@ -103,8 +89,24 @@ namespace ConsoleClient.Presentation
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
+                    LoadMainMenu(clientSocket);
                     break;
             }
+        }
+
+        private static void HandleSendImage(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir");
+            //string path = Console.ReadLine();
+            string path = "C:\\Users\\Fran\\Documents\\ORT\\Semestre6\\ProgramacionRedes\\Practico\\SenderReciver\\FileSender_y_TcpWrappersExamples.zip";
+            string fileName = _fileHandler.GetFileName(path);
+            long fileSize = _fileHandler.GetFileSize(path);
+            Header header = new Header(fileName, fileSize, HeaderConstants.Request, CommandConstants.UploadGame);
+            clientSocket.SendHeader(header);
+            clientSocket.SendFile(path);
+            Console.WriteLine("Image send");
+            LoadMainMenu(clientSocket);
+
         }
 
         private static void HandleLogout(SocketHandler clientSocket)
