@@ -93,28 +93,13 @@ namespace ConsoleClient.Presentation
                     HandleBuyGame(clientSocket);
                     break;
                 case "4":
-                    HandleSendImage(clientSocket);
+                    HandleAddGame(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
                     break;
             }
-        }
-
-        private static void HandleSendImage(SocketHandler clientSocket)
-        {
-            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir");
-            //string path = Console.ReadLine();
-            string path = "C:\\Users\\Fran\\Documents\\ORT\\Semestre6\\ProgramacionRedes\\Practico\\SenderReciver\\FileSender_y_TcpWrappersExamples.zip";
-            string fileName = _fileHandler.GetFileName(path);
-            long fileSize = _fileHandler.GetFileSize(path);
-            Header header = new Header(fileName, fileSize, HeaderConstants.Request, CommandConstants.UploadGame);
-            clientSocket.SendHeader(header);
-            clientSocket.SendFile(path);
-            Console.WriteLine("Image send");
-            LoadMainMenu(clientSocket);
-
         }
 
         private static void HandleLogout(SocketHandler clientSocket)
@@ -142,6 +127,38 @@ namespace ConsoleClient.Presentation
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
+        }
+
+        private static void HandleAddGame(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese el nombre del juego");
+            string name = Console.ReadLine();
+            Console.WriteLine("Ingrese el genero del juego");
+            string genre = Console.ReadLine();
+            Console.WriteLine("Ingrese un resumen del juego");
+            string synopsis = Console.ReadLine();
+            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir");
+            string path = Console.ReadLine();
+
+
+
+            string gameData = name + "%" + genre + "%" + synopsis;
+            string fileName = _fileHandler.GetFileName(path);
+            long fileSize = _fileHandler.GetFileSize(path);
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+
+            clientSocket.SendImage(path);
+
+            /*
+            //string path = Console.ReadLine();
+            string path = "C:\\Users\\Fran\\Documents\\ORT\\Semestre6\\ProgramacionRedes\\Practico\\SenderReciver\\FileSender_y_TcpWrappersExamples.zip";
+            string fileName = _fileHandler.GetFileName(path);
+            long fileSize = _fileHandler.GetFileSize(path);
+            Header header = new Header(fileName, fileSize, HeaderConstants.Request, CommandConstants.UploadGame);
+            clientSocket.SendHeader(header);
+            clientSocket.SendFile(path);
+            Console.WriteLine("Image send");
+            LoadMainMenu(clientSocket);*/
         }
     }
 }

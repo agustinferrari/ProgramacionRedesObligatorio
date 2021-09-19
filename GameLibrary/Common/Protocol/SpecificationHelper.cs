@@ -9,7 +9,7 @@ namespace Common.Protocol
             return parts * Specification.MaxPacketSize == fileSize ? parts : parts + 1;
         }
 
-        public static int GetImageLength()
+        public static int GetImageDataLength()
         {
             return Specification.FixedFileNameLength + Specification.FixedFileSizeLength;
         }

@@ -53,6 +53,7 @@ namespace Common.Protocol
             _dataLength = Encoding.UTF8.GetBytes(stringData);
         }
 
+        /*
         public Header(string fileName, long fileSize, string direction, int command)
         {
             try
@@ -77,8 +78,7 @@ namespace Common.Protocol
             byte[] fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
             if (fileNameData.Length != Specification.FixedFileNameLength)
                 throw new Exception("There is something wrong with the file name");
-
-        }
+        }*/
 
         public byte[] GetRequest()
         {

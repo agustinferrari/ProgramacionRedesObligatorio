@@ -10,6 +10,6 @@ namespace Common.Protocol
         public const int Logout = 2;
         public const int ListGames = 3;
         public const int BuyGame = 4;
-        public const int UploadGame = 5;
+        public const int AddGame = 5;
     }
 }

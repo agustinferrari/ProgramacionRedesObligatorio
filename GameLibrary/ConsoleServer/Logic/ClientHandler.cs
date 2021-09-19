@@ -48,8 +48,8 @@ namespace ConsoleServer.Logic
                         case CommandConstants.BuyGame:
                             HandleBuyGame(header, clientSocketHandler);
                             break;
-                        case CommandConstants.UploadGame:
-                            HandleUploadGame(header, clientSocketHandler);
+                        case CommandConstants.AddGame:
+                            HandleAddGame(header, clientSocketHandler);
                             break;
                         case 0:
                             isSocketActive = false;
@@ -63,12 +63,6 @@ namespace ConsoleServer.Logic
                     Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
                 }
             }
-        }
-
-        private void HandleUploadGame(Header header, SocketHandler clientSocketHandler)
-        {
-            clientSocketHandler.ReceiveImage(header.SDataLength);
-            Console.WriteLine("Server says image arraived");
         }
 
         private void HandleLogin(Header header, SocketHandler clientSocketHandler)
@@ -113,8 +107,8 @@ namespace ConsoleServer.Logic
         private void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
-            string username = "";
-            string responseMessageResult = "";
+            string username;
+            string responseMessageResult;
             if (loggedClients.ContainsKey(clientSocketHandler))
             {
                 username = loggedClients[clientSocketHandler];
@@ -137,6 +131,19 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
+        }
+
+        private void HandleAddGame(Header header, SocketHandler clientSocketHandler)
+        {
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string[] gameData = rawData.Split('%');
+            string name = gameData[0];
+            string genre = gameData[1];
+            string synopsis = gameData[2];
+            Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
+            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
+            clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
+            //Guardar el juego en la lista (arreglar concurrencia en lista de juegos)
         }
     }
 }

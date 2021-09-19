@@ -98,17 +98,16 @@ namespace Common.NetworkUtils
             return data;
         }
 
-        public string ReceiveImage(string dataLength)
+        public string ReceiveImage(string rawImageData)
         {
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
             // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
-            byte[] buffer = new byte[SpecificationHelper.GetImageLength()];
-            string fileNameBytes = dataLength.Substring(0, 4);
-            string fileSizeBytes = dataLength.Substring(4, 8);
+            byte[] buffer = new byte[SpecificationHelper.GetImageDataLength()];
+            string fileNameBytes = rawImageData.Substring(0, Specification.FixedFileNameLength);
+            string fileSizeBytes = rawImageData.Substring(Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
             int fileNameSize = (Int32.Parse(fileNameBytes));
             long fileSize = (Int64.Parse(fileSizeBytes));
-            ReceiveData(SpecificationHelper.GetImageLength(), buffer);
 
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
@@ -138,7 +137,7 @@ namespace Common.NetworkUtils
             return fileName;
         }
 
-        public void SendFile(string path)
+        public void SendImage(string path)
         {
             // El envio del archivo se compone de las siguientes etapas:
             // 1) Creo un paquete de datos que tiene esta estructura XXXX YYYYYYYY <NOMBRE>
@@ -148,6 +147,9 @@ namespace Common.NetworkUtils
 
             long fileSize = _fileHandler.GetFileSize(path); //Obtenemos el tamaño del archivo
             string fileName = _fileHandler.GetFileName(path); //Obtenemos el nombre del archivo
+            string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
+            protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
+            SendData(Encoding.UTF8.GetBytes(protocolData));
             SendData(Encoding.UTF8.GetBytes(fileName));
 
             // 2) Calculo tamaño y cantidad de partes a enviar

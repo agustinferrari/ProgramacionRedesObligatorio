@@ -9,16 +9,12 @@ namespace ConsoleServer
 {
     public class ServerSocketHandler : SocketHandler
     {
-        public bool exit { get; set; }
-        private List<SocketHandler> _clientsConnectedSockets { get; set; }
-        private string _ipAddress;
-        private int _port;
+        public bool Exit { get; set; }
+        private List<SocketHandler> ClientsConnectedSockets { get; set; }
 
         public ServerSocketHandler(string ipAddress, int port) :
             base(ipAddress, port)
         {
-            _ipAddress = ipAddress;
-            _port = port;
             _socket.Listen(100);
         }
 
@@ -31,8 +27,8 @@ namespace ConsoleServer
         public void CloseConections()
         {
             ClientHandler.stopHandling = true;
-            exit = true;
-            foreach (SocketHandler client in _clientsConnectedSockets)
+            Exit = true;
+            foreach (SocketHandler client in ClientsConnectedSockets)
             {
                 client.ShutdownSocket();
             }
@@ -43,15 +39,15 @@ namespace ConsoleServer
 
         private void ListenForConnections(Socket socketServer)
         {
-            _clientsConnectedSockets = new List<SocketHandler>();
-            while (!exit)
+            ClientsConnectedSockets = new List<SocketHandler>();
+            while (!Exit)
             {
                 try
                 {
                     ClientHandler clientHandler = new ClientHandler();
                     Socket clientConnected = socketServer.Accept();
                     SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
-                    _clientsConnectedSockets.Add(clientConnectedHandler);
+                    ClientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Accepted new connection...");
                     Thread threadcClient = new Thread(() => clientHandler.HandleClient(clientConnectedHandler));
                     threadcClient.Start();
@@ -59,7 +55,7 @@ namespace ConsoleServer
                 catch (Exception e)
                 {
                     Console.WriteLine(e);
-                    exit = true;
+                    Exit = true;
                 }
             }
             Console.WriteLine("Exiting....");
