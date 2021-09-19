@@ -95,6 +95,9 @@ namespace ConsoleClient.Presentation
                 case "4":
                     HandleAddGame(clientSocket);
                     break;
+                case "5":
+                    HandleGameReview(clientSocket);
+                    break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
@@ -147,7 +150,21 @@ namespace ConsoleClient.Presentation
 
             clientSocket.SendImage(path);
 
-           
+
+            LoadMainMenu(clientSocket);
+        }
+
+        private static void HandleGameReview(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese el nombre del juego");
+            string gameName = Console.ReadLine();
+            Console.WriteLine("Ingrese el rating del juego (1-10)");
+            string rating = Console.ReadLine();
+            Console.WriteLine("Ingrese un comentario acerca del juego");
+            string comment = Console.ReadLine();
+            string review = gameName + "%" + rating + "%" + comment;
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ReviewGame, review);
+
             LoadMainMenu(clientSocket);
         }
     }

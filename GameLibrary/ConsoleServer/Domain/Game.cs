@@ -12,5 +12,10 @@ namespace ConsoleServer.Domain
         public string Synopsis { get; set; }
         public string PathToPhoto { get; set; }
         public List<Review> Reviews { get; set; }
+
+        internal void AddReview(Review newReview)
+        {
+            Reviews.Add(newReview);
+        }
     }
 }

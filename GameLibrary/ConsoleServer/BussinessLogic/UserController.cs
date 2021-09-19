@@ -45,5 +45,15 @@ namespace ConsoleServer.BussinessLogic
                 throw new InvalidUsernameException();
             }
         }
+
+        public User GetUser(string username)
+        {
+            foreach (User user in _users)
+            {
+                if (user.Name == username)
+                    return user;
+            }
+            throw new InvalidUsernameException();
+        }
     }
 }
