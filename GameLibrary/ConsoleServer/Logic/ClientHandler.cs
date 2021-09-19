@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
 using ConsoleServer.BussinessLogic;
+using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
@@ -142,8 +143,16 @@ namespace ConsoleServer.Logic
             string synopsis = gameData[2];
             Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
             string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
-            clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
-            //Guardar el juego en la lista (arreglar concurrencia en lista de juegos)
+            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
+            Game newGame = new Game
+            {
+                Name = name,
+                Genre = genre,
+                Synopsis = synopsis,
+                Rating = 0,
+                PathToPhoto = pathToImageGame
+            };
+            this._gameController.AddGame(newGame);
         }
     }
 }

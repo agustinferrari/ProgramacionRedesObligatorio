@@ -54,5 +54,6 @@ namespace ConsoleServer.BussinessLogic
                 throw new InvalidUsernameException();
             }
         }
+
     }
 }

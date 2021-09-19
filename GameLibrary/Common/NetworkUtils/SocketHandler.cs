@@ -3,6 +3,7 @@ using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.Protocol;
 using System;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -111,6 +112,7 @@ namespace Common.NetworkUtils
 
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
+            string wantedPath = changePathToImagesFolder(fileName);
 
             // 5) Calculo la cantidad de partes a recibir
             long parts = SpecificationHelper.GetParts(fileSize);
@@ -131,10 +133,18 @@ namespace Common.NetworkUtils
                     ReceiveData(Specification.MaxPacketSize, data);
                     offset += Specification.MaxPacketSize;
                 }
-                _fileStreamHandler.Write(fileName, data);
+                _fileStreamHandler.Write(wantedPath, data);
                 currentPart++;
             }
-            return fileName;
+            return wantedPath;
+        }
+
+        private string changePathToImagesFolder(string fileName)
+        {
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
+            string wantedPath = projectDirectory + "\\GamesImages\\" + fileName;
+            return wantedPath;
         }
 
         public void SendImage(string path)

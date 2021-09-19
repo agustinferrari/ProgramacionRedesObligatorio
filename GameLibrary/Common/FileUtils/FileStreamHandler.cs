@@ -28,11 +28,9 @@ namespace Common.FileUtils
             return data;
         }
 
-        public void Write(string fileName, byte[] data)
+        public void Write(string wantedPath, byte[] data)
         {
-            string workingDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
-            string wantedPath = projectDirectory + "\\GamesImages\\" + fileName;
+           
             if (File.Exists(wantedPath))
             {
                 using (var fs = new FileStream(wantedPath, FileMode.Append))
