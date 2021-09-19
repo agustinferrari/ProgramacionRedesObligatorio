@@ -30,16 +30,19 @@ namespace Common.FileUtils
 
         public void Write(string fileName, byte[] data)
         {
-            if (File.Exists(fileName))
+            string workingDirectory = Environment.CurrentDirectory;
+            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
+            string wantedPath = projectDirectory + "\\GamesImages\\" + fileName;
+            if (File.Exists(wantedPath))
             {
-                using (var fs = new FileStream(fileName, FileMode.Append))
+                using (var fs = new FileStream(wantedPath, FileMode.Append))
                 {
                     fs.Write(data, 0, data.Length);
                 }
             }
             else
             {
-                using (var fs = new FileStream(fileName, FileMode.Create))
+                using (var fs = new FileStream(wantedPath, FileMode.Create))
                 {
                     fs.Write(data, 0, data.Length);
                 }

@@ -20,8 +20,8 @@ namespace ConsoleServer.Logic
 
         public ClientHandler()
         {
-            _gameController = GameController.GetInstance();
-            _userController = UserController.GetInstance();
+            _gameController = GameController.Instance;
+            _userController = UserController.Instance;
             loggedClients = new Dictionary<SocketHandler, string>();
             stopHandling = false;
         }
@@ -99,7 +99,7 @@ namespace ConsoleServer.Logic
 
         private void HandleListGames(SocketHandler clientSocketHandler)
         {
-            string gameList = _gameController.GetGames();
+            string gameList = _gameController.GetAllGames();
             string responseMessage = gameList;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
