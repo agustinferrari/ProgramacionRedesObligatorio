@@ -100,7 +100,7 @@ namespace ConsoleClient.Presentation
         private static void HandleLogin(SocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
-            string user = Console.ReadLine();
+            string user = Console.ReadLine().ToLower();
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
@@ -172,7 +172,7 @@ namespace ConsoleClient.Presentation
         private static void HandleBuyGame(SocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
-            string gameName = Console.ReadLine();
+            string gameName = Console.ReadLine().ToLower();
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.BuyGame, gameName);
             Console.WriteLine(response);
             if (response == ResponseConstants.BuyGameSuccess || response == ResponseConstants.InvalidGameError || response == ResponseConstants.GameAlreadyBought)

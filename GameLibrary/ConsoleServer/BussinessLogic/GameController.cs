@@ -47,8 +47,8 @@ namespace ConsoleServer.BussinessLogic
 
         public Game GetOneGame(string gameName)
         {
-            if (games.Exists(game => game.Name == gameName))
-                return games.Find(game => game.Name == gameName);
+            if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
+                return games.Find(game => game.Name.ToLower() == gameName.ToLower());
             throw new InvalidGameException();
         }
 
@@ -61,11 +61,11 @@ namespace ConsoleServer.BussinessLogic
         internal string GetGamesFiltered(string rawData)
         {
             string[] gamesFilters = rawData.Split('%');
-            string gameName = gamesFilters[0];
-            string genre = gamesFilters[1];
+            string gameName = gamesFilters[0].ToLower();
+            string genre = gamesFilters[1].ToLower();
             int rating = Int32.Parse(gamesFilters[2]);
 
-            List<Game> filteredGames =  games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre 
+            List<Game> filteredGames =  games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre
                                                         || game.Rating == rating);
             string filteredGamesResult = GameListToString(filteredGames);
             return filteredGamesResult;
