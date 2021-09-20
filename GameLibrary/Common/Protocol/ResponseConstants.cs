@@ -16,5 +16,8 @@ namespace Common.Protocol
         public static string AuthenticationError = "Debe logearse para comprar un juego";
         public static string ReviewGameSuccess = "Calificacion realizada exitosamente";
         public static string InvalidRatingException = "El rating debe ser un entero entre 1 y 10, intente de nuevo";
+        public static string LibraryError = "El usuario no posee juegos propios";
+
+
     }
 }

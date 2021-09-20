@@ -12,5 +12,6 @@ namespace Common.Protocol
         public const int BuyGame = 4;
         public const int AddGame = 5;
         public const int ReviewGame = 6;
+        public const int ListOwnedGames = 7;
     }
 }

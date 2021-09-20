@@ -97,12 +97,26 @@ namespace ConsoleClient.Presentation
                     break;
                 case "5":
                     HandleGameReview(clientSocket);
+                case "6":
+                    HandleListOwnedGames(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
                     break;
             }
+        }
+
+        private static void HandleListOwnedGames(SocketHandler clientSocket)
+        {
+            Header header = new Header(HeaderConstants.Request, CommandConstants.ListOwnedGames, 0);
+            clientSocket.SendHeader(header);
+            Header recivedHeader = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+            Console.WriteLine("Lista de juegos propios:");
+            Console.WriteLine(response);
+            LoadLoggedUserMenu(clientSocket);
+
         }
 
         private static void HandleLogout(SocketHandler clientSocket)
