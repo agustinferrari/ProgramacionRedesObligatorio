@@ -54,7 +54,7 @@ namespace ConsoleServer.BussinessLogic
 
         public void AddReview(string gameName, Review newReview)
         {
-            Game gameToReview = GetOneGame(gameName);
+            Game gameToReview = GetGame(gameName);
             gameToReview.AddReview(newReview);
         }
 
@@ -65,8 +65,8 @@ namespace ConsoleServer.BussinessLogic
             string genre = gamesFilters[1].ToLower();
             int rating = Int32.Parse(gamesFilters[2]);
 
-            List<Game> filteredGames =  games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre
-                                                        || game.Rating == rating);
+            List<Game> filteredGames = games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre
+                                                       || game.Rating == rating);
             string filteredGamesResult = GameListToString(filteredGames);
             return filteredGamesResult;
         }

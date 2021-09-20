@@ -81,18 +81,11 @@ namespace ConsoleServer.Logic
             }
         }
 
-        private void HandleListGames(SocketHandler clientSocketHandler)
-        {
-            string gameList = _gameController.GetAllGames();
-            string responseMessage = gameList;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
-        }
-
         private void HandleListFilteredGames(Header header, SocketHandler clientSocketHandler)
         {
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string responseMessageResult = _gameController.GetGamesFiltered(rawData);
-            
+
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
         }
 
