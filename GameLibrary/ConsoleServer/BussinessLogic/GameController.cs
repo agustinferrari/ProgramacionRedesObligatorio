@@ -65,8 +65,8 @@ namespace ConsoleServer.BussinessLogic
             string genre = gamesFilters[1].ToLower();
             int rating = Int32.Parse(gamesFilters[2]);
 
-            List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) || game.Genre.ToLower().Contains(genre)
-                                                       || game.Rating == rating);
+            List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
+                                                       && game.Rating == rating);
             string filteredGamesResult = GameListToString(filteredGames);
             return filteredGamesResult;
         }
