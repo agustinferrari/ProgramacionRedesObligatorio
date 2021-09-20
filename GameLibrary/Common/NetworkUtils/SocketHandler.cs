@@ -140,9 +140,14 @@ namespace Common.NetworkUtils
 
         private string ChangePathToImagesFolder(string fileName)
         {
+            string dir = "GamesImages";
+            // If directory does not exist, create it
+            if (!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
+            }
             string workingDirectory = Environment.CurrentDirectory;
-            string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
-            string wantedPath = workingDirectory + "\\GamesImages\\" + fileName;
+            string wantedPath = workingDirectory + dir + fileName;
             return wantedPath;
         }
 

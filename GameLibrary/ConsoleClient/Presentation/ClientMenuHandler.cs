@@ -156,7 +156,7 @@ namespace ConsoleClient.Presentation
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ListFilteredGames, totalFilter);
             Console.WriteLine("Lista de juegos:");
             Console.WriteLine(response);
-
+            LoadLoggedUserMenu(clientSocket);
         }
 
         private static void HandleListOwnedGames(SocketHandler clientSocket)
