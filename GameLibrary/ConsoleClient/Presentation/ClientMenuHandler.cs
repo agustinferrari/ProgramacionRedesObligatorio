@@ -46,37 +46,6 @@ namespace ConsoleClient.Presentation
             }
         }
 
-        private static void HandleLogin(SocketHandler clientSocket)
-        {
-            Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
-            string user = Console.ReadLine();
-            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
-            Console.WriteLine(response);
-            if (response == ResponseConstants.LoginSuccess)
-                LoadLoggedUserMenu(clientSocket);
-            else
-                LoadMainMenu(clientSocket);
-        }
-
-        private static void HandleListGames(SocketHandler clientSocket)
-        {
-            Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, 0);
-            clientSocket.SendHeader(header);
-            Header recivedHeader = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
-            Console.WriteLine("Lista de juegos:");
-            Console.WriteLine(response);
-        }
-
-        private static void LoadLoggedUserMenu(SocketHandler clientSocket)
-        {
-            _fileHandler = new FileHandler();
-            ClientMenuRenderer.RenderLoggedUserMenu();
-            HandleLoggedUserMenuResponse(clientSocket);
-        }
-
         private static void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
         {
             string selectedOption = Console.ReadLine();
@@ -101,6 +70,9 @@ namespace ConsoleClient.Presentation
                 case "7":
                     HandleGetGameDetails(clientSocket);
                     break;
+                case "6":
+                    HandleListOwnedGames(clientSocket);
+                    break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
@@ -108,12 +80,45 @@ namespace ConsoleClient.Presentation
             }
         }
 
+        private static void LoadLoggedUserMenu(SocketHandler clientSocket)
+        {
+            _fileHandler = new FileHandler();
+            ClientMenuRenderer.RenderLoggedUserMenu();
+            HandleLoggedUserMenuResponse(clientSocket);
+        }
+
+        private static string SendMessageAndRecieveResponse(SocketHandler clientSocket, int command, string messageToSend)
+        {
+            clientSocket.SendMessage(HeaderConstants.Request, command, messageToSend);
+            return RecieveResponse(clientSocket);
+        }
+
+        private static string RecieveResponse(SocketHandler clientSocket)
+        {
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            return response;
+        }
+
+        private static void HandleLogin(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
+            string user = Console.ReadLine().ToLower();
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            if (response == ResponseConstants.LoginSuccess)
+                LoadLoggedUserMenu(clientSocket);
+            else
+                LoadMainMenu(clientSocket);
+        }
+
         private static void HandleLogout(SocketHandler clientSocket)
         {
             Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
             clientSocket.SendHeader(header);
-            Header recivedHEader = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(recivedHEader.IDataLength);
+            string response = RecieveResponse(clientSocket);
             Console.WriteLine(response);
             if (response == ResponseConstants.LogoutSuccess)
                 LoadMainMenu(clientSocket);
@@ -121,15 +126,59 @@ namespace ConsoleClient.Presentation
                 LoadLoggedUserMenu(clientSocket);
         }
 
+        private static void HandleListGames(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
+            string filterResponse = Console.ReadLine().ToLower();
+            if (filterResponse == "y")
+                HandleListGamesFiltered(clientSocket);
+            else
+            {
+                Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, 0);
+                clientSocket.SendHeader(header);
+                Header recivedHeader = clientSocket.ReceiveHeader();
+                string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+                Console.WriteLine("Lista de juegos:");
+                Console.WriteLine(response);
+            }
+        }
+
+        private static void HandleListGamesFiltered(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
+            string filterTitle = Console.ReadLine().ToLower();
+            Console.WriteLine("Por favor ingrese genero a filtrar, si no desea esta opción, ingrese enter:");
+            string genreFIlter = Console.ReadLine().ToLower();
+            Console.WriteLine("Por favor ingrese rating a filtrar, si no desea esta opción, ingrese enter:");
+            string ratingTitle = Console.ReadLine().ToLower();
+            string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
+
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ListFilteredGames, totalFilter);
+            Console.WriteLine("Lista de juegos:");
+            Console.WriteLine(response);
+
+        }
+       
+
+        private static void HandleListOwnedGames(SocketHandler clientSocket)
+        {
+            Header header = new Header(HeaderConstants.Request, CommandConstants.ListOwnedGames, 0);
+            clientSocket.SendHeader(header);
+            string response = RecieveResponse(clientSocket);
+            Console.WriteLine("Lista de juegos propios:");
+            Console.WriteLine(response);
+            LoadLoggedUserMenu(clientSocket);
+
+        }
+
+
         private static void HandleBuyGame(SocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
-            string gameName = Console.ReadLine();
-            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.BuyGame, gameName);
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            string gameName = Console.ReadLine().ToLower();
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.BuyGame, gameName);
             Console.WriteLine(response);
-            if (response == ResponseConstants.BuyGameSuccess || response == ResponseConstants.InvalidGameError)
+            if (response == ResponseConstants.BuyGameSuccess || response == ResponseConstants.InvalidGameError || response == ResponseConstants.GameAlreadyBought)
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
@@ -147,14 +196,15 @@ namespace ConsoleClient.Presentation
             string path = Console.ReadLine();
 
             string gameData = name + "%" + genre + "%" + synopsis;
-            string fileName = _fileHandler.GetFileName(path);
-            long fileSize = _fileHandler.GetFileSize(path);
-            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.AddGame, gameData);
 
             clientSocket.SendImage(path);
 
+            if (response == ResponseConstants.AddGameSuccess)
+                LoadLoggedUserMenu(clientSocket);
+            else
+                LoadMainMenu(clientSocket);
 
-            LoadMainMenu(clientSocket);
         }
 
         private static void HandleGameReview(SocketHandler clientSocket)
@@ -166,9 +216,7 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("Ingrese un comentario acerca del juego:");
             string comment = Console.ReadLine();
             string review = gameName + "%" + rating + "%" + comment;
-            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ReviewGame, review);
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ReviewGame, review);
             Console.WriteLine(response);
             if (response == ResponseConstants.ReviewGameSuccess || response == ResponseConstants.InvalidGameError
                     || response == ResponseConstants.InvalidRatingException)

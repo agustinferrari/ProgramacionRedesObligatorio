@@ -44,5 +44,6 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("");
             Console.WriteLine("-----------------------------------------------------------------------------------");
         }
+
     }
 }

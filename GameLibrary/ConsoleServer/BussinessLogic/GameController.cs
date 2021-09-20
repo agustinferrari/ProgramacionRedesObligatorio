@@ -42,28 +42,46 @@ namespace ConsoleServer.BussinessLogic
 
         public string GetGames()
         {
-            string result = "";
-            for (int i = 0; i < games.Count; i++)
-            {
-                Game game = games[i];
-                result += game.Name;
-                if (i < games.Count - 1)
-                    result += "\n";
-            }
-            return result;
+            return GameListToString(games);
         }
 
         public Game GetGame(string gameName)
         {
-            if (games.Exists(game => game.Name == gameName))
-                return games.Find(game => game.Name == gameName);
+            if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
+                return games.Find(game => game.Name.ToLower() == gameName.ToLower());
             throw new InvalidGameException();
         }
 
         public void AddReview(string gameName, Review newReview)
         {
-            Game gameToReview = GetGame(gameName);
+            Game gameToReview = GetOneGame(gameName);
             gameToReview.AddReview(newReview);
+        }
+
+        internal string GetGamesFiltered(string rawData)
+        {
+            string[] gamesFilters = rawData.Split('%');
+            string gameName = gamesFilters[0].ToLower();
+            string genre = gamesFilters[1].ToLower();
+            int rating = Int32.Parse(gamesFilters[2]);
+
+            List<Game> filteredGames =  games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre
+                                                        || game.Rating == rating);
+            string filteredGamesResult = GameListToString(filteredGames);
+            return filteredGamesResult;
+        }
+
+        private string GameListToString(List<Game> gamesToString)
+        {
+            string result = "";
+            for (int i = 0; i < gamesToString.Count; i++)
+            {
+                Game game = gamesToString[i];
+                result += game.Name;
+                if (i < gamesToString.Count - 1)
+                    result += "\n";
+            }
+            return result;
         }
     }
 }

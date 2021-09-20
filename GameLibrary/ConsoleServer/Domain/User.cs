@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using ConsoleServer.Utils.CustomExceptions;
 
 namespace ConsoleServer.Domain
 {
@@ -17,12 +17,15 @@ namespace ConsoleServer.Domain
             return this.Name == ((User)obj).Name;
         }
 
-        internal void AddGame(Game game)
+        public void AddGame(Game game)
         {
             //Ver si fijarnos si ya lo tiene
             if (OwnedGames == null)
                 OwnedGames = new List<Game>();
-            OwnedGames.Add(game);
+            if (!OwnedGames.Contains(game))
+                OwnedGames.Add(game);
+            else
+                throw new GameAlreadyBoughtException();
         }
     }
 }

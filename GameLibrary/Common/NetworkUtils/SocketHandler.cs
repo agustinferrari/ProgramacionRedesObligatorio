@@ -1,5 +1,4 @@
-﻿
-using Common.FileUtils;
+﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.Protocol;
 using System;
@@ -39,7 +38,7 @@ namespace Common.NetworkUtils
         {
             Header header = new Header(headerConstant, commandNumber, message.Length);
             SendHeader(header);
-            var bytesMessage = Encoding.UTF8.GetBytes(message);
+            byte[] bytesMessage = Encoding.UTF8.GetBytes(message);
             SendData(bytesMessage);
         }
 
@@ -65,7 +64,7 @@ namespace Common.NetworkUtils
             {
                 try
                 {
-                    var localRecv = _socket.Receive(buffer, iRecv, Length - iRecv, SocketFlags.None);
+                    int localRecv = _socket.Receive(buffer, iRecv, Length - iRecv, SocketFlags.None);
                     if (localRecv == 0) // Si recieve retorna 0 -> la conexion se cerro desde el endpoint remoto
                     {
                         throw new Exception("Connection has been closed"); // Catchear en server y si el server sigue andando cerrar la conexion 
