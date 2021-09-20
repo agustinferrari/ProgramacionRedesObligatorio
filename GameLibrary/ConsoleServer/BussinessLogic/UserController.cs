@@ -46,7 +46,7 @@ namespace ConsoleServer.BussinessLogic
 
         public void BuyGame(string username, string gameName)
         {
-            Game game = _gameController.GetOneGame(gameName);
+            Game game = _gameController.GetGame(gameName);
             if (_users.Exists(user => user.Name == username))
             {
                 User user = _users.Find(user => user.Name == username);

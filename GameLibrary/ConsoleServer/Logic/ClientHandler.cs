@@ -55,6 +55,12 @@ namespace ConsoleServer.Logic
                         case CommandConstants.ReviewGame:
                             HandleReviewGame(header, clientSocketHandler);
                             break;
+                        case CommandConstants.GetGameDetails:
+                            HandleGetGameDetails(header, clientSocketHandler);
+                            break;
+                        case CommandConstants.GetGameImage:
+                            HandleGetGameImage(header, clientSocketHandler);
+                            break;
                         case CommandConstants.ListOwnedGames:
                             HandleListOwnedGames(clientSocketHandler);
                             break;
@@ -130,6 +136,13 @@ namespace ConsoleServer.Logic
                 _loggedClients.Remove(clientSocketHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
+        }
+
+        private void HandleListGames(SocketHandler clientSocketHandler)
+        {
+            string gameList = _gameController.GetGames();
+            string responseMessage = gameList;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
 
         private void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
@@ -231,6 +244,40 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+        }
+
+        private void HandleGetGameDetails(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string responseMessageResult;
+            try
+            {
+                Game game = _gameController.GetGame(gameName);
+                responseMessageResult = game.ToString();
+            }
+            catch (InvalidGameException e)
+            {
+                responseMessageResult = ResponseConstants.InvalidGameError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
+        }
+
+        private void HandleGetGameImage(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string responseMessageResult = "";
+            Game game = null;
+            try
+            {
+                game = _gameController.GetGame(gameName);
+            }
+            catch (InvalidGameException e)
+            {
+                responseMessageResult = ResponseConstants.InvalidGameError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);//Capaz que hacer de otra forma
+            if (game != null)
+                clientSocketHandler.SendImage(game.PathToPhoto);
         }
 
     }

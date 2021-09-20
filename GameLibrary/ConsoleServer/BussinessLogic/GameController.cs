@@ -40,12 +40,12 @@ namespace ConsoleServer.BussinessLogic
             games.Add(gameToAdd);
         }
 
-        public string GetAllGames()
+        public string GetGames()
         {
             return GameListToString(games);
         }
 
-        public Game GetOneGame(string gameName)
+        public Game GetGame(string gameName)
         {
             if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
                 return games.Find(game => game.Name.ToLower() == gameName.ToLower());
