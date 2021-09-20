@@ -145,10 +145,10 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
             string filterTitle = Console.ReadLine().ToLower();
             Console.WriteLine("Por favor ingrese genero a filtrar, si no desea esta opción, ingrese enter:");
-            string genreTitle = Console.ReadLine().ToLower();
+            string genreFIlter = Console.ReadLine().ToLower();
             Console.WriteLine("Por favor ingrese rating a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
-            string totalFilter = filterTitle + "%" + genreTitle + "%" + ratingTitle;
+            string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
 
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ListFilteredGames, totalFilter);
             Console.WriteLine("Lista de juegos:");
@@ -201,7 +201,6 @@ namespace ConsoleClient.Presentation
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
-
 
         }
 

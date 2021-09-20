@@ -75,6 +75,13 @@ namespace ConsoleServer.Logic
             }
         }
 
+        private void HandleListGames(SocketHandler clientSocketHandler)
+        {
+            string gameList = _gameController.GetAllGames();
+            string responseMessage = gameList;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
+        }
+
         private void HandleListFilteredGames(Header header, SocketHandler clientSocketHandler)
         {
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
@@ -85,7 +92,7 @@ namespace ConsoleServer.Logic
 
         private void HandleListOwnedGames(SocketHandler clientSocketHandler)
         {
-            string userName = GetUserBySocket(clientSocketHandler);
+            string userName = _loggedClients[clientSocketHandler];
             string gameList = _userController.ListOwnedGameByUser(userName);
             string responseMessage = gameList;
             if (gameList == "")
@@ -123,13 +130,6 @@ namespace ConsoleServer.Logic
                 _loggedClients.Remove(clientSocketHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
-        }
-
-        private void HandleListGames(SocketHandler clientSocketHandler)
-        {
-            string gameList = _gameController.GetAllGames();
-            string responseMessage = gameList;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
 
         private void HandleBuyGame(Header header, SocketHandler clientSocketHandler)
@@ -233,13 +233,5 @@ namespace ConsoleServer.Logic
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
         }
 
-        private string GetUserBySocket(SocketHandler clientSocketHandler)
-        {
-            string username = ResponseConstants.AuthenticationError;
-            if (_loggedClients.ContainsKey(clientSocketHandler))
-                username = _loggedClients[clientSocketHandler];
-           
-            return username;
-        }
     }
 }
