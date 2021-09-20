@@ -52,6 +52,9 @@ namespace ConsoleServer.Logic
                         case CommandConstants.AddGame:
                             HandleAddGame(header, clientSocketHandler);
                             break;
+                        case CommandConstants.ListOwnedGames:
+                            HandleListOwnedGames(clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
                             loggedClients.Remove(clientSocketHandler);
@@ -64,6 +67,16 @@ namespace ConsoleServer.Logic
                     Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
                 }
             }
+        }
+
+        private void HandleListOwnedGames(SocketHandler clientSocketHandler)
+        {
+            string userName = GetUserBySocket(clientSocketHandler);
+            string gameList = _userController.ListOwnedGameByUser(userName);
+            string responseMessage = gameList;
+            if (gameList == "")
+                responseMessage = ResponseConstants.LibraryError;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
 
         private void HandleLogin(Header header, SocketHandler clientSocketHandler)
@@ -153,6 +166,15 @@ namespace ConsoleServer.Logic
                 PathToPhoto = pathToImageGame
             };
             this._gameController.AddGame(newGame);
+        }
+
+        private string GetUserBySocket(SocketHandler clientSocketHandler)
+        {
+            string username = ResponseConstants.AuthenticationError;
+            if (loggedClients.ContainsKey(clientSocketHandler))
+                username = loggedClients[clientSocketHandler];
+           
+            return username;
         }
     }
 }

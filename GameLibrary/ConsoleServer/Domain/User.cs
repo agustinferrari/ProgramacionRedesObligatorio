@@ -22,7 +22,8 @@ namespace ConsoleServer.Domain
             //Ver si fijarnos si ya lo tiene
             if (OwnedGames == null)
                 OwnedGames = new List<Game>();
-            OwnedGames.Add(game);
+            if (!OwnedGames.Contains(game))
+                OwnedGames.Add(game);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿
-using Common.FileUtils;
+﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.Protocol;
 using System;
