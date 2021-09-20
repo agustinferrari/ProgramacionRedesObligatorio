@@ -58,6 +58,9 @@ namespace ConsoleServer.Logic
                         case CommandConstants.ListOwnedGames:
                             HandleListOwnedGames(clientSocketHandler);
                             break;
+                        case CommandConstants.ListFilteredGames:
+                            HandleListFilteredGames(header, clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
                             _loggedClients.Remove(clientSocketHandler);
@@ -70,6 +73,14 @@ namespace ConsoleServer.Logic
                     Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
                 }
             }
+        }
+
+        private void HandleListFilteredGames(Header header, SocketHandler clientSocketHandler)
+        {
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string responseMessageResult = _gameController.GetGamesFiltered(rawData);
+            
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
         }
 
         private void HandleListOwnedGames(SocketHandler clientSocketHandler)
@@ -173,6 +184,8 @@ namespace ConsoleServer.Logic
                 PathToPhoto = pathToImageGame
             };
             this._gameController.AddGame(newGame);
+            string responseMessageResult = ResponseConstants.AddGameSuccess;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
         }
 
         private void HandleReviewGame(Header header, SocketHandler clientSocketHandler)
@@ -184,7 +197,7 @@ namespace ConsoleServer.Logic
             string comment = gameData[2];
 
 
-            string responseMessageResult = "";
+            string responseMessageResult;
             if (_loggedClients.ContainsKey(clientSocketHandler))
             {
                 string userName = _loggedClients[clientSocketHandler];

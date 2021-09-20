@@ -13,5 +13,6 @@ namespace Common.Protocol
         public const int AddGame = 5;
         public const int ReviewGame = 6;
         public const int ListOwnedGames = 7;
+        public const int ListFilteredGames = 8;
     }
 }

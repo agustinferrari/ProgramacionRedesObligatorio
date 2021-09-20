@@ -42,15 +42,7 @@ namespace ConsoleServer.BussinessLogic
 
         public string GetAllGames()
         {
-            string result = "";
-            for (int i = 0; i < games.Count; i++)
-            {
-                Game game = games[i];
-                result += game.Name;
-                if (i < games.Count - 1)
-                    result += "\n";
-            }
-            return result;
+            return GameListToString(games);
         }
 
         public Game GetOneGame(string gameName)
@@ -64,6 +56,32 @@ namespace ConsoleServer.BussinessLogic
         {
             Game gameToReview = GetOneGame(gameName);
             gameToReview.AddReview(newReview);
+        }
+
+        internal string GetGamesFiltered(string rawData)
+        {
+            string[] gamesFilters = rawData.Split('%');
+            string gameName = gamesFilters[0];
+            string genre = gamesFilters[1];
+            int rating = Int32.Parse(gamesFilters[2]);
+
+            List<Game> filteredGames =  games.FindAll(game => game.Name.ToLower() == gameName || game.Genre.ToLower() == genre 
+                                                        || game.Rating == rating);
+            string filteredGamesResult = GameListToString(filteredGames);
+            return filteredGamesResult;
+        }
+
+        private string GameListToString(List<Game> gamesToString)
+        {
+            string result = "";
+            for (int i = 0; i < gamesToString.Count; i++)
+            {
+                Game game = gamesToString[i];
+                result += game.Name;
+                if (i < gamesToString.Count - 1)
+                    result += "\n";
+            }
+            return result;
         }
     }
 }
