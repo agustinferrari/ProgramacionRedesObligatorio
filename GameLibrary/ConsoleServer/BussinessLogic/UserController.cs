@@ -38,10 +38,7 @@ namespace ConsoleServer.BussinessLogic
         {
             User newUser = new User { Name = name };
             if (!_users.Contains(newUser))
-            {
                 _users.Add(newUser);
-                //newUser.OwnedGames = new List<Game>();
-            }
         }
 
         public void BuyGame(string username, string gameName)
