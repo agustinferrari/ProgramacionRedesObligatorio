@@ -62,7 +62,7 @@ namespace ConsoleServer.BussinessLogic
 
         public void AddReview(string gameName, Review newReview)
         {
-            Game gameToReview = GetGame(gameName);
+            Game gameToReview = GetOneGame(gameName);
             gameToReview.AddReview(newReview);
         }
     }

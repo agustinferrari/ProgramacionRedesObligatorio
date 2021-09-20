@@ -67,6 +67,7 @@ namespace ConsoleServer.BussinessLogic
             }
             throw new InvalidUsernameException();
         }
+
         public string ListOwnedGameByUser (string username)
         {
             if (_users.Exists(user => user.Name == username))

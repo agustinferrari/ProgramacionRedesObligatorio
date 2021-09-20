@@ -23,7 +23,7 @@ namespace ConsoleServer.Logic
         {
             _gameController = GameController.Instance;
             _userController = UserController.Instance;
-            loggedClients = new Dictionary<SocketHandler, string>();
+            _loggedClients = new Dictionary<SocketHandler, string>();
             stopHandling = false;
         }
 
@@ -142,6 +142,10 @@ namespace ConsoleServer.Logic
                 {
                     responseMessageResult = ResponseConstants.InvalidGameError;
                 }
+                catch (GameAlreadyBoughtException ge)
+                {
+                    responseMessageResult = ResponseConstants.GameAlreadyBought;
+                }
             }
             else
             {
@@ -214,12 +218,13 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+        }
 
         private string GetUserBySocket(SocketHandler clientSocketHandler)
         {
             string username = ResponseConstants.AuthenticationError;
-            if (loggedClients.ContainsKey(clientSocketHandler))
-                username = loggedClients[clientSocketHandler];
+            if (_loggedClients.ContainsKey(clientSocketHandler))
+                username = _loggedClients[clientSocketHandler];
            
             return username;
         }
