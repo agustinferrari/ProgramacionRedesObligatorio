@@ -28,6 +28,7 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("4. Publicar juego -> permite publicar un juego");
             Console.WriteLine("5. Calificar juego -> permite calificar un juego adquirido por el usuario");
             Console.WriteLine("6. Ver biblioteca -> permite ver la biblioteca de juegos adquiridos por el usuario");
+            Console.WriteLine("7. Ver detalle de juego -> permite ver el detalle de un juego en especifico");
             Console.WriteLine("Ingrese su opcion: ");
             RenderBottomSeparator();
         }

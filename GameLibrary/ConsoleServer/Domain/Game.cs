@@ -18,11 +18,11 @@ namespace ConsoleServer.Domain
             if (Reviews == null)
                 Reviews = new List<Review>();
             Reviews.Add(newReview);
-            calculateRating();
+            CalculateRating();
             Console.WriteLine(Rating);
         }
 
-        private void calculateRating()
+        private void CalculateRating()
         {
             int totalSum = 0;
             foreach (Review review in Reviews)
@@ -30,6 +30,25 @@ namespace ConsoleServer.Domain
                 totalSum += review.Rating;
             }
             Rating = totalSum / Reviews.Count;
+        }
+
+        public override string ToString()
+        {
+            string result = "";
+            result += "Nombre: " + Name + "\n";
+            result += "Genero: " + Genre + "\n";
+            result += "Sinopsis: " + Synopsis + "\n";
+            result += "Rating promedio: " + Rating + "\n";
+            result += "Calificaciones: \n";
+            string reviewList = "";
+            if (Reviews == null || Reviews.Count == 0)
+                reviewList = "Aun no hay calificaciones";
+            else
+                foreach (Review review in Reviews)
+                    reviewList = review.ToString() + "\n";
+            result += reviewList;
+
+            return result;
         }
     }
 }

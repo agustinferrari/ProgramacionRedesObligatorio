@@ -98,6 +98,9 @@ namespace ConsoleClient.Presentation
                 case "5":
                     HandleGameReview(clientSocket);
                     break;
+                case "7":
+                    HandleGetGameDetails(clientSocket);
+                    break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
@@ -172,6 +175,30 @@ namespace ConsoleClient.Presentation
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
+        }
+
+        private static void HandleGetGameDetails(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
+            string gameName = Console.ReadLine();
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            if (response == ResponseConstants.ReviewGameSuccess)
+            {
+                Console.WriteLine("Para descargar la caratula ingrese 1:");
+                string option = Console.ReadLine();
+                if (option == "1")
+                {
+                    clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
+                    Header recivedHeader = clientSocket.ReceiveHeader();//Capaz que sacarlo
+                    string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
+                    string pathToImageGame = clientSocket.ReceiveImage(rawImageData);
+                    Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
+                }
+            }
+            LoadLoggedUserMenu(clientSocket);
         }
     }
 }

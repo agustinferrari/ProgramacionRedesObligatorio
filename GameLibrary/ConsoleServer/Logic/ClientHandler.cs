@@ -23,7 +23,7 @@ namespace ConsoleServer.Logic
         {
             _gameController = GameController.Instance;
             _userController = UserController.Instance;
-            loggedClients = new Dictionary<SocketHandler, string>();
+            _loggedClients = new Dictionary<SocketHandler, string>();
             stopHandling = false;
         }
 
@@ -54,6 +54,12 @@ namespace ConsoleServer.Logic
                             break;
                         case CommandConstants.ReviewGame:
                             HandleReviewGame(header, clientSocketHandler);
+                            break;
+                        case CommandConstants.GetGameDetails:
+                            HandleGetGameDetails(header, clientSocketHandler);
+                            break;
+                        case CommandConstants.GetGameImage:
+                            HandleGetGameImage(header, clientSocketHandler);
                             break;
                         case 0:
                             isSocketActive = false;
@@ -103,7 +109,7 @@ namespace ConsoleServer.Logic
 
         private void HandleListGames(SocketHandler clientSocketHandler)
         {
-            string gameList = _gameController.GetAllGames();
+            string gameList = _gameController.GetGames();
             string responseMessage = gameList;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
@@ -167,7 +173,7 @@ namespace ConsoleServer.Logic
             string comment = gameData[2];
 
 
-            string responseMessageResult = "";
+            string responseMessageResult;
             if (_loggedClients.ContainsKey(clientSocketHandler))
             {
                 string userName = _loggedClients[clientSocketHandler];
@@ -201,7 +207,40 @@ namespace ConsoleServer.Logic
                 responseMessageResult = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+        }
 
+        private void HandleGetGameDetails(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string responseMessageResult;
+            try
+            {
+                Game game = _gameController.GetGame(gameName);
+                responseMessageResult = game.ToString();
+            }
+            catch (InvalidGameException e)
+            {
+                responseMessageResult = ResponseConstants.InvalidGameError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
+        }
+
+        private void HandleGetGameImage(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string responseMessageResult = "";
+            Game game = null;
+            try
+            {
+                game = _gameController.GetGame(gameName);
+            }
+            catch (InvalidGameException e)
+            {
+                responseMessageResult = ResponseConstants.InvalidGameError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);//Capaz que hacer de otra forma
+            if (game != null)
+                clientSocketHandler.SendImage(game.PathToPhoto);
         }
     }
 }

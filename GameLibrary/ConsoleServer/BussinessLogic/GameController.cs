@@ -40,7 +40,7 @@ namespace ConsoleServer.BussinessLogic
             games.Add(gameToAdd);
         }
 
-        public string GetAllGames()
+        public string GetGames()
         {
             string result = "";
             for (int i = 0; i < games.Count; i++)
@@ -53,7 +53,7 @@ namespace ConsoleServer.BussinessLogic
             return result;
         }
 
-        public Game GetOneGame(string gameName)
+        public Game GetGame(string gameName)
         {
             if (games.Exists(game => game.Name == gameName))
                 return games.Find(game => game.Name == gameName);
