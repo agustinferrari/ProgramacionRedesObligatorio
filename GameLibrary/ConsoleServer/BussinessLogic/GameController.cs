@@ -51,7 +51,7 @@ namespace ConsoleServer.BussinessLogic
             throw new InvalidGameException();
         }
 
-        internal void AddReview(string gameName, Review newReview)
+        public void AddReview(string gameName, Review newReview)
         {
             Game gameToReview = GetGame(gameName);
             gameToReview.AddReview(newReview);

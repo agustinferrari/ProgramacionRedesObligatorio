@@ -157,17 +157,39 @@ namespace ConsoleServer.Logic
             string gameName = gameData[0];
             string rating = gameData[1];
             string comment = gameData[2];
-            string userName = _loggedClients[clientSocketHandler];
 
-            //Ver si hacer un try catch por si el user no esta
-            Review newReview = new Review
+
+            string responseMessageResult = "";
+            if (_loggedClients.ContainsKey(clientSocketHandler))
             {
-                User = _userController.GetUser(userName),
-                Comment = comment,
-                Rating = Int32.Parse(rating),
-            };
+                string userName = _loggedClients[clientSocketHandler];
+                try
+                {
+                    Review newReview = new Review
+                    {
+                        User = _userController.GetUser(userName),
+                        Comment = comment,
+                        Rating = Int32.Parse(rating),
+                    };
 
-            _gameController.AddReview(gameName, newReview);
+                    _gameController.AddReview(gameName, newReview);
+                    responseMessageResult = ResponseConstants.ReviewGameSuccess;
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidUsernameError;
+                }
+                catch (InvalidGameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidGameError;
+                }
+            }
+            else
+            {
+                responseMessageResult = ResponseConstants.AuthenticationError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+
         }
     }
 }
