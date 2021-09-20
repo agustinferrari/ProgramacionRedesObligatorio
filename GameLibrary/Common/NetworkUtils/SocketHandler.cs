@@ -111,7 +111,7 @@ namespace Common.NetworkUtils
 
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
-            string wantedPath = changePathToImagesFolder(fileName);
+            string wantedPath = ChangePathToImagesFolder(fileName);
 
             // 5) Calculo la cantidad de partes a recibir
             long parts = SpecificationHelper.GetParts(fileSize);
@@ -138,11 +138,11 @@ namespace Common.NetworkUtils
             return wantedPath;
         }
 
-        private string changePathToImagesFolder(string fileName)
+        private string ChangePathToImagesFolder(string fileName)
         {
             string workingDirectory = Environment.CurrentDirectory;
             string projectDirectory = Directory.GetParent(workingDirectory).Parent.Parent.Parent.FullName;
-            string wantedPath = projectDirectory + "\\GamesImages\\" + fileName;
+            string wantedPath = workingDirectory + "\\GamesImages\\" + fileName;
             return wantedPath;
         }
 

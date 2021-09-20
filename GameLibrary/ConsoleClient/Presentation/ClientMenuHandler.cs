@@ -158,7 +158,6 @@ namespace ConsoleClient.Presentation
             Console.WriteLine(response);
 
         }
-       
 
         private static void HandleListOwnedGames(SocketHandler clientSocket)
         {
@@ -168,9 +167,7 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("Lista de juegos propios:");
             Console.WriteLine(response);
             LoadLoggedUserMenu(clientSocket);
-
         }
-
 
         private static void HandleBuyGame(SocketHandler clientSocket)
         {
@@ -196,10 +193,13 @@ namespace ConsoleClient.Presentation
             string path = Console.ReadLine();
 
             string gameData = name + "%" + genre + "%" + synopsis;
-            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.AddGame, gameData);
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+            //string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.AddGame, gameData);
 
             clientSocket.SendImage(path);
 
+            Header recivedHeader = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
             if (response == ResponseConstants.AddGameSuccess)
                 LoadLoggedUserMenu(clientSocket);
             else
@@ -233,7 +233,7 @@ namespace ConsoleClient.Presentation
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
-            if (response == ResponseConstants.ReviewGameSuccess)
+            if (response != ResponseConstants.InvalidGameError)
             {
                 Console.WriteLine("Para descargar la caratula ingrese 1:");
                 string option = Console.ReadLine();
