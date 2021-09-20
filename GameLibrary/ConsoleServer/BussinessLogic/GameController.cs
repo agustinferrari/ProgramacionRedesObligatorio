@@ -9,7 +9,8 @@ namespace ConsoleServer.BussinessLogic
 {
     public class GameController
     {
-        private static GameController _instance;
+        private static readonly object padlock = new object();
+        private static GameController _instance = null;
         private List<Game> games;
 
         private GameController()
@@ -18,11 +19,19 @@ namespace ConsoleServer.BussinessLogic
             CatalogueLoader.AddGames(this);
         }
 
-        public static GameController GetInstance()
+        public static GameController Instance
         {
-            if (_instance == null)
-                _instance = new GameController();
-            return _instance;
+            get
+            {
+                lock (padlock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new GameController();
+                    }
+                    return _instance;
+                }
+            }
         }
 
         public void AddGame(Game gameToAdd)
@@ -31,7 +40,7 @@ namespace ConsoleServer.BussinessLogic
             games.Add(gameToAdd);
         }
 
-        public string GetGames()
+        public string GetAllGames()
         {
             string result = "";
             for (int i = 0; i < games.Count; i++)
@@ -44,7 +53,7 @@ namespace ConsoleServer.BussinessLogic
             return result;
         }
 
-        public Game GetGame(string gameName)
+        public Game GetOneGame(string gameName)
         {
             if (games.Exists(game => game.Name == gameName))
                 return games.Find(game => game.Name == gameName);

@@ -28,18 +28,19 @@ namespace Common.FileUtils
             return data;
         }
 
-        public void Write(string fileName, byte[] data)
+        public void Write(string wantedPath, byte[] data)
         {
-            if (File.Exists(fileName))
+           
+            if (File.Exists(wantedPath))
             {
-                using (var fs = new FileStream(fileName, FileMode.Append))
+                using (var fs = new FileStream(wantedPath, FileMode.Append))
                 {
                     fs.Write(data, 0, data.Length);
                 }
             }
             else
             {
-                using (var fs = new FileStream(fileName, FileMode.Create))
+                using (var fs = new FileStream(wantedPath, FileMode.Create))
                 {
                     fs.Write(data, 0, data.Length);
                 }

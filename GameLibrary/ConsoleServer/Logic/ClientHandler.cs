@@ -21,9 +21,9 @@ namespace ConsoleServer.Logic
 
         public ClientHandler()
         {
-            _gameController = GameController.GetInstance();
-            _userController = UserController.GetInstance();
-            _loggedClients = new Dictionary<SocketHandler, string>();
+            _gameController = GameController.Instance;
+            _userController = UserController.Instance;
+            loggedClients = new Dictionary<SocketHandler, string>();
             stopHandling = false;
         }
 
@@ -103,7 +103,7 @@ namespace ConsoleServer.Logic
 
         private void HandleListGames(SocketHandler clientSocketHandler)
         {
-            string gameList = _gameController.GetGames();
+            string gameList = _gameController.GetAllGames();
             string responseMessage = gameList;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
@@ -146,8 +146,16 @@ namespace ConsoleServer.Logic
             string synopsis = gameData[2];
             Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
             string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
-            clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
-            //Guardar el juego en la lista (arreglar concurrencia en lista de juegos)
+            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
+            Game newGame = new Game
+            {
+                Name = name,
+                Genre = genre,
+                Synopsis = synopsis,
+                Rating = 0,
+                PathToPhoto = pathToImageGame
+            };
+            this._gameController.AddGame(newGame);
         }
 
         private void HandleReviewGame(Header header, SocketHandler clientSocketHandler)
