@@ -194,12 +194,11 @@ namespace ConsoleClient.Presentation
 
             string gameData = name + "%" + genre + "%" + synopsis;
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-            //string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.AddGame, gameData);
-
             clientSocket.SendImage(path);
 
             Header recivedHeader = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+            Console.WriteLine(response);
             if (response == ResponseConstants.AddGameSuccess)
                 LoadLoggedUserMenu(clientSocket);
             else
