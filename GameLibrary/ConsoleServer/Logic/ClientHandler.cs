@@ -183,6 +183,10 @@ namespace ConsoleServer.Logic
                 {
                     responseMessageResult = ResponseConstants.InvalidGameError;
                 }
+                catch (Exception e) when (e is FormatException || e is InvalidReviewRatingException)
+                {
+                    responseMessageResult = ResponseConstants.InvalidRatingException;
+                }
             }
             else
             {

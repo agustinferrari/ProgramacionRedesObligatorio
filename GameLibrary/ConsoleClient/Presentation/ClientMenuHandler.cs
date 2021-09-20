@@ -167,7 +167,8 @@ namespace ConsoleClient.Presentation
             Header header = clientSocket.ReceiveHeader();
             string response = clientSocket.ReceiveString(header.IDataLength);
             Console.WriteLine(response);
-            if (response == ResponseConstants.ReviewGameSuccess || response == ResponseConstants.InvalidGameError)
+            if (response == ResponseConstants.ReviewGameSuccess || response == ResponseConstants.InvalidGameError
+                    || response == ResponseConstants.InvalidRatingException)
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
