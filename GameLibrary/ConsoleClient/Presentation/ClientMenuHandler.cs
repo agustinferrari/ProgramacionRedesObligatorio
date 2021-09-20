@@ -46,6 +46,57 @@ namespace ConsoleClient.Presentation
             }
         }
 
+        private static void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
+        {
+            string selectedOption = Console.ReadLine();
+            switch (selectedOption)
+            {
+                case "1":
+                    HandleLogout(clientSocket);
+                    break;
+                case "2":
+                    HandleListGames(clientSocket);
+                    LoadLoggedUserMenu(clientSocket);
+                    break;
+                case "3":
+                    HandleBuyGame(clientSocket);
+                    break;
+                case "4":
+                    HandleAddGame(clientSocket);
+                    break;
+                case "5":
+                    HandleGameReview(clientSocket);
+                    break;
+                case "6":
+                    HandleListOwnedGames(clientSocket);
+                    break;
+                default:
+                    Console.WriteLine("La opcion seleccionada es invalida.");
+                    LoadMainMenu(clientSocket);
+                    break;
+            }
+        }
+
+        private static void LoadLoggedUserMenu(SocketHandler clientSocket)
+        {
+            _fileHandler = new FileHandler();
+            ClientMenuRenderer.RenderLoggedUserMenu();
+            HandleLoggedUserMenuResponse(clientSocket);
+        }
+
+        private static string SendMessageAndRecieveResponse(SocketHandler clientSocket, int command, string messageToSend)
+        {
+            clientSocket.SendMessage(HeaderConstants.Request, command, messageToSend);
+            return RecieveResponse(clientSocket);
+        }
+
+        private static string RecieveResponse(SocketHandler clientSocket)
+        {
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            return response;
+        }
+
         private static void HandleLogin(SocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
@@ -58,6 +109,18 @@ namespace ConsoleClient.Presentation
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);
+        }
+
+        private static void HandleLogout(SocketHandler clientSocket)
+        {
+            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
+            clientSocket.SendHeader(header);
+            string response = RecieveResponse(clientSocket);
+            Console.WriteLine(response);
+            if (response == ResponseConstants.LogoutSuccess)
+                LoadMainMenu(clientSocket);
+            else
+                LoadLoggedUserMenu(clientSocket);
         }
 
         private static void HandleListGames(SocketHandler clientSocket)
@@ -92,57 +155,7 @@ namespace ConsoleClient.Presentation
             Console.WriteLine(response);
 
         }
-
-        private static string SendMessageAndRecieveResponse(SocketHandler clientSocket, int command, string messageToSend)
-        {
-            clientSocket.SendMessage(HeaderConstants.Request, command, messageToSend);
-            return RecieveResponse(clientSocket);
-        }
-
-        private static string RecieveResponse( SocketHandler clientSocket)
-        {
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
-            return response;
-        }
-
-        private static void LoadLoggedUserMenu(SocketHandler clientSocket)
-        {
-            _fileHandler = new FileHandler();
-            ClientMenuRenderer.RenderLoggedUserMenu();
-            HandleLoggedUserMenuResponse(clientSocket);
-        }
-
-        private static void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
-        {
-            string selectedOption = Console.ReadLine();
-            switch (selectedOption)
-            {
-                case "1":
-                    HandleLogout(clientSocket);
-                    break;
-                case "2":
-                    HandleListGames(clientSocket);
-                    LoadLoggedUserMenu(clientSocket);
-                    break;
-                case "3":
-                    HandleBuyGame(clientSocket);
-                    break;
-                case "4":
-                    HandleAddGame(clientSocket);
-                    break;
-                case "5":
-                    HandleGameReview(clientSocket);
-                    break;
-                case "6":
-                    HandleListOwnedGames(clientSocket);
-                    break;
-                default:
-                    Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadMainMenu(clientSocket);
-                    break;
-            }
-        }
+       
 
         private static void HandleListOwnedGames(SocketHandler clientSocket)
         {
@@ -155,17 +168,6 @@ namespace ConsoleClient.Presentation
 
         }
 
-        private static void HandleLogout(SocketHandler clientSocket)
-        {
-            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
-            clientSocket.SendHeader(header);
-            string response = RecieveResponse(clientSocket);
-            Console.WriteLine(response);
-            if (response == ResponseConstants.LogoutSuccess)
-                LoadMainMenu(clientSocket);
-            else
-                LoadLoggedUserMenu(clientSocket);
-        }
 
         private static void HandleBuyGame(SocketHandler clientSocket)
         {
