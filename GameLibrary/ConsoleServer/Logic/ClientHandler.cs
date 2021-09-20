@@ -17,7 +17,7 @@ namespace ConsoleServer.Logic
         private UserController _userController;
         public static bool stopHandling;
 
-        private Dictionary<SocketHandler, string> loggedClients;
+        private Dictionary<SocketHandler, string> _loggedClients;
 
         public ClientHandler()
         {
@@ -52,9 +52,12 @@ namespace ConsoleServer.Logic
                         case CommandConstants.AddGame:
                             HandleAddGame(header, clientSocketHandler);
                             break;
+                        case CommandConstants.ReviewGame:
+                            HandleReviewGame(header, clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
-                            loggedClients.Remove(clientSocketHandler);
+                            _loggedClients.Remove(clientSocketHandler);
                             clientSocketHandler.ShutdownSocket();
                             break;
                     }
@@ -70,15 +73,15 @@ namespace ConsoleServer.Logic
         {
             string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
             string responseMessageResult;
-            if (loggedClients.ContainsValue(userName))
+            if (_loggedClients.ContainsValue(userName))
             {
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;
             }
             else
             {
-                if (!loggedClients.ContainsKey(clientSocketHandler))
+                if (!_loggedClients.ContainsKey(clientSocketHandler))
                 {
-                    loggedClients.Add(clientSocketHandler, userName);
+                    _loggedClients.Add(clientSocketHandler, userName);
                     _userController.TryAddUser(userName);
                     responseMessageResult = ResponseConstants.LoginSuccess;
                 }
@@ -92,8 +95,8 @@ namespace ConsoleServer.Logic
 
         private void HandleLogout(SocketHandler clientSocketHandler)
         {
-            if (loggedClients.ContainsKey(clientSocketHandler))
-                loggedClients.Remove(clientSocketHandler);
+            if (_loggedClients.ContainsKey(clientSocketHandler))
+                _loggedClients.Remove(clientSocketHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
         }
@@ -110,9 +113,9 @@ namespace ConsoleServer.Logic
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string username;
             string responseMessageResult;
-            if (loggedClients.ContainsKey(clientSocketHandler))
+            if (_loggedClients.ContainsKey(clientSocketHandler))
             {
-                username = loggedClients[clientSocketHandler];
+                username = _loggedClients[clientSocketHandler];
                 try
                 {
                     _userController.BuyGame(username, gameName);
@@ -153,6 +156,52 @@ namespace ConsoleServer.Logic
                 PathToPhoto = pathToImageGame
             };
             this._gameController.AddGame(newGame);
+        }
+
+        private void HandleReviewGame(Header header, SocketHandler clientSocketHandler)
+        {
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string[] gameData = rawData.Split('%');
+            string gameName = gameData[0];
+            string rating = gameData[1];
+            string comment = gameData[2];
+
+
+            string responseMessageResult = "";
+            if (_loggedClients.ContainsKey(clientSocketHandler))
+            {
+                string userName = _loggedClients[clientSocketHandler];
+                try
+                {
+                    Review newReview = new Review
+                    {
+                        User = _userController.GetUser(userName),
+                        Comment = comment,
+                        Rating = Int32.Parse(rating),
+                    };
+
+                    _gameController.AddReview(gameName, newReview);
+                    responseMessageResult = ResponseConstants.ReviewGameSuccess;
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidUsernameError;
+                }
+                catch (InvalidGameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidGameError;
+                }
+                catch (Exception e) when (e is FormatException || e is InvalidReviewRatingException)
+                {
+                    responseMessageResult = ResponseConstants.InvalidRatingException;
+                }
+            }
+            else
+            {
+                responseMessageResult = ResponseConstants.AuthenticationError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+
         }
     }
 }

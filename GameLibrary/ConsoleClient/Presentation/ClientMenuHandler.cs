@@ -95,6 +95,9 @@ namespace ConsoleClient.Presentation
                 case "4":
                     HandleAddGame(clientSocket);
                     break;
+                case "5":
+                    HandleGameReview(clientSocket);
+                    break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
@@ -117,7 +120,7 @@ namespace ConsoleClient.Presentation
 
         private static void HandleBuyGame(SocketHandler clientSocket)
         {
-            Console.WriteLine("Por favor ingrese el nombre del juego para comprar: ");
+            Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine();
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.BuyGame, gameName);
             Header header = clientSocket.ReceiveHeader();
@@ -131,13 +134,13 @@ namespace ConsoleClient.Presentation
 
         private static void HandleAddGame(SocketHandler clientSocket)
         {
-            Console.WriteLine("Ingrese el nombre del juego");
+            Console.WriteLine("Ingrese el nombre del juego:");
             string name = Console.ReadLine();
-            Console.WriteLine("Ingrese el genero del juego");
+            Console.WriteLine("Ingrese el genero del juego:");
             string genre = Console.ReadLine();
-            Console.WriteLine("Ingrese un resumen del juego");
+            Console.WriteLine("Ingrese un resumen del juego:");
             string synopsis = Console.ReadLine();
-            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir");
+            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir:");
             string path = Console.ReadLine();
 
             string gameData = name + "%" + genre + "%" + synopsis;
@@ -147,8 +150,28 @@ namespace ConsoleClient.Presentation
 
             clientSocket.SendImage(path);
 
-           
+
             LoadMainMenu(clientSocket);
+        }
+
+        private static void HandleGameReview(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese el nombre del juego:");
+            string gameName = Console.ReadLine();
+            Console.WriteLine("Ingrese el rating del juego (1-10):");
+            string rating = Console.ReadLine();
+            Console.WriteLine("Ingrese un comentario acerca del juego:");
+            string comment = Console.ReadLine();
+            string review = gameName + "%" + rating + "%" + comment;
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ReviewGame, review);
+            Header header = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(response);
+            if (response == ResponseConstants.ReviewGameSuccess || response == ResponseConstants.InvalidGameError
+                    || response == ResponseConstants.InvalidRatingException)
+                LoadLoggedUserMenu(clientSocket);
+            else
+                LoadMainMenu(clientSocket);
         }
     }
 }
