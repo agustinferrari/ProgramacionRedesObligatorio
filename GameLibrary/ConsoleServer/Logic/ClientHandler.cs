@@ -67,6 +67,9 @@ namespace ConsoleServer.Logic
                         case CommandConstants.ListFilteredGames:
                             HandleListFilteredGames(header, clientSocketHandler);
                             break;
+                        case CommandConstants.DeleteOwnedGame:
+                            HandleDeleteOwnedGame(header, clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
                             _loggedClients.Remove(clientSocketHandler);
@@ -79,6 +82,17 @@ namespace ConsoleServer.Logic
                     Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
                 }
             }
+        }
+
+        private void HandleDeleteOwnedGame(Header header, SocketHandler clientSocketHandler)
+        {
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string userName = _loggedClients[clientSocketHandler];
+            bool deletedSuccesfull = _userController.DeleteOwnedGame(userName, gameName);
+            string responseMessage = ResponseConstants.DeleteOwnedGameSucces;
+            if (!deletedSuccesfull)
+                responseMessage = ResponseConstants.InvalidGameError;
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
 
         private void HandleListFilteredGames(Header header, SocketHandler clientSocketHandler)

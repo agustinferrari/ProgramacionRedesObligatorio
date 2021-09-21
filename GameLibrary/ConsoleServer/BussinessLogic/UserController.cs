@@ -67,16 +67,8 @@ namespace ConsoleServer.BussinessLogic
 
         public string ListOwnedGameByUser (string username)
         {
-            if (_users.Exists(user => user.Name == username))
-            {
-                User user = _users.Find(user => user.Name == username);
-                return GameListToString(user);
-            }
-            else
-            {
-                throw new InvalidUsernameException();
-            }
-
+            User user = GetUser(username);
+            return GameListToString(user);
         }
 
         private string GameListToString(User user)
@@ -93,7 +85,25 @@ namespace ConsoleServer.BussinessLogic
                     result += "\n";
             }
             return result;
-        } 
+        }
 
+        public bool DeleteOwnedGame(string userName, string gameName)
+        {
+            bool deleted = false;
+            User user = GetUser(userName);
+            List<Game> games = user.OwnedGames;
+            if (games == null)
+                return deleted;
+            for (int i = 0; i < games.Count; i++)
+            {
+                Game game = games[i];
+                if (game.Name.ToLower() == gameName.ToLower())
+                {
+                    games.RemoveAt(i);
+                    deleted = true;
+                }
+            }
+            return deleted;
+        }
     }
 }

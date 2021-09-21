@@ -67,17 +67,49 @@ namespace ConsoleClient.Presentation
                 case "5":
                     HandleGameReview(clientSocket);
                     break;
+                case "6":
+                    HandleListOwnedGames(clientSocket);
+                    break;
                 case "7":
                     HandleGetGameDetails(clientSocket);
                     break;
-                case "6":
-                    HandleListOwnedGames(clientSocket);
+                case "8":
+                    HandleModifyDeleteOwnedGame(clientSocket);
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
                     LoadMainMenu(clientSocket);
                     break;
             }
+        }
+
+        private static void HandleModifyDeleteOwnedGame(SocketHandler clientSocket)
+        {
+            Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
+            string gameName = Console.ReadLine();
+            Console.WriteLine("Desea eliminarlo por completo al juego? \n Y/N");
+            string filterResponse = Console.ReadLine().ToLower();
+            if (filterResponse == "y" || filterResponse == "yes")
+                HandleDeleteOwnedGame(clientSocket, gameName);
+
+            else
+                HandleModifyOwnedGame(clientSocket, gameName);
+        }
+
+        private static void HandleModifyOwnedGame(SocketHandler clientSocket, string gameName)
+        {
+            Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
+            string changes = "";
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyOwnedGame, gameName);
+            Console.WriteLine(response);
+            LoadLoggedUserMenu(clientSocket);
+        }
+
+        private static void HandleDeleteOwnedGame(SocketHandler clientSocket, string gameName)
+        {
+            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeleteOwnedGame, gameName);
+            Console.WriteLine(response);
+            LoadLoggedUserMenu(clientSocket);
         }
 
         private static void LoadLoggedUserMenu(SocketHandler clientSocket)
@@ -137,7 +169,7 @@ namespace ConsoleClient.Presentation
         {
             Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
             string filterResponse = Console.ReadLine().ToLower();
-            if (filterResponse == "y")
+            if (filterResponse == "y" || filterResponse == "yes")
                 HandleListGamesFiltered(clientSocket);
             else
             {

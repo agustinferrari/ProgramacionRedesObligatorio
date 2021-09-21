@@ -19,5 +19,6 @@ namespace Common.Protocol
         public static string LibraryError = "El usuario no posee juegos propios";
         public static string GameAlreadyBought = "El usuario ya compro este juego";
         public static string AddGameSuccess = "El juego se publico correctamente";
+        public static string DeleteOwnedGameSucces = "El juego ha sido borrado correctamente";
     }
 }
