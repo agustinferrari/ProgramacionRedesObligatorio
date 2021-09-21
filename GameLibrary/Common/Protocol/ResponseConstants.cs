@@ -20,5 +20,6 @@ namespace Common.Protocol
         public static string GameAlreadyBought = "El usuario ya compro este juego";
         public static string AddGameSuccess = "El juego se publico correctamente";
         public static string DeleteOwnedGameSucces = "El juego ha sido borrado correctamente";
+        public static string ModifyOwnedGameSucces = "El juego ha sido editado correctamente";
     }
 }

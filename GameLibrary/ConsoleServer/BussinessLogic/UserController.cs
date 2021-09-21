@@ -97,5 +97,16 @@ namespace ConsoleServer.BussinessLogic
             Game userGame = user.OwnedGames.Find(game => game.Name.ToLower() == gameName.ToLower());
             return userGame;
         }
+
+        public void ModifyGame(string userName, string oldGameName, Game newGame)
+        {
+            Game gameToModify = GetCertainGameOwnedByUser(userName, oldGameName);
+            if (gameToModify == null)
+                throw new GameDoesNotExistOnLibraryExcpetion();
+            gameToModify.Name = newGame.Name;
+            gameToModify.Genre = newGame.Genre;
+            gameToModify.Synopsis = newGame.Synopsis;
+
+        }
     }
 }

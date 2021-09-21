@@ -109,7 +109,7 @@ namespace ConsoleClient.Presentation
             {
                 string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyOwnedGame, changes);
                 Console.WriteLine(response);
-                if (response == ResponseConstants.InvalidGameError)
+                if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.ModifyOwnedGameSucces || response == ResponseConstants.InvalidUsernameError)
                     LoadLoggedUserMenu(clientSocket);
                 else
                     LoadMainMenu(clientSocket);
@@ -124,7 +124,10 @@ namespace ConsoleClient.Presentation
         {
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeleteOwnedGame, gameName);
             Console.WriteLine(response);
-            LoadLoggedUserMenu(clientSocket);
+            if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.DeleteOwnedGameSucces || response == ResponseConstants.InvalidUsernameError)
+                LoadLoggedUserMenu(clientSocket);
+            else
+                LoadMainMenu(clientSocket);
         }
 
         private static void LoadLoggedUserMenu(SocketHandler clientSocket)

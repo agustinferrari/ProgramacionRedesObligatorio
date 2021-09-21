@@ -89,12 +89,34 @@ namespace ConsoleServer.Logic
 
         private void HandleModifyOwnedGame(Header header, SocketHandler clientSocketHandler)
         {
+            string userName = _loggedClients[clientSocketHandler];
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
-            string newGameName = gameData[0];
-            string newGamegenre = gameData[1];
-            string newGamesynopsis = gameData[2];
-            //Game gameToModify = _userController.G
+            string oldGameName = gameData[0];
+            string newGameName = gameData[1];
+            string newGamegenre = gameData[2];
+            string newGameSynopsis = gameData[3];
+            Game newGame = new Game
+            {
+                Name = newGameName,
+                Genre = newGamegenre,
+                Synopsis = newGameSynopsis
+            };
+            string responseMessage;
+            try
+            {
+                _userController.ModifyGame(userName, oldGameName, newGame);
+                responseMessage = ResponseConstants.ModifyOwnedGameSucces;
+            }
+            catch (InvalidUsernameException e)
+            {
+                responseMessage = ResponseConstants.InvalidUsernameError;
+            }
+            catch (GameDoesNotExistOnLibraryExcpetion e)
+            {
+                responseMessage = ResponseConstants.InvalidGameError;
+            }
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
 
         private void HandleDeleteOwnedGame(Header header, SocketHandler clientSocketHandler)
