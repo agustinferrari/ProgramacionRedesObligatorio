@@ -63,10 +63,13 @@ namespace ConsoleServer.BussinessLogic
             string[] gamesFilters = rawData.Split('%');
             string gameName = gamesFilters[0].ToLower();
             string genre = gamesFilters[1].ToLower();
-            int rating = Int32.Parse(gamesFilters[2]);
+            int rating = 0;
+            if (gamesFilters[2] != "")
+                rating = Int32.Parse(gamesFilters[2]);
+
 
             List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
-                                                       && game.Rating == rating);
+                                                       && game.Rating >= rating);
             string filteredGamesResult = GameListToString(filteredGames);
             return filteredGamesResult;
         }

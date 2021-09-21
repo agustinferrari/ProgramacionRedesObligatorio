@@ -156,7 +156,7 @@ namespace ConsoleClient.Presentation
             string filterTitle = Console.ReadLine().ToLower();
             Console.WriteLine("Por favor ingrese genero a filtrar, si no desea esta opción, ingrese enter:");
             string genreFIlter = Console.ReadLine().ToLower();
-            Console.WriteLine("Por favor ingrese rating a filtrar, si no desea esta opción, ingrese enter:");
+            Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
             string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ListFilteredGames, totalFilter);
