@@ -78,7 +78,7 @@ namespace ConsoleClient.Presentation
                     break;
                 default:
                     Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadMainMenu(clientSocket);
+                    LoadLoggedUserMenu(clientSocket);
                     break;
             }
         }
