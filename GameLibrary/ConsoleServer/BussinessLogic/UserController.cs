@@ -87,23 +87,24 @@ namespace ConsoleServer.BussinessLogic
             return result;
         }
 
-        public bool DeleteOwnedGame(string userName, string gameName)
+        public void DeleteOwnedGame(string userName, string gameName)
         {
-            bool deleted = false;
+            bool searchingGame = true;
             User user = GetUser(userName);
             List<Game> games = user.OwnedGames;
             if (games == null)
-                return deleted;
-            for (int i = 0; i < games.Count; i++)
+                searchingGame = false;
+            for (int i = 0; searchingGame && i < games.Count; i++)
             {
                 Game game = games[i];
                 if (game.Name.ToLower() == gameName.ToLower())
                 {
                     games.RemoveAt(i);
-                    deleted = true;
+                    searchingGame = false;
                 }
             }
-            return deleted;
+            if (searchingGame)
+                throw new GameDoesNotExistOnLibraryExcpetion();
         }
     }
 }

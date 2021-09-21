@@ -88,10 +88,20 @@ namespace ConsoleServer.Logic
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string userName = _loggedClients[clientSocketHandler];
-            bool deletedSuccesfull = _userController.DeleteOwnedGame(userName, gameName);
-            string responseMessage = ResponseConstants.DeleteOwnedGameSucces;
-            if (!deletedSuccesfull)
+            string responseMessage = "";
+            try
+            {
+                _userController.DeleteOwnedGame(userName, gameName);
+                responseMessage = ResponseConstants.DeleteOwnedGameSucces;
+            }
+            catch (InvalidUsernameException e)
+            {
+                responseMessage = ResponseConstants.InvalidUsernameError;
+            }
+            catch (GameDoesNotExistOnLibraryExcpetion e)
+            {
                 responseMessage = ResponseConstants.InvalidGameError;
+            }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
 
