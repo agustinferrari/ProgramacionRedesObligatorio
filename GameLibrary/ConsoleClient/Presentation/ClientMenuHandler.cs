@@ -98,11 +98,26 @@ namespace ConsoleClient.Presentation
 
         private static void HandleModifyOwnedGame(SocketHandler clientSocket, string gameName)
         {
-            Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
-            string changes = "";
-            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyOwnedGame, gameName);
-            Console.WriteLine(response);
-            LoadLoggedUserMenu(clientSocket);
+            Console.WriteLine("Ingrese nuevo nombre:");
+            string newName = Console.ReadLine();
+            Console.WriteLine("Ingrese nuevo genero:");
+            string genre = Console.ReadLine();
+            Console.WriteLine("Ingrese nuevo sinopsis:");
+            string synopsis = Console.ReadLine();
+            string changes = gameName + "%" + newName + "%" + genre + "%" + synopsis;
+            if (ValidateNotEmptyFields(changes))
+            {
+                string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyOwnedGame, changes);
+                Console.WriteLine(response);
+                if (response == ResponseConstants.InvalidGameError)
+                    LoadLoggedUserMenu(clientSocket);
+                else
+                    LoadMainMenu(clientSocket);
+            }
+            else
+            {
+                LoadLoggedUserMenu(clientSocket);
+            }
         }
 
         private static void HandleDeleteOwnedGame(SocketHandler clientSocket, string gameName)
