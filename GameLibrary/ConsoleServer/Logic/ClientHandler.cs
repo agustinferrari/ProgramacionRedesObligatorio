@@ -70,6 +70,9 @@ namespace ConsoleServer.Logic
                         case CommandConstants.DeleteOwnedGame:
                             HandleDeleteOwnedGame(header, clientSocketHandler);
                             break;
+                        case CommandConstants.ModifyOwnedGame:
+                            HandleModifyOwnedGame(header, clientSocketHandler);
+                            break;
                         case 0:
                             isSocketActive = false;
                             _loggedClients.Remove(clientSocketHandler);
@@ -84,11 +87,21 @@ namespace ConsoleServer.Logic
             }
         }
 
+        private void HandleModifyOwnedGame(Header header, SocketHandler clientSocketHandler)
+        {
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string[] gameData = rawData.Split('%');
+            string newGameName = gameData[0];
+            string newGamegenre = gameData[1];
+            string newGamesynopsis = gameData[2];
+            //Game gameToModify = _userController.G
+        }
+
         private void HandleDeleteOwnedGame(Header header, SocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string userName = _loggedClients[clientSocketHandler];
-            string responseMessage = "";
+            string responseMessage;
             try
             {
                 _userController.DeleteOwnedGame(userName, gameName);

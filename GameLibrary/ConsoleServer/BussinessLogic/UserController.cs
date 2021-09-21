@@ -44,15 +44,8 @@ namespace ConsoleServer.BussinessLogic
         public void BuyGame(string username, string gameName)
         {
             Game game = _gameController.GetGame(gameName);
-            if (_users.Exists(user => user.Name == username))
-            {
-                User user = _users.Find(user => user.Name == username);
-                user.AddGame(game);
-            }
-            else
-            {
-                throw new InvalidUsernameException();
-            }
+            User user = GetUser(username);
+            user.AddGame(game);
         }
 
         public User GetUser(string username)
@@ -88,23 +81,21 @@ namespace ConsoleServer.BussinessLogic
         }
 
         public void DeleteOwnedGame(string userName, string gameName)
-        {
-            bool searchingGame = true;
-            User user = GetUser(userName);
-            List<Game> games = user.OwnedGames;
-            if (games == null)
-                searchingGame = false;
-            for (int i = 0; searchingGame && i < games.Count; i++)
-            {
-                Game game = games[i];
-                if (game.Name.ToLower() == gameName.ToLower())
-                {
-                    games.RemoveAt(i);
-                    searchingGame = false;
-                }
-            }
-            if (searchingGame)
+        {  
+            Game gameToDelete = GetCertainGameOwnedByUser(userName, gameName);
+            if (gameToDelete == null)
                 throw new GameDoesNotExistOnLibraryExcpetion();
+
+            GetUser(userName).OwnedGames.Remove(gameToDelete);
+        }
+
+        public Game GetCertainGameOwnedByUser(string userName, string gameName)
+        {
+            User user = GetUser(userName);
+            if (user.OwnedGames == null)
+                return null;
+            Game userGame = user.OwnedGames.Find(game => game.Name.ToLower() == gameName.ToLower());
+            return userGame;
         }
     }
 }
