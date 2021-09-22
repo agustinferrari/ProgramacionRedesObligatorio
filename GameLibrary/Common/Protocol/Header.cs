@@ -53,33 +53,6 @@ namespace Common.Protocol
             _dataLength = Encoding.UTF8.GetBytes(stringData);
         }
 
-        /*
-        public Header(string fileName, long fileSize, string direction, int command)
-        {
-            try
-            {
-                ValidateImageName(fileName);
-                _direction = Encoding.UTF8.GetBytes(direction);
-                string stringCommand = command.ToString("D2");  //Maximo largo 2, si es menor a 2 cifras, completo con 0s a la izquierda 
-                _command = Encoding.UTF8.GetBytes(stringCommand);
-                string data = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
-                data += fileSize.ToString("D" + Specification.FixedFileSizeLength);
-                _dataLength = Encoding.UTF8.GetBytes(data);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Ruta equivocada, ingresar nuevamente. Cambiar de lugar catch");
-            }
-
-        }
-
-        private void ValidateImageName(string fileName)
-        {
-            byte[] fileNameData = BitConverter.GetBytes(Encoding.UTF8.GetBytes(fileName).Length);
-            if (fileNameData.Length != Specification.FixedFileNameLength)
-                throw new Exception("There is something wrong with the file name");
-        }*/
-
         public byte[] GetRequest()
         {
             byte[] header = new byte[HeaderConstants.Request.Length + HeaderConstants.CommandLength + HeaderConstants.DataLength];
