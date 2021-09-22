@@ -9,7 +9,7 @@ namespace ConsoleServer.BussinessLogic
 {
     public class GameController
     {
-        private static readonly object padlock = new object();
+        private static readonly object _padlock = new object();
         private static GameController _instance = null;
         private List<Game> games;
 
@@ -23,7 +23,7 @@ namespace ConsoleServer.BussinessLogic
         {
             get
             {
-                lock (padlock)
+                lock (_padlock)
                 {
                     if (_instance == null)
                     {

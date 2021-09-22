@@ -8,7 +8,7 @@ namespace ConsoleServer.BussinessLogic
 {
     public class UserController
     {
-        private static readonly object padlock = new object();
+        private static readonly object _padlock = new object();
         private List<User> _users;
         private GameController _gameController;
         private static UserController _instance = null;
@@ -23,7 +23,7 @@ namespace ConsoleServer.BussinessLogic
         {
             get
             {
-                lock (padlock)
+                lock (_padlock)
                 {
                     if (_instance == null)
                     {
@@ -58,7 +58,7 @@ namespace ConsoleServer.BussinessLogic
             throw new InvalidUsernameException();
         }
 
-        public string ListOwnedGameByUser (string username)
+        public string ListOwnedGameByUser(string username)
         {
             User user = GetUser(username);
             return GameListToString(user);
@@ -68,7 +68,7 @@ namespace ConsoleServer.BussinessLogic
         {
             string result = "";
             List<Game> games = user.OwnedGames;
-            if (games == null) 
+            if (games == null)
                 return "";
             for (int i = 0; i < games.Count; i++)
             {
@@ -81,7 +81,7 @@ namespace ConsoleServer.BussinessLogic
         }
 
         public void DeleteOwnedGame(string userName, string gameName)
-        {  
+        {
             Game gameToDelete = GetCertainGameOwnedByUser(userName, gameName);
             if (gameToDelete == null)
                 throw new GameDoesNotExistOnLibraryExcpetion();
