@@ -15,7 +15,10 @@ namespace ConsoleClient.Presentation.MenuHandler.Strategies
             string response = _menuHandler.RecieveResponse(clientSocket);
             Console.WriteLine("Lista de juegos propios:");
             Console.WriteLine(response);
-            _menuHandler.LoadLoggedUserMenu(clientSocket);
+            if (response == ResponseConstants.AuthenticationError)
+                _menuHandler.LoadLoggedUserMenu(clientSocket);
+            else
+                _menuHandler.LoadLoggedUserMenu(clientSocket);
         }
     }
 }
