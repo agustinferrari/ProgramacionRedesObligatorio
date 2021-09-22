@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-using ConsoleClient.Presentation;
+using ConsoleClient.Presentation.MenuHandler;
 using System;
 
 namespace ConsoleClient
@@ -9,7 +9,8 @@ namespace ConsoleClient
         static void Main(string[] args)
         {
             ClientSocketHandler socketHandler = new ClientSocketHandler("127.0.0.1", 0, 6000);
-            ClientMenuHandler.LoadMainMenu(socketHandler);
+            ClientMenuHandler menuHandler = new ClientMenuHandler();
+            menuHandler.LoadMainMenu(socketHandler);
         }
     }
 }

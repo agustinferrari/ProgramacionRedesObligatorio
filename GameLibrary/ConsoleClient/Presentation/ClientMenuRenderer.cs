@@ -29,7 +29,8 @@ namespace ConsoleClient.Presentation
             Console.WriteLine("5. Calificar juego -> permite calificar un juego adquirido por el usuario");
             Console.WriteLine("6. Ver biblioteca -> permite ver la biblioteca de juegos adquiridos por el usuario");
             Console.WriteLine("7. Ver detalle de juego -> permite ver el detalle de un juego en especifico");
-            Console.WriteLine("8. Modificar un juego -> permite cambiar o eliminar un juego propio");
+            Console.WriteLine("8. Modificar un juego -> permite cambiar un juego propio");
+            Console.WriteLine("9. Eliminar un juego -> permite eliminar un juego propio");
             Console.WriteLine("Ingrese su opcion: ");
             RenderBottomSeparator();
         }
