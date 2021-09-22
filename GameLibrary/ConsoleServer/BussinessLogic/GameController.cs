@@ -37,19 +37,24 @@ namespace ConsoleServer.BussinessLogic
         public void AddGame(Game gameToAdd)
         {
             //Todo validar unico (?
-            games.Add(gameToAdd);
+            lock (_padlock)
+                games.Add(gameToAdd);
         }
 
         public string GetGames()
         {
-            return GameListToString(games);
+            lock (_padlock)
+                return GameListToString(games);
         }
 
         public Game GetGame(string gameName)
         {
-            if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
-                return games.Find(game => game.Name.ToLower() == gameName.ToLower());
-            throw new InvalidGameException();
+            lock (_padlock)
+            {
+                if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
+                    return games.Find(game => game.Name.ToLower() == gameName.ToLower());
+                throw new InvalidGameException();
+            }     
         }
 
         public void AddReview(string gameName, Review newReview)
@@ -58,7 +63,7 @@ namespace ConsoleServer.BussinessLogic
             gameToReview.AddReview(newReview);
         }
 
-        internal string GetGamesFiltered(string rawData)
+        public string GetGamesFiltered(string rawData)
         {
             string[] gamesFilters = rawData.Split('%');
             string gameName = gamesFilters[0].ToLower();
@@ -67,11 +72,13 @@ namespace ConsoleServer.BussinessLogic
             if (gamesFilters[2] != "")
                 rating = Int32.Parse(gamesFilters[2]);
 
-
-            List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
+            lock (_padlock)
+            {
+                List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
                                                        && game.Rating >= rating);
-            string filteredGamesResult = GameListToString(filteredGames);
-            return filteredGamesResult;
+                string filteredGamesResult = GameListToString(filteredGames);
+                return filteredGamesResult;
+            }
         }
 
         private string GameListToString(List<Game> gamesToString)
@@ -89,10 +96,13 @@ namespace ConsoleServer.BussinessLogic
 
         public Game GetCertainGamePublishedByUser(User user, string gameName)
         {
-            if (games == null)
+            lock (_padlock)
+            {
+                if (games == null)
                 return null;
-            Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.userOwner.Name.ToLower() == user.Name.ToLower());
-            return userGame;
+                Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.userOwner.Name.ToLower() == user.Name.ToLower());
+                return userGame;
+            }
         }
 
         public void DeletePublishedGameByUser(Game gameToDelete)
@@ -100,16 +110,20 @@ namespace ConsoleServer.BussinessLogic
             if (gameToDelete == null)
                 throw new InvalidGameException();
 
-            games.Remove(gameToDelete);
+            lock (_padlock)
+                games.Remove(gameToDelete);
         }
 
         public void ModifyGame(Game gameToModify, Game newGame)
         {
             if (gameToModify == null)
                 throw new InvalidGameException();
-            gameToModify.Name = newGame.Name;
-            gameToModify.Genre = newGame.Genre;
-            gameToModify.Synopsis = newGame.Synopsis;
+            lock (_padlock)
+            {
+                gameToModify.Name = newGame.Name;
+                gameToModify.Genre = newGame.Genre;
+                gameToModify.Synopsis = newGame.Synopsis;
+            }
         }
     }
 }

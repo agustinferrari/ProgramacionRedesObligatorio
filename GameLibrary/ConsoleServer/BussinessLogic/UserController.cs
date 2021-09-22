@@ -37,31 +37,35 @@ namespace ConsoleServer.BussinessLogic
         public void TryAddUser(string name)
         {
             User newUser = new User { Name = name.ToLower() };
-            if (!_users.Contains(newUser))
-                _users.Add(newUser);
+            lock (_padlock)
+                if (!_users.Contains(newUser))
+                    _users.Add(newUser);
         }
 
         public void BuyGame(string username, string gameName)
         {
             Game game = _gameController.GetGame(gameName);
             User user = GetUser(username);
-            user.AddGame(game);
+            lock (_padlock)
+                user.AddGame(game);
         }
 
         public User GetUser(string username)
         {
-            foreach (User user in _users)
-            {
-                if (user.Name == username)
-                    return user;
-            }
-            throw new InvalidUsernameException();
+            lock (_padlock)
+                foreach (User user in _users)
+                {
+                    if (user.Name == username)
+                        return user;
+                }
+                throw new InvalidUsernameException();
         }
 
         public string ListOwnedGameByUser(string username)
         {
             User user = GetUser(username);
-            return GameListToString(user);
+            lock (_padlock)
+                return GameListToString(user);
         }
 
         private string GameListToString(User user)
@@ -84,12 +88,13 @@ namespace ConsoleServer.BussinessLogic
         {
             if (gameToDelete == null)
                 throw new InvalidGameException();
-            foreach (User user in _users)
-            {
+            lock (_padlock)
+                foreach (User user in _users)
+                {
 
-                if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))
-                    user.OwnedGames.Remove(gameToDelete);
-            }
+                    if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))
+                        user.OwnedGames.Remove(gameToDelete);
+                }
         }
 
 
@@ -97,18 +102,19 @@ namespace ConsoleServer.BussinessLogic
         {
             if (gameToModify == null)
                 throw new InvalidGameException();
-            foreach (User user in _users)
-            {
-                Game game = user.OwnedGames.Find(game => game.userOwner.Name.ToLower() == gameToModify.userOwner.Name.ToLower() &&
-                game.Name.ToLower() == gameToModify.Name.ToLower());
-
-                if (game != null)
+            lock (_padlock)
+                foreach (User user in _users)
                 {
-                    gameToModify.Name = newGame.Name;
-                    gameToModify.Genre = newGame.Genre;
-                    gameToModify.Synopsis = newGame.Synopsis;
+                    Game game = user.OwnedGames.Find(game => game.userOwner.Name.ToLower() == gameToModify.userOwner.Name.ToLower() &&
+                    game.Name.ToLower() == gameToModify.Name.ToLower());
+
+                    if (game != null)
+                    {
+                        gameToModify.Name = newGame.Name;
+                        gameToModify.Genre = newGame.Genre;
+                        gameToModify.Synopsis = newGame.Synopsis;
+                    }
                 }
-            }
         }
     }
 }
