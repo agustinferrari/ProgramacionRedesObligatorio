@@ -2,13 +2,10 @@
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
-    public class ModifyOwnedGame : CommandStrategy
+    public class ModifyGamePublished : CommandStrategy
     {
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)

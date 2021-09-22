@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Factory
             { 9, new ListOwnedGames() },
             { 10, new ListFilteredGames() },
             { 11, new DeleteGamePublished() },
-            { 12, new ModifyOwnedGame() },
+            { 12, new ModifyGamePublished() },
         };
 
         public static CommandStrategy GetStrategy(int commandConstant)
