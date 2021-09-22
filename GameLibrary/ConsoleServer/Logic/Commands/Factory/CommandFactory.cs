@@ -19,7 +19,7 @@ namespace ConsoleServer.Logic.Commands.Factory
             { 8, new GetGameImage() },
             { 9, new ListOwnedGames() },
             { 10, new ListFilteredGames() },
-            { 11, new DeleteOwnedGame() },
+            { 11, new DeleteGamePublished() },
             { 12, new ModifyOwnedGame() },
         };
 

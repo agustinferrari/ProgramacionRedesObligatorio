@@ -1,13 +1,11 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
+using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
-    public class DeleteOwnedGame : CommandStrategy
+    public class DeleteGamePublished : CommandStrategy
     {
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
@@ -19,8 +17,16 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 string userName = _clientHandler.GetUsername(clientSocketHandler);
                 try
                 {
-                    _userController.DeleteOwnedGame(userName, gameName);
-                    responseMessage = ResponseConstants.DeleteOwnedGameSucces;
+                    User user = _userController.GetUser(userName);
+                    Game gameToDelete = _gameController.GetCertainGamePublishedByUser(user, gameName);
+                    if (gameToDelete != null)
+                    {
+                        _userController.DeleteGameFromAllUsers(gameToDelete);
+                        _gameController.DeletePublishedGameByUser(gameToDelete);
+                        responseMessage = ResponseConstants.DeleteGameSucces;
+                    }
+                    else
+                        responseMessage = ResponseConstants.UnauthorizedGame;
                 }
                 catch (InvalidUsernameException e)
                 {
@@ -34,6 +40,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessage = ResponseConstants.AuthenticationError;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+             
         }
     }
 }

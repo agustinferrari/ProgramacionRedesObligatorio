@@ -23,16 +23,27 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 string newGameName = gameData[1];
                 string newGamegenre = gameData[2];
                 string newGameSynopsis = gameData[3];
+                User user = _userController.GetUser(userName);
                 Game newGame = new Game
                 {
                     Name = newGameName,
                     Genre = newGamegenre,
-                    Synopsis = newGameSynopsis
+                    Synopsis = newGameSynopsis,
+                    userOwner = user
                 };
                 try
                 {
-                    _userController.ModifyGame(userName, oldGameName, newGame);
-                    responseMessage = ResponseConstants.ModifyOwnedGameSucces;
+                    Game gameToModify = _gameController.GetCertainGamePublishedByUser(user, oldGameName);
+                    if (gameToModify != null)
+                    {
+                        _userController.ModifyGameFromAllUser(gameToModify, newGame);
+                        _gameController.ModifyGame(gameToModify, newGame);
+                        responseMessage = ResponseConstants.ModifyOwnedGameSucces;
+                    }
+                    else
+                    {
+                        responseMessage = ResponseConstants.UnauthorizedGame;
+                    }
                 }
                 catch (InvalidUsernameException e)
                 {
@@ -45,8 +56,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
-
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);  
         }
     }
 }
