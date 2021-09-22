@@ -86,5 +86,30 @@ namespace ConsoleServer.BussinessLogic
             }
             return result;
         }
+
+        public Game GetCertainGamePublishedByUser(User user, string gameName)
+        {
+            if (games == null)
+                return null;
+            Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.userOwner.Name.ToLower() == user.Name.ToLower());
+            return userGame;
+        }
+
+        public void DeletePublishedGameByUser(Game gameToDelete)
+        {
+            if (gameToDelete == null)
+                throw new InvalidGameException();
+
+            games.Remove(gameToDelete);
+        }
+
+        public void ModifyGame(Game gameToModify, Game newGame)
+        {
+            if (gameToModify == null)
+                throw new InvalidGameException();
+            gameToModify.Name = newGame.Name;
+            gameToModify.Genre = newGame.Genre;
+            gameToModify.Synopsis = newGame.Synopsis;
+        }
     }
 }

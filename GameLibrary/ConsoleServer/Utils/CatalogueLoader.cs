@@ -10,13 +10,18 @@ namespace ConsoleServer.Utils
     {
         public static void AddGames(GameController gameController)
         {
+            User user = new User
+            {
+                Name = "Pepe"
+            };
             Game newGame = new Game
             {
                 Name = "Minecraft",
                 Genre = "Building",
                 PathToPhoto = "ahtddstd",
                 Synopsis = "A building world made of blocks",
-                Rating = 10
+                Rating = 10,
+                userOwner = user
             };
             Game newGame1 = new Game
             {
@@ -24,7 +29,8 @@ namespace ConsoleServer.Utils
                 Genre = "Shooter",
                 PathToPhoto = "ahtddstd",
                 Synopsis = "First person online shooter",
-                Rating = 5
+                Rating = 5,
+                userOwner = user
             };
             Game newGame2 = new Game
             {
@@ -32,7 +38,8 @@ namespace ConsoleServer.Utils
                 Genre = "Football",
                 PathToPhoto = "ahtddstd",
                 Synopsis = "Footbal game",
-                Rating = 3
+                Rating = 3,
+                userOwner = user
             };
             Game newGame3 = new Game
             {
@@ -40,7 +47,8 @@ namespace ConsoleServer.Utils
                 Genre = "Roguelike",
                 PathToPhoto = "ahtddstd",
                 Synopsis = "Son of Hades escaped underworld",
-                Rating = 7
+                Rating = 7,
+                userOwner = user
             };
             gameController.AddGame(newGame);
             gameController.AddGame(newGame1);
