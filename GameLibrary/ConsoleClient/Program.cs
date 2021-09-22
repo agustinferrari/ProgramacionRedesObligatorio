@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-using ConsoleClient.Presentation.MenuHandler;
+using ConsoleClient.Menu.MenuHandler;
 using System;
 
 namespace ConsoleClient

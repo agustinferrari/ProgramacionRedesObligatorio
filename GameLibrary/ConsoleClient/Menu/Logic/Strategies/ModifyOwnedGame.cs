@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleClient.Presentation.MenuHandler.Strategies
+namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class ModifyOwnedGame : MenuStrategy
     {

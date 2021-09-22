@@ -1,9 +1,7 @@
-﻿using ConsoleClient.Presentation.MenuHandler.Strategies;
-using System;
+﻿using ConsoleClient.Menu.Logic.Strategies;
 using System.Collections.Generic;
-using System.Text;
 
-namespace ConsoleClient.Presentation.MenuHandler.Factory
+namespace ConsoleClient.Menu.Logic.Factory
 {
     public static class MenuFactory
     {

@@ -2,15 +2,11 @@
 using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
 using Common.Protocol;
-using ConsoleClient.Presentation;
-using ConsoleClient.Presentation.MenuHandler.Factory;
-using ConsoleClient.Presentation.MenuHandler.Strategies;
+using ConsoleClient.Menu.Presentation;
 using System;
-using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 
-namespace ConsoleClient.Presentation.MenuHandler
+namespace ConsoleClient.Menu.MenuHandler
 {
     public class ClientMenuHandler
     {

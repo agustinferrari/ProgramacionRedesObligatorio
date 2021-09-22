@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleClient.Presentation
+namespace ConsoleClient.Menu.Presentation
 {
     public static class ClientMenuRenderer
     {

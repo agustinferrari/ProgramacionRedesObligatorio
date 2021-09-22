@@ -1,9 +1,7 @@
 ﻿using Common.NetworkUtils;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ConsoleClient.Menu.MenuHandler;
 
-namespace ConsoleClient.Presentation.MenuHandler.Strategies
+namespace ConsoleClient.Menu.Logic.Strategies
 {
     public abstract class MenuStrategy
     {

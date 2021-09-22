@@ -4,19 +4,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleClient.Presentation.MenuHandler.Strategies
+namespace ConsoleClient.Menu.Logic.Strategies
 {
-    public class ListOwnedGames : MenuStrategy
+    public class Logout : MenuStrategy
     {
         public override void HandleSelectedOption(SocketHandler clientSocket)
         {
-            Header header = new Header(HeaderConstants.Request, CommandConstants.ListOwnedGames, 0);
+            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
             clientSocket.SendHeader(header);
             string response = _menuHandler.RecieveResponse(clientSocket);
-            Console.WriteLine("Lista de juegos propios:");
             Console.WriteLine(response);
-            if (response == ResponseConstants.AuthenticationError)
-                _menuHandler.LoadLoggedUserMenu(clientSocket);
+            if (response == ResponseConstants.LogoutSuccess)
+                _menuHandler.LoadMainMenu(clientSocket);
             else
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
         }
