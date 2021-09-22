@@ -109,7 +109,8 @@ namespace ConsoleClient.Presentation
             {
                 string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyOwnedGame, changes);
                 Console.WriteLine(response);
-                if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.ModifyOwnedGameSucces || response == ResponseConstants.InvalidUsernameError)
+                if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.ModifyOwnedGameSucces || response == ResponseConstants.InvalidUsernameError
+                    || response == ResponseConstants.UnauthorizedGame)
                     LoadLoggedUserMenu(clientSocket);
                 else
                     LoadMainMenu(clientSocket);
@@ -124,7 +125,8 @@ namespace ConsoleClient.Presentation
         {
             string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeleteOwnedGame, gameName);
             Console.WriteLine(response);
-            if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.DeleteOwnedGameSucces || response == ResponseConstants.InvalidUsernameError)
+            if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.DeleteGameSucces || response == ResponseConstants.InvalidUsernameError
+                || response == ResponseConstants.UnauthorizedGame)
                 LoadLoggedUserMenu(clientSocket);
             else
                 LoadMainMenu(clientSocket);

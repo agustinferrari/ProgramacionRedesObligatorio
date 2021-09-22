@@ -36,7 +36,7 @@ namespace ConsoleServer.BussinessLogic
 
         public void TryAddUser(string name)
         {
-            User newUser = new User { Name = name };
+            User newUser = new User { Name = name.ToLower() };
             if (!_users.Contains(newUser))
                 _users.Add(newUser);
         }
@@ -80,33 +80,35 @@ namespace ConsoleServer.BussinessLogic
             return result;
         }
 
-        public void DeleteOwnedGame(string userName, string gameName)
-        {  
-            Game gameToDelete = GetCertainGameOwnedByUser(userName, gameName);
+        public void DeleteGameFromAllUsers( Game gameToDelete)
+        {
             if (gameToDelete == null)
-                throw new GameDoesNotExistOnLibraryExcpetion();
+                throw new InvalidGameException();
+            foreach (User user in _users)
+            {
 
-            GetUser(userName).OwnedGames.Remove(gameToDelete);
+                if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))
+                    user.OwnedGames.Remove(gameToDelete);
+            }
         }
 
-        public Game GetCertainGameOwnedByUser(string userName, string gameName)
-        {
-            User user = GetUser(userName);
-            if (user.OwnedGames == null)
-                return null;
-            Game userGame = user.OwnedGames.Find(game => game.Name.ToLower() == gameName.ToLower());
-            return userGame;
-        }
 
-        public void ModifyGame(string userName, string oldGameName, Game newGame)
+        public void ModifyGameFromAllUser( Game gameToModify, Game newGame)
         {
-            Game gameToModify = GetCertainGameOwnedByUser(userName, oldGameName);
             if (gameToModify == null)
-                throw new GameDoesNotExistOnLibraryExcpetion();
-            gameToModify.Name = newGame.Name;
-            gameToModify.Genre = newGame.Genre;
-            gameToModify.Synopsis = newGame.Synopsis;
+                throw new InvalidGameException();
+            foreach (User user in _users)
+            {
+                Game game = user.OwnedGames.Find(game => game.userOwner.Name.ToLower() == gameToModify.userOwner.Name.ToLower() &&
+                game.Name.ToLower() == gameToModify.Name.ToLower());
 
+                if (game != null)
+                {
+                    gameToModify.Name = newGame.Name;
+                    gameToModify.Genre = newGame.Genre;
+                    gameToModify.Synopsis = newGame.Synopsis;
+                }
+            }
         }
     }
 }

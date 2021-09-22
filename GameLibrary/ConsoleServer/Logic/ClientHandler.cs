@@ -89,32 +89,50 @@ namespace ConsoleServer.Logic
 
         private void HandleModifyOwnedGame(Header header, SocketHandler clientSocketHandler)
         {
-            string userName = _loggedClients[clientSocketHandler];
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
             string oldGameName = gameData[0];
             string newGameName = gameData[1];
             string newGamegenre = gameData[2];
             string newGameSynopsis = gameData[3];
-            Game newGame = new Game
-            {
-                Name = newGameName,
-                Genre = newGamegenre,
-                Synopsis = newGameSynopsis
-            };
             string responseMessage;
-            try
+            if (_loggedClients.ContainsKey(clientSocketHandler))
             {
-                _userController.ModifyGame(userName, oldGameName, newGame);
-                responseMessage = ResponseConstants.ModifyOwnedGameSucces;
+                string userName = _loggedClients[clientSocketHandler];
+                try
+                {
+                    User user = _userController.GetUser(userName);
+                    Game newGame = new Game
+                    {
+                        Name = newGameName,
+                        Genre = newGamegenre,
+                        Synopsis = newGameSynopsis,
+                        userOwner = user
+                    };
+                    Game gameToModify = _gameController.GetCertainGamePublishedByUser(user, oldGameName);
+                    if (gameToModify != null)
+                    {
+                        _userController.ModifyGameFromAllUser(gameToModify, newGame);
+                        _gameController.ModifyGame(gameToModify, newGame);
+                        responseMessage = ResponseConstants.ModifyOwnedGameSucces;
+                    }
+                    else
+                    {
+                        responseMessage = ResponseConstants.UnauthorizedGame;
+                    }
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessage = ResponseConstants.InvalidUsernameError;
+                }
+                catch (InvalidGameException e)
+                {
+                    responseMessage = ResponseConstants.InvalidGameError;
+                }
             }
-            catch (InvalidUsernameException e)
+            else
             {
-                responseMessage = ResponseConstants.InvalidUsernameError;
-            }
-            catch (GameDoesNotExistOnLibraryExcpetion e)
-            {
-                responseMessage = ResponseConstants.InvalidGameError;
+                responseMessage = ResponseConstants.AuthenticationError;
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
@@ -122,22 +140,37 @@ namespace ConsoleServer.Logic
         private void HandleDeleteOwnedGame(Header header, SocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
-            string userName = _loggedClients[clientSocketHandler];
             string responseMessage;
-            try
+            if (_loggedClients.ContainsKey(clientSocketHandler))
             {
-                _userController.DeleteOwnedGame(userName, gameName);
-                responseMessage = ResponseConstants.DeleteOwnedGameSucces;
+                string userName = _loggedClients[clientSocketHandler];
+                try
+                {
+                    User user = _userController.GetUser(userName);
+                    Game gameToDelete = _gameController.GetCertainGamePublishedByUser(user, gameName);
+                    if(gameToDelete != null)
+                    {
+                    _userController.DeleteGameFromAllUsers(gameToDelete);
+                    _gameController.DeletePublishedGameByUser(gameToDelete);
+                    responseMessage = ResponseConstants.DeleteGameSucces;
+                    }
+                    else
+                        responseMessage = ResponseConstants.UnauthorizedGame;
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessage = ResponseConstants.InvalidUsernameError;
+                }
+                catch (InvalidGameException e)
+                {
+                    responseMessage = ResponseConstants.InvalidGameError;
+                }
             }
-            catch (InvalidUsernameException e)
+            else
             {
-                responseMessage = ResponseConstants.InvalidUsernameError;
+                responseMessage = ResponseConstants.AuthenticationError;
             }
-            catch (GameDoesNotExistOnLibraryExcpetion e)
-            {
-                responseMessage = ResponseConstants.InvalidGameError;
-            }
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
 
         private void HandleListFilteredGames(Header header, SocketHandler clientSocketHandler)
@@ -240,16 +273,34 @@ namespace ConsoleServer.Logic
             Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
             string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
             string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
-            Game newGame = new Game
+            string responseMessageResult;
+            if (_loggedClients.ContainsKey(clientSocketHandler))
             {
-                Name = name,
-                Genre = genre,
-                Synopsis = synopsis,
-                Rating = 0,
-                PathToPhoto = pathToImageGame
-            };
-            this._gameController.AddGame(newGame);
-            string responseMessageResult = ResponseConstants.AddGameSuccess;
+                string userName = _loggedClients[clientSocketHandler];
+                try
+                {
+                    User user = _userController.GetUser(userName);
+                    Game newGame = new Game
+                    {
+                        Name = name,
+                        Genre = genre,
+                        Synopsis = synopsis,
+                        Rating = 0,
+                        PathToPhoto = pathToImageGame,
+                        userOwner = user
+                    };
+                    this._gameController.AddGame(newGame);
+                    responseMessageResult = ResponseConstants.AddGameSuccess;
+                }
+                catch (InvalidUsernameException e)
+                {
+                    responseMessageResult = ResponseConstants.InvalidUsernameError;
+                }
+            }
+            else
+            {
+                responseMessageResult = ResponseConstants.AuthenticationError;
+            } 
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
         }
 
