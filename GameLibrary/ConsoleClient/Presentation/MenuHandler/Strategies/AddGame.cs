@@ -20,7 +20,8 @@ namespace ConsoleClient.Presentation.MenuHandler.Strategies
             string path = Console.ReadLine();
 
             string gameData = name + "%" + genre + "%" + synopsis;
-            if (_menuHandler.ValidateNotEmptyFields(gameData))
+            string dataToCheck = gameData + "%" + path;
+            if (_menuHandler.ValidateNotEmptyFields(dataToCheck))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
                 clientSocket.SendImage(path);
