@@ -1,9 +1,9 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
 using ConsoleServer.Domain;
+using ConsoleServer.Utils.CustomExceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
@@ -28,8 +28,16 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 Rating = 0,
                 PathToPhoto = pathToImageGame
             };
-            this._gameController.AddGame(newGame);
-            string responseMessageResult = ResponseConstants.AddGameSuccess;
+            string responseMessageResult;
+            try
+            { 
+                this._gameController.AddGame(newGame);
+                 responseMessageResult = ResponseConstants.AddGameSuccess;
+            }
+            catch (GameAlreadyAddedException)
+            {
+                responseMessageResult = ResponseConstants.AddGameError;
+            }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
         }
     }

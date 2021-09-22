@@ -23,7 +23,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     {
                         _userController.DeleteGameFromAllUsers(gameToDelete);
                         _gameController.DeletePublishedGameByUser(gameToDelete);
-                        responseMessage = ResponseConstants.DeleteGameSucces;
+                        responseMessage = ResponseConstants.DeleteGameSuccess;
                     }
                     else
                         responseMessage = ResponseConstants.UnauthorizedGame;
@@ -32,9 +32,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 {
                     responseMessage = ResponseConstants.InvalidUsernameError;
                 }
-                catch (GameDoesNotExistOnLibraryExcpetion e)
+                catch (InvalidGameException)
                 {
-                    responseMessage = ResponseConstants.InvalidGameError;
+                    responseMessage = ResponseConstants.DeleteGameError;
                 }
             }
             else

@@ -36,22 +36,28 @@ namespace ConsoleServer.BussinessLogic
 
         public void AddGame(Game gameToAdd)
         {
-            //Todo validar unico (?
             lock (_padlock)
-                games.Add(gameToAdd);
+            {
+                if (games != null && games.Exists(game => game.Name.ToLower() == gameToAdd.Name.ToLower()))
+                    throw new GameAlreadyAddedException();
+                else
+                    games.Add(gameToAdd);
+            }
         }
 
         public string GetGames()
         {
             lock (_padlock)
-                return GameListToString(games);
+                if (games != null)
+                    return GameListToString(games);
+            throw new InvalidGameException();
         }
 
         public Game GetGame(string gameName)
         {
             lock (_padlock)
             {
-                if (games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
+                if (games != null && games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
                     return games.Find(game => game.Name.ToLower() == gameName.ToLower());
                 throw new InvalidGameException();
             }     
@@ -73,12 +79,18 @@ namespace ConsoleServer.BussinessLogic
                 rating = Int32.Parse(gamesFilters[2]);
 
             lock (_padlock)
-            {
-                List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
-                                                       && game.Rating >= rating);
-                string filteredGamesResult = GameListToString(filteredGames);
-                return filteredGamesResult;
-            }
+                if (games != null)
+                {
+                    List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
+                                                           && game.Rating >= rating);
+                    string filteredGamesResult = GameListToString(filteredGames);
+                    return filteredGamesResult;
+                }
+                else
+                {
+                    throw new InvalidGameException();
+                }
+
         }
 
         private string GameListToString(List<Game> gamesToString)
@@ -107,7 +119,7 @@ namespace ConsoleServer.BussinessLogic
 
         public void DeletePublishedGameByUser(Game gameToDelete)
         {
-            if (gameToDelete == null)
+            if (games == null)
                 throw new InvalidGameException();
 
             lock (_padlock)

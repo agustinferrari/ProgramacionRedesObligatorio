@@ -1,8 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ConsoleServer.Utils.CustomExceptions;
+
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
@@ -12,7 +11,16 @@ namespace ConsoleServer.Logic.Commands.Strategies
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
         {
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
-            string responseMessageResult = _gameController.GetGamesFiltered(rawData);
+            string responseMessageResult;
+            try
+            {
+             responseMessageResult = _gameController.GetGamesFiltered(rawData);
+
+            }
+            catch (InvalidGameException)
+            {
+                responseMessageResult = ResponseConstants.NoAvailableGames;
+            }
 
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
         }

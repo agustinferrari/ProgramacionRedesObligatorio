@@ -23,15 +23,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     _userController.BuyGame(username, gameName);
                     responseMessageResult = ResponseConstants.BuyGameSuccess;
                 }
-                catch (InvalidUsernameException e)
+                catch (InvalidUsernameException)
                 {
                     responseMessageResult = ResponseConstants.InvalidUsernameError;
                 }
-                catch (InvalidGameException e)
+                catch (InvalidGameException)
                 {
                     responseMessageResult = ResponseConstants.InvalidGameError;
                 }
-                catch (GameAlreadyBoughtException ge)
+                catch (GameAlreadyBoughtException)
                 {
                     responseMessageResult = ResponseConstants.GameAlreadyBought;
                 }
