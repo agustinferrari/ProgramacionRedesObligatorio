@@ -13,7 +13,7 @@ namespace Common.Protocol
         public static string BuyGameSuccess = "Compra realizada exitosamente";
         public static string InvalidGameError = "El juego ingresado no se encuentra en el sistema, intente de nuevo";
         public static string InvalidUsernameError = "El usuario no se encuentra en el sistema, intente de nuevo";
-        public static string AuthenticationError = "Debe logearse para comprar un juego";
+        public static string AuthenticationError = "Debe logearse para acceder a esta opcion";
         public static string ReviewGameSuccess = "Calificacion realizada exitosamente";
         public static string InvalidRatingException = "El rating debe ser un entero entre 1 y 10, intente de nuevo";
         public static string LibraryError = "El usuario no posee juegos propios";

@@ -23,6 +23,7 @@ namespace ConsoleClient.Presentation
         {
 
             string selectedOption = Console.ReadLine();
+            Console.Clear();
             try
             {
                 switch (selectedOption)
@@ -49,6 +50,7 @@ namespace ConsoleClient.Presentation
         private static void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
         {
             string selectedOption = Console.ReadLine();
+            Console.Clear();
             switch (selectedOption)
             {
                 case "1":

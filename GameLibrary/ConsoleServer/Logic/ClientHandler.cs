@@ -80,7 +80,7 @@ namespace ConsoleServer.Logic
                 try
                 {
                     Header header = clientSocketHandler.ReceiveHeader();
-                    if (header.ICommand == 0)
+                    if (header.ICommand == 0) // Cuando el cliente cierra la consola, se envia en header con command en 0
                     {
                         isSocketActive = false;
                         _loggedClients.Remove(clientSocketHandler);
