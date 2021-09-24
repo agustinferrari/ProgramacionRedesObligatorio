@@ -2,6 +2,8 @@
 using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
 using Common.Protocol;
+using ConsoleClient.Menu.Logic.Factory;
+using ConsoleClient.Menu.Logic.Strategies;
 using ConsoleClient.Menu.Presentation;
 using System;
 using System.Net.Sockets;

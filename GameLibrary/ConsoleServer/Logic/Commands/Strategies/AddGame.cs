@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interface;
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
@@ -19,7 +20,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string synopsis = gameData[2];
             Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
             string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
-            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData); //Ver donde guardarla imagen
+            ISettingsManager SettingsMgr = new SettingsManager();
+            string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
+            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder);
             Game newGame = new Game
             {
                 Name = name,
@@ -30,9 +33,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
             };
             string responseMessageResult;
             try
-            { 
+            {
                 this._gameController.AddGame(newGame);
-                 responseMessageResult = ResponseConstants.AddGameSuccess;
+                responseMessageResult = ResponseConstants.AddGameSuccess;
             }
             catch (GameAlreadyAddedException)
             {

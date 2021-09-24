@@ -98,7 +98,7 @@ namespace Common.NetworkUtils
             return data;
         }
 
-        public string ReceiveImage(string rawImageData)
+        public string ReceiveImage(string rawImageData, string pathToImageFolder)
         {
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
@@ -111,7 +111,7 @@ namespace Common.NetworkUtils
 
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
-            string wantedPath = ChangePathToImagesFolder(fileName);
+            string dir = CreateFolder(pathToImageFolder, fileName);
 
             // 5) Calculo la cantidad de partes a recibir
             long parts = SpecificationHelper.GetParts(fileSize);
@@ -132,23 +132,19 @@ namespace Common.NetworkUtils
                     ReceiveData(Specification.MaxPacketSize, data);
                     offset += Specification.MaxPacketSize;
                 }
-                _fileStreamHandler.Write(wantedPath, data);
+                _fileStreamHandler.Write(dir, data);
                 currentPart++;
             }
-            return wantedPath;
+            return dir;
         }
 
-        private string ChangePathToImagesFolder(string fileName)
+        private string CreateFolder(string path, string fileName)
         {
-            string dir = "GamesImages";
-            // If directory does not exist, create it
-            if (!Directory.Exists(dir))
+            if (!Directory.Exists(path))
             {
-                Directory.CreateDirectory(dir);
+                Directory.CreateDirectory(@path);
             }
-            string workingDirectory = Environment.CurrentDirectory;
-            string wantedPath = workingDirectory + dir + fileName;
-            return wantedPath;
+            return path + fileName;
         }
 
         public void SendImage(string path)
