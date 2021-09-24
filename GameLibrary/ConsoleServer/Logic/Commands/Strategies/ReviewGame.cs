@@ -13,11 +13,14 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
         {
+            int firstElement = 0;
+            int secondElement = 1;
+            int thirdElement = 2;
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
-            string gameName = gameData[0];
-            string rating = gameData[1];
-            string comment = gameData[2];
+            string gameName = gameData[firstElement];
+            string rating = gameData[secondElement];
+            string comment = gameData[thirdElement];
 
 
             string responseMessageResult;
@@ -36,11 +39,11 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     _gameController.AddReview(gameName, newReview);
                     responseMessageResult = ResponseConstants.ReviewGameSuccess;
                 }
-                catch (InvalidUsernameException e)
+                catch (InvalidUsernameException)
                 {
                     responseMessageResult = ResponseConstants.InvalidUsernameError;
                 }
-                catch (InvalidGameException e)
+                catch (InvalidGameException)
                 {
                     responseMessageResult = ResponseConstants.InvalidGameError;
                 }

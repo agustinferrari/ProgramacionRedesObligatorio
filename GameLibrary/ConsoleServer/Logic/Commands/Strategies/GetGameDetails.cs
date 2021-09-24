@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 Game game = _gameController.GetGame(gameName);
                 responseMessageResult = game.ToString();
             }
-            catch (InvalidGameException e)
+            catch (InvalidGameException)
             {
                 responseMessageResult = ResponseConstants.InvalidGameError;
             }

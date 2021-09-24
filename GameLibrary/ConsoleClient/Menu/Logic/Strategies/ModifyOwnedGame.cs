@@ -23,7 +23,11 @@ namespace ConsoleClient.Menu.Logic.Strategies
             {
                 string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyPublishedGame, changes);
                 Console.WriteLine(response);
-                if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.ModifyOwnedGameSucces || response == ResponseConstants.InvalidUsernameError)
+                bool acceptedResponses = response == ResponseConstants.InvalidGameError;
+                acceptedResponses |= response == ResponseConstants.ModifyPublishedGameSuccess;
+                acceptedResponses |= response == ResponseConstants.InvalidUsernameError;
+
+                if (acceptedResponses)
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 else
                     _menuHandler.LoadMainMenu(clientSocket);

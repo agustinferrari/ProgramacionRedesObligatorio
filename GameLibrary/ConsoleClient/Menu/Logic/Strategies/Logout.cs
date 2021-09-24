@@ -10,7 +10,8 @@ namespace ConsoleClient.Menu.Logic.Strategies
     {
         public override void HandleSelectedOption(SocketHandler clientSocket)
         {
-            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, 0);
+            int sendNoData = 0;
+            Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, sendNoData);
             clientSocket.SendHeader(header);
             string response = _menuHandler.RecieveResponse(clientSocket);
             Console.WriteLine(response);

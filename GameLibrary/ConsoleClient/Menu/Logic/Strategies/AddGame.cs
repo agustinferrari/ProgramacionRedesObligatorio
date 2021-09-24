@@ -35,9 +35,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
                     _menuHandler.LoadMainMenu(clientSocket);
             }
             else
-            {
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
-            }
         }
     }
 }

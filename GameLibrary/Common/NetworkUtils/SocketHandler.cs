@@ -65,7 +65,8 @@ namespace Common.NetworkUtils
                 try
                 {
                     int localRecv = _socket.Receive(buffer, iRecv, Length - iRecv, SocketFlags.None);
-                    if (localRecv == 0) // Si recieve retorna 0 -> la conexion se cerro desde el endpoint remoto
+                    bool connectionCloseOnRemoteEndPoint = localRecv == 0;
+                    if (connectionCloseOnRemoteEndPoint)
                     {
                         throw new Exception("Connection has been closed"); // Catchear en server y si el server sigue andando cerrar la conexion 
                     }
@@ -86,7 +87,7 @@ namespace Common.NetworkUtils
             byte[] buffer = new byte[headerLength];
             this.ReceiveData(headerLength, buffer);
             Header header = new Header();
-            header.DecodeData(buffer);
+            if (header.DecodeData(buffer) == false) throw new FormatException() ;
             return header;
         }
 
@@ -103,7 +104,6 @@ namespace Common.NetworkUtils
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
             // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
-            byte[] buffer = new byte[SpecificationHelper.GetImageDataLength()];
             string fileNameBytes = rawImageData.Substring(0, Specification.FixedFileNameLength);
             string fileSizeBytes = rawImageData.Substring(Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
             int fileNameSize = (Int32.Parse(fileNameBytes));
@@ -153,25 +153,18 @@ namespace Common.NetworkUtils
 
         public void SendImage(string path)
         {
-            // El envio del archivo se compone de las siguientes etapas:
-            // 1) Creo un paquete de datos que tiene esta estructura XXXX YYYYYYYY <NOMBRE>
-            //          a) XXXX -> Largo del nombre del archivo
-            //          b) YYYYYYYY -> Tamaño en bytes del archivo
-            //          c) <NOMBRE> -> Nombre del archivo
-
-            long fileSize = _fileHandler.GetFileSize(path); //Obtenemos el tamaño del archivo
-            string fileName = _fileHandler.GetFileName(path); //Obtenemos el nombre del archivo
+            long fileSize = _fileHandler.GetFileSize(path);
+            string fileName = _fileHandler.GetFileName(path);
             string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
             protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
             SendData(Encoding.UTF8.GetBytes(protocolData));
             SendData(Encoding.UTF8.GetBytes(fileName));
 
-            // 2) Calculo tamaño y cantidad de partes a enviar
-            var parts = SpecificationHelper.GetParts(fileSize);
+
+            long parts = SpecificationHelper.GetParts(fileSize);
             long offset = 0;
             long currentPart = 1;
 
-            // 3) Mientras tengo partes, envio
             while (fileSize > offset)
             {
                 byte[] data;

@@ -128,8 +128,16 @@ namespace ConsoleClient.Menu.MenuHandler
 
         public string RecieveResponse(SocketHandler clientSocket)
         {
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            string response;
+            try
+            {
+                Header header = clientSocket.ReceiveHeader();
+                response = clientSocket.ReceiveString(header.IDataLength);
+            }
+            catch (FormatException)
+            {
+                response = "No se pudo decodificar correctamente";
+            }
             return response;
         }
 

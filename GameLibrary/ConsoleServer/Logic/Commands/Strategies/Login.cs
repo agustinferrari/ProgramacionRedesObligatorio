@@ -14,9 +14,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
             string responseMessageResult;
             if (_clientHandler.IsClientLogged(userName))
-            {
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;
-            }
             else
             {
                 if (!_clientHandler.IsSocketInUse(clientSocketHandler))
@@ -26,9 +24,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     responseMessageResult = ResponseConstants.LoginSuccess;
                 }
                 else
-                {
                     responseMessageResult = ResponseConstants.LoginErrorSocketAlreadyInUse;
-                }
             }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
         }

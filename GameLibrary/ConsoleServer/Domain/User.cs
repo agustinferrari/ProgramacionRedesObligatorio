@@ -19,7 +19,6 @@ namespace ConsoleServer.Domain
 
         public void AddGame(Game game)
         {
-            //Ver si fijarnos si ya lo tiene
             if (OwnedGames == null)
                 OwnedGames = new List<Game>();
             if (!OwnedGames.Contains(game))

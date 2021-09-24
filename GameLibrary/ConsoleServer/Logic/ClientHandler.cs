@@ -15,6 +15,7 @@ namespace ConsoleServer.Logic
         private Dictionary<SocketHandler, string> _loggedClients;
         private static readonly object _padlock = new object();
         private static ClientHandler _instance;
+        private int _clientClosedConnectionAbruptly = 0;
 
         public ClientHandler()
         {
@@ -75,7 +76,7 @@ namespace ConsoleServer.Logic
                 try
                 {
                     Header header = clientSocketHandler.ReceiveHeader();
-                    if (header.ICommand == 0) // Cuando el cliente cierra la consola, se envia en header con command en 0
+                    if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
                         isSocketActive = false;
                         _loggedClients.Remove(clientSocketHandler);

@@ -14,7 +14,10 @@ namespace ConsoleClient.Menu.Logic.Strategies
             string gameName = Console.ReadLine();
             string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeletePublishedGame, gameName);
             Console.WriteLine(response);
-            if (response == ResponseConstants.InvalidGameError || response == ResponseConstants.DeleteGameSuccess || response == ResponseConstants.InvalidUsernameError)
+            bool acceptedResponses = response == ResponseConstants.DeleteGameSuccess;
+            acceptedResponses |= response == ResponseConstants.InvalidGameError;
+            acceptedResponses |= response == ResponseConstants.InvalidUsernameError;
+            if (acceptedResponses)
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
             else
                 _menuHandler.LoadMainMenu(clientSocket);
