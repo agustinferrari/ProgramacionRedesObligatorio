@@ -16,7 +16,8 @@ namespace Common.Protocol
         public const int GetGameImage = 8;
         public const int ListOwnedGames = 9;
         public const int ListFilteredGames = 10;
-        public const int DeleteOwnedGame = 11;
-        public const int ModifyOwnedGame = 12;
+        public const int DeletePublishedGame = 11;
+        public const int ModifyPublishedGame = 12;
+        public const int InvalidOption = -1;
     }
 }
