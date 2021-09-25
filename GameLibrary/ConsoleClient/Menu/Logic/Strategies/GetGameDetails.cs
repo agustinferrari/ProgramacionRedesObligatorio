@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interface;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -27,7 +28,9 @@ namespace ConsoleClient.Menu.Logic.Strategies
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
                         Header receivedHeader = clientSocket.ReceiveHeader();//Capaz que sacarlo
                         string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
-                        string pathToImageGame = clientSocket.ReceiveImage(rawImageData);
+                        ISettingsManager SettingsMgr = new SettingsManager();
+                        string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
+                        string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, gameName);
                         Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
                     }
                     else

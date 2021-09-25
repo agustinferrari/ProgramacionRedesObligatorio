@@ -21,7 +21,7 @@ namespace Common.Protocol
         public static string AddGameSuccess = "El juego se publico correctamente";
         public static string AddGameError = "El juego ya se encuentra en el sistema";
         public static string DeleteGameSuccess = "El juego ha sido borrado correctamente";
-        public static string DeleteGameError= "El juego  no ha sido borrado correctamente";
+        public static string DeleteGameError = "El juego  no ha sido borrado correctamente";
         public static string UnauthorizedGame = "El juego no pertence a este usuario";
         public static string ModifyPublishedGameSuccess = "El juego ha sido editado correctamente";
         public static string NoAvailableGames = "No hay juegos cargados en el sistema";
