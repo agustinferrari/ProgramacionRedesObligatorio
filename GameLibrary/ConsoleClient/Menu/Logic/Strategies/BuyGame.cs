@@ -16,15 +16,16 @@ namespace ConsoleClient.Menu.Logic.Strategies
             {
                 string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.BuyGame, gameName);
                 Console.WriteLine(response);
-                if (response == ResponseConstants.BuyGameSuccess || response == ResponseConstants.InvalidGameError || response == ResponseConstants.GameAlreadyBought)
+                bool acceptedResponses = response == ResponseConstants.BuyGameSuccess;
+                acceptedResponses |= response == ResponseConstants.InvalidGameError;
+                acceptedResponses |= response == ResponseConstants.GameAlreadyBought;
+                if (acceptedResponses)
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 else
                     _menuHandler.LoadMainMenu(clientSocket);
             }
             else
-            {
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
-            }
         }
     }
 }

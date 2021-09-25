@@ -33,6 +33,10 @@ namespace ConsoleClient.Menu.Logic.Strategies
                         string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, gameName);
                         Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
                     }
+                    else
+                    {
+                        Console.WriteLine("La foto no fue descargada");
+                    }
                 }
             }
             _menuHandler.LoadLoggedUserMenu(clientSocket);

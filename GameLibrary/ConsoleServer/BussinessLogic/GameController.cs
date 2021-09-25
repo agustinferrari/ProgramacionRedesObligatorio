@@ -71,11 +71,15 @@ namespace ConsoleServer.BussinessLogic
 
         public string GetGamesFiltered(string rawData)
         {
+            string emptyString = "";
+            int firstElement = 0;
+            int secondElement = 1;
+            int thirdElement = 2;
             string[] gamesFilters = rawData.Split('%');
-            string gameName = gamesFilters[0].ToLower();
-            string genre = gamesFilters[1].ToLower();
+            string gameName = gamesFilters[firstElement].ToLower();
+            string genre = gamesFilters[secondElement].ToLower();
             int rating = 0;
-            if (gamesFilters[2] != "")
+            if (gamesFilters[thirdElement] != emptyString)
                 rating = Int32.Parse(gamesFilters[2]);
 
             lock (_padlock)

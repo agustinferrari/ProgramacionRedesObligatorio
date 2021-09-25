@@ -11,13 +11,14 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
         {
+            string emptyString = "";
             string responseMessage;
             if (_clientHandler.IsSocketInUse(clientSocketHandler))
             {
                 string userName = _clientHandler.GetUsername(clientSocketHandler);
                 string gameList = _userController.ListOwnedGameByUser(userName);
                 responseMessage = gameList;
-                if (gameList == "")
+                if (gameList == emptyString)
                     responseMessage = ResponseConstants.LibraryError;
 
             }

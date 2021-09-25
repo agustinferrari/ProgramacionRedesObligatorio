@@ -3,7 +3,6 @@ using Common.NetworkUtils.Interface;
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
-using System;
 
 
 namespace ConsoleServer.Logic.Commands.Strategies
@@ -13,13 +12,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
         {
+            int firstElement = 0;
+            int secondElement = 1;
+            int thirdElement = 2;
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
-            string gameName = gameData[0];
-            string genre = gameData[1];
-            string synopsis = gameData[2];
-            Console.WriteLine("Name: " + gameName + ", Genre: " + genre + ", Synopsis: " + synopsis);
-            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
+            string gameName = gameData[firstElement];
+            string genre = gameData[secondElement];
+            string synopsis = gameData[thirdElement];
+            
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
             string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);

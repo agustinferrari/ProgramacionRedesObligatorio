@@ -20,7 +20,6 @@ namespace ConsoleServer.Domain
                 Reviews = new List<Review>();
             Reviews.Add(newReview);
             CalculateRating();
-            Console.WriteLine(Rating);
         }
 
         private void CalculateRating()

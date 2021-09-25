@@ -6,7 +6,8 @@ namespace Common.Protocol
         public static long GetParts(long fileSize)
         {
             long parts = fileSize / Specification.MaxPacketSize;
-            return parts * Specification.MaxPacketSize == fileSize ? parts : parts + 1;
+            long nextParts = parts + 1;
+            return parts * Specification.MaxPacketSize == fileSize ? parts : nextParts;
         }
 
         public static int GetImageDataLength()

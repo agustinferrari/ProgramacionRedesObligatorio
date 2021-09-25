@@ -28,7 +28,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     else
                         responseMessage = ResponseConstants.UnauthorizedGame;
                 }
-                catch (InvalidUsernameException e)
+                catch (InvalidUsernameException)
                 {
                     responseMessage = ResponseConstants.InvalidUsernameError;
                 }

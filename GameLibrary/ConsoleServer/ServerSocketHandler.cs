@@ -11,11 +11,12 @@ namespace ConsoleServer
     {
         public bool Exit { get; set; }
         private List<SocketHandler> ClientsConnectedSockets { get; set; }
+        private int _supportedConnections = 100;
 
         public ServerSocketHandler(string ipAddress, int port) :
             base(ipAddress, port)
         {
-            _socket.Listen(100);
+            _socket.Listen(_supportedConnections);
         }
 
         public void CreateClientConectionThread()

@@ -44,7 +44,7 @@ namespace ConsoleClient.Menu.MenuHandler
             try
             {
                 int parsedOption = ParseMainMenuOption(selectedOption);
-                if (parsedOption > 0 && parsedOption < 3)
+                if (parsedOption >= CommandConstants.Login && parsedOption <= CommandConstants.Logout)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
                     menuStrategy.HandleSelectedOption(clientSocket);
@@ -56,7 +56,7 @@ namespace ConsoleClient.Menu.MenuHandler
                     LoadMainMenu(clientSocket);
                 }
             }
-            catch (SocketException se)
+            catch (SocketException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
@@ -69,9 +69,9 @@ namespace ConsoleClient.Menu.MenuHandler
             {
                 result = Int32.Parse(selectedOption);
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
-                result = -1;
+                result = CommandConstants.InvalidOption;
             }
             return result;
         }
@@ -83,7 +83,7 @@ namespace ConsoleClient.Menu.MenuHandler
             try
             {
                 int parsedOption = ParseLoggedUserMenuOption(selectedOption);
-                if (parsedOption > 2 && parsedOption < 12)
+                if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.ModifyPublishedGame)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
                     menuStrategy.HandleSelectedOption(clientSocket);
@@ -94,7 +94,7 @@ namespace ConsoleClient.Menu.MenuHandler
                     LoadLoggedUserMenu(clientSocket);
                 }
             }
-            catch (SocketException se)
+            catch (SocketException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
@@ -107,9 +107,9 @@ namespace ConsoleClient.Menu.MenuHandler
             {
                 result = Int32.Parse(selectedOption) + 2; //Sacar magic number, es la cantidad de opciones del main menu
             }
-            catch (FormatException e)
+            catch (FormatException)
             {
-                result = -1;
+                result = CommandConstants.InvalidOption;
             }
             return result;
         }
@@ -128,8 +128,16 @@ namespace ConsoleClient.Menu.MenuHandler
 
         public string RecieveResponse(SocketHandler clientSocket)
         {
-            Header header = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(header.IDataLength);
+            string response;
+            try
+            {
+                Header header = clientSocket.ReceiveHeader();
+                response = clientSocket.ReceiveString(header.IDataLength);
+            }
+            catch (FormatException)
+            {
+                response = "No se pudo decodificar correctamente";
+            }
             return response;
         }
 

@@ -16,7 +16,8 @@ namespace ConsoleClient.Menu.Logic.Strategies
                 _menuHandler.HandleListGamesFiltered(clientSocket);
             else
             {
-                Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, 0);
+                int sendNoData = 0;
+                Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
                 clientSocket.SendHeader(header);
                 Header recivedHeader = clientSocket.ReceiveHeader();
                 string response = clientSocket.ReceiveString(recivedHeader.IDataLength);

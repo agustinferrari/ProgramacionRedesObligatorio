@@ -21,16 +21,16 @@ namespace ConsoleClient.Menu.Logic.Strategies
             {
                 string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.ReviewGame, review);
                 Console.WriteLine(response);
-                if (response == ResponseConstants.ReviewGameSuccess || response == ResponseConstants.InvalidGameError
-                        || response == ResponseConstants.InvalidRatingException)
+                bool acceptedResponses = response == ResponseConstants.ReviewGameSuccess;
+                acceptedResponses |= response == ResponseConstants.InvalidGameError;
+                acceptedResponses |= response == ResponseConstants.InvalidRatingException;
+                if (acceptedResponses)
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 else
                     _menuHandler.LoadMainMenu(clientSocket);
             }
             else
-            {
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
-            }
         }
     }
 }
