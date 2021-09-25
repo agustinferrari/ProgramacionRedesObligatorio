@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string gameName = gameData[firstElement];
             string genre = gameData[secondElement];
             string synopsis = gameData[thirdElement];
-            
+            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
             string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
