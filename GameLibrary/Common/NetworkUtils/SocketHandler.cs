@@ -136,6 +136,7 @@ namespace Common.NetworkUtils
                 _fileStreamHandler.Write(dir, data);
                 currentPart++;
             }
+            return dir;
         }
 
         private string CreateFolder(string pathToImageFolder, string fileName, string gameName)
