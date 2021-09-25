@@ -15,17 +15,17 @@ namespace ConsoleServer.Logic.Commands.Strategies
         {
             string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
-            string name = gameData[0];
+            string gameName = gameData[0];
             string genre = gameData[1];
             string synopsis = gameData[2];
-            Console.WriteLine("Name: " + name + ", Genre: " + genre + ", Synopsis: " + synopsis);
+            Console.WriteLine("Name: " + gameName + ", Genre: " + genre + ", Synopsis: " + synopsis);
             string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder);
+            string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
             Game newGame = new Game
             {
-                Name = name,
+                Name = gameName,
                 Genre = genre,
                 Synopsis = synopsis,
                 Rating = 0,

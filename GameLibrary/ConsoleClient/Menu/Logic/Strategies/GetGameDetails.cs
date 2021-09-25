@@ -30,7 +30,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
                         string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
                         ISettingsManager SettingsMgr = new SettingsManager();
                         string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-                        string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder);
+                        string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, gameName);
                         Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
                     }
                 }

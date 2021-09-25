@@ -98,12 +98,11 @@ namespace Common.NetworkUtils
             return data;
         }
 
-        public string ReceiveImage(string rawImageData, string pathToImageFolder)
+        public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName)
         {
             // 1) Recibo 12 bytes
             // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
             // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
-            byte[] buffer = new byte[SpecificationHelper.GetImageDataLength()];
             string fileNameBytes = rawImageData.Substring(0, Specification.FixedFileNameLength);
             string fileSizeBytes = rawImageData.Substring(Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
             int fileNameSize = (Int32.Parse(fileNameBytes));
@@ -111,7 +110,7 @@ namespace Common.NetworkUtils
 
             // 4) Recibo el nombre del archivo
             string fileName = ReceiveString(fileNameSize);
-            string dir = CreateFolder(pathToImageFolder, fileName);
+            string dir = CreateFolder(pathToImageFolder, fileName, gameName);
 
             // 5) Calculo la cantidad de partes a recibir
             long parts = SpecificationHelper.GetParts(fileSize);
@@ -120,31 +119,33 @@ namespace Common.NetworkUtils
 
             while (fileSize > offset)
             {
-                byte[] data = new byte[fileSize];
+                byte[] data;
                 if (currentPart == parts)
                 {
                     int lastPartSize = (int)(fileSize - offset);
+                    data = new byte[lastPartSize];
                     ReceiveData(lastPartSize, data);
                     offset += lastPartSize;
                 }
                 else
                 {
+                    data = new byte[Specification.MaxPacketSize];
                     ReceiveData(Specification.MaxPacketSize, data);
                     offset += Specification.MaxPacketSize;
                 }
                 _fileStreamHandler.Write(dir, data);
                 currentPart++;
             }
-            return dir;
         }
 
-        private string CreateFolder(string path, string fileName)
+        private string CreateFolder(string pathToImageFolder, string fileName, string gameName)
         {
-            if (!Directory.Exists(path))
+            if (!Directory.Exists(pathToImageFolder))
             {
-                Directory.CreateDirectory(@path);
+                Directory.CreateDirectory(pathToImageFolder);
             }
-            return path + fileName;
+            string path = pathToImageFolder + gameName + "_" + fileName;
+            return path;
         }
 
         public void SendImage(string path)

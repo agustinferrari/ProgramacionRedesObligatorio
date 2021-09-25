@@ -1,12 +1,8 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interface;
-using ConsoleServer.BussinessLogic;
-using ConsoleServer.Logic;
 using ConsoleServer.Presentation;
 using ConsoleServer.Utils;
 using System;
-using System.Net.Sockets;
-using System.Threading;
 
 namespace ConsoleServer
 {
