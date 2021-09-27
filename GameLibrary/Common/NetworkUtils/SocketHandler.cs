@@ -152,7 +152,7 @@ namespace Common.NetworkUtils
             return path;
         }
 
-        public void SendImage(string path)
+        public bool SendImage(string path)
         {
             bool imageSentCorrectly = true;
             long fileSize = _fileHandler.GetFileSize(path);
@@ -180,6 +180,7 @@ namespace Common.NetworkUtils
                 }
                 catch (UnableToReadFileException)
                 {
+                    imageSentCorrectly = false;
                     if (currentPart == parts)
                         data = new byte[lastPartSize];
                     else
@@ -193,7 +194,7 @@ namespace Common.NetworkUtils
                 SendData(data);
                 currentPart++;
             }
-
+            return imageSentCorrectly;
         }
 
         public void ShutdownSocket()

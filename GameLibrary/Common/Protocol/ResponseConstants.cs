@@ -18,7 +18,7 @@ namespace Common.Protocol
         public static string InvalidRatingException = "El rating debe ser un entero entre 1 y 10, intente de nuevo";
         public static string LibraryError = "El usuario no posee juegos propios";
         public static string GameAlreadyBought = "El usuario ya compro este juego";
-        public static string AddGameSuccess = "El juego se publico correctamente";
+        public static string AddGameSuccess = "Se ha publicado el juego!";
         public static string AddGameError = "El juego ya se encuentra en el sistema";
         public static string DeleteGameSuccess = "El juego ha sido borrado correctamente";
         public static string DeleteGameError = "El juego  no ha sido borrado correctamente";

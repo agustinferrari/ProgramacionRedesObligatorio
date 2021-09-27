@@ -29,7 +29,9 @@ namespace ConsoleClient.Menu.Logic.Strategies
                 if (fileStreamHandler.FileExists(path))
                 {
                     clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-                    clientSocket.SendImage(path);
+                    bool imageSentCorrectly = clientSocket.SendImage(path);
+                    if (!imageSentCorrectly)
+                        Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
 
                     Header recivedHeader = clientSocket.ReceiveHeader();
                     string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
