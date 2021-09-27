@@ -7,14 +7,24 @@ namespace Common.FileUtils
 {
     public class FileHandler : IFileHandler
     {
-        public bool FileExists(string path)
+        public bool FileExistsAndIsReadable(string path)
         {
-            return File.Exists(path);
+            bool readable = File.Exists(path);
+            if (readable)
+                try
+                {
+                    File.OpenRead(path).Close();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    readable = false;
+                }
+            return readable;
         }
 
         public string GetFileName(string path)
         {
-            if (FileExists(path))
+            if (FileExistsAndIsReadable(path))
             {
                 return new FileInfo(path).Name;
             }
@@ -24,7 +34,7 @@ namespace Common.FileUtils
 
         public long GetFileSize(string path)
         {
-            if (FileExists(path))
+            if (FileExistsAndIsReadable(path))
             {
                 return new FileInfo(path).Length;
             }

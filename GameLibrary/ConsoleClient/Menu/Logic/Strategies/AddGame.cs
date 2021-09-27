@@ -26,7 +26,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
             if (_menuHandler.ValidateNotEmptyFields(dataToCheck))
             {
                 IFileHandler fileStreamHandler = new FileHandler();
-                if (fileStreamHandler.FileExists(path))
+                if (fileStreamHandler.FileExistsAndIsReadable(path))
                 {
                     clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
                     bool imageSentCorrectly = clientSocket.SendImage(path);
@@ -43,7 +43,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
                 }
                 else
                 {
-                    Console.WriteLine("El path ingresado es invalido, intente de nuevo");
+                    Console.WriteLine("El path ingresado es invalido o no tiene permisos para leer la imagen, intente de nuevo");
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 }
             }

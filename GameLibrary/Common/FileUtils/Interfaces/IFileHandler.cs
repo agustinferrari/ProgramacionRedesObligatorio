@@ -2,7 +2,7 @@
 {
     public interface IFileHandler
     {
-        bool FileExists(string path);
+        bool FileExistsAndIsReadable(string path);
         string GetFileName(string path);
         long GetFileSize(string path);
     }

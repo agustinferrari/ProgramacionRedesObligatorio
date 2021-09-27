@@ -100,6 +100,27 @@ namespace Common.NetworkUtils
             return data;
         }
 
+        public string SendMessageAndRecieveResponse(int command, string messageToSend)
+        {
+            SendMessage(HeaderConstants.Request, command, messageToSend);
+            return RecieveResponse();
+        }
+
+        public string RecieveResponse()
+        {
+            string response;
+            try
+            {
+                Header header = ReceiveHeader();
+                response = ReceiveString(header.IDataLength);
+            }
+            catch (FormatException)
+            {
+                response = "No se pudo decodificar correctamente";
+            }
+            return response;
+        }
+
         public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName)
         {
             // 1) Recibo 12 bytes
@@ -110,33 +131,37 @@ namespace Common.NetworkUtils
             int fileNameSize = (Int32.Parse(fileNameBytes));
             long fileSize = (Int64.Parse(fileSizeBytes));
 
-            // 4) Recibo el nombre del archivo
-            string fileName = ReceiveString(fileNameSize);
-            string dir = CreateFolder(pathToImageFolder, fileName, gameName);
-
-            // 5) Calculo la cantidad de partes a recibir
-            long parts = SpecificationHelper.GetParts(fileSize);
-            long offset = 0;
-            long currentPart = 1;
-
-            while (fileSize > offset)
+            string dir = "";
+            if (fileNameSize != 0 && fileSize != 0)
             {
-                byte[] data;
-                if (currentPart == parts)
+                // 4) Recibo el nombre del archivo
+                string fileName = ReceiveString(fileNameSize);
+                dir = CreateFolder(pathToImageFolder, fileName, gameName);
+
+                // 5) Calculo la cantidad de partes a recibir
+                long parts = SpecificationHelper.GetParts(fileSize);
+                long offset = 0;
+                long currentPart = 1;
+
+                while (fileSize > offset)
                 {
-                    int lastPartSize = (int)(fileSize - offset);
-                    data = new byte[lastPartSize];
-                    ReceiveData(lastPartSize, data);
-                    offset += lastPartSize;
+                    byte[] data;
+                    if (currentPart == parts)
+                    {
+                        int lastPartSize = (int)(fileSize - offset);
+                        data = new byte[lastPartSize];
+                        ReceiveData(lastPartSize, data);
+                        offset += lastPartSize;
+                    }
+                    else
+                    {
+                        data = new byte[Specification.MaxPacketSize];
+                        ReceiveData(Specification.MaxPacketSize, data);
+                        offset += Specification.MaxPacketSize;
+                    }
+                    _fileStreamHandler.Write(dir, data);
+                    currentPart++;
                 }
-                else
-                {
-                    data = new byte[Specification.MaxPacketSize];
-                    ReceiveData(Specification.MaxPacketSize, data);
-                    offset += Specification.MaxPacketSize;
-                }
-                _fileStreamHandler.Write(dir, data);
-                currentPart++;
             }
             return dir;
         }
@@ -157,11 +182,8 @@ namespace Common.NetworkUtils
             bool imageSentCorrectly = true;
             long fileSize = _fileHandler.GetFileSize(path);
             string fileName = _fileHandler.GetFileName(path);
-            string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
-            protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
-            SendData(Encoding.UTF8.GetBytes(protocolData));
+            SendImageProtocolData(fileName, fileSize);
             SendData(Encoding.UTF8.GetBytes(fileName));
-
 
             long parts = SpecificationHelper.GetParts(fileSize);
             long offset = 0;
@@ -178,7 +200,7 @@ namespace Common.NetworkUtils
                     else
                         data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
                 }
-                catch (UnableToReadFileException)
+                catch (UnauthorizedAccessException)
                 {
                     imageSentCorrectly = false;
                     if (currentPart == parts)
@@ -195,6 +217,13 @@ namespace Common.NetworkUtils
                 currentPart++;
             }
             return imageSentCorrectly;
+        }
+
+        public void SendImageProtocolData(string fileName, long fileSize)
+        {
+            string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
+            protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
+            SendData(Encoding.UTF8.GetBytes(protocolData));
         }
 
         public void ShutdownSocket()

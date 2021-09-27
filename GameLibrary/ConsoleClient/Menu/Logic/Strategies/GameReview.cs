@@ -19,7 +19,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
             string review = gameName + "%" + rating + "%" + comment;
             if (_menuHandler.ValidateNotEmptyFields(gameName))
             {
-                string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.ReviewGame, review);
+                string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ReviewGame, review);
                 Console.WriteLine(response);
                 bool acceptedResponses = response == ResponseConstants.ReviewGameSuccess;
                 acceptedResponses |= response == ResponseConstants.InvalidGameError;
