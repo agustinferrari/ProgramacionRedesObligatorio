@@ -24,22 +24,31 @@ namespace Common.FileUtils
 
         public string GetFileName(string path)
         {
+            string fileName = "";
             if (FileExistsAndIsReadable(path))
-            {
-                return new FileInfo(path).Name;
-            }
-
-            throw new InvalidPathException();
+                fileName = new FileInfo(path).Name;
+            return fileName;
         }
 
         public long GetFileSize(string path)
         {
+            long fileSize = 0;
             if (FileExistsAndIsReadable(path))
-            {
-                return new FileInfo(path).Length;
-            }
+                fileSize = new FileInfo(path).Length;
+            return fileSize;
+        }
 
-            throw new InvalidPathException();
+        public bool IsFilePNG(string path)
+        {
+            if (FileExistsAndIsReadable(path))
+                return new FileInfo(path).Extension.ToLower() == ".png";
+            return false;
+        }
+
+        public void DeleteFile(string path)
+        {
+            if (FileExistsAndIsReadable(path))
+                File.Delete(path);
         }
     }
 }

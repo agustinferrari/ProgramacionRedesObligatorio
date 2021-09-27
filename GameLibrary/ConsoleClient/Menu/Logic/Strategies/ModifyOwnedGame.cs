@@ -20,7 +20,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
             string genre = Console.ReadLine();
             Console.WriteLine("Ingrese nuevo sinopsis:");
             string synopsis = Console.ReadLine();
-            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir:");
+            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir (.png):");
             string path = Console.ReadLine();
 
             string newGameData = newName + "%" + genre + "%" + synopsis;
@@ -30,7 +30,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
                 IFileHandler fileStreamHandler = new FileHandler();
-                if (fileStreamHandler.FileExistsAndIsReadable(path))
+                if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
                     bool imageSentCorrectly = clientSocket.SendImage(path);
                     if (!imageSentCorrectly)

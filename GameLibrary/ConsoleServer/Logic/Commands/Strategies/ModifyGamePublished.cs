@@ -1,4 +1,6 @@
-﻿using Common.NetworkUtils;
+﻿using Common.FileUtils;
+using Common.FileUtils.Interfaces;
+using Common.NetworkUtils;
 using Common.NetworkUtils.Interface;
 using Common.Protocol;
 using ConsoleServer.Domain;
@@ -52,6 +54,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 Game gameToModify = _gameController.GetCertainGamePublishedByUser(user, oldGameName);
                 if (gameToModify != null)
                 {
+                    DeletePreviousImage(gameToModify, newGame);
                     _userController.ModifyGameFromAllUser(gameToModify, newGame);
                     _gameController.ModifyGame(gameToModify, newGame);
                     responseMessage = ResponseConstants.ModifyPublishedGameSuccess;
@@ -86,6 +89,14 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
             }
             return pathToImageGame;
+        }
+
+        private void DeletePreviousImage(Game gameToModify, Game newGame)
+        {
+            IFileHandler fileStreamHandler = new FileHandler();
+            string previousImagePath = gameToModify.PathToPhoto;
+            if (newGame.PathToPhoto != "")
+                fileStreamHandler.DeleteFile(previousImagePath);
         }
     }
 }
