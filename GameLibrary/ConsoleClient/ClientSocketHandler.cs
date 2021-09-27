@@ -1,5 +1,4 @@
 ﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
 
 namespace ConsoleClient
 {
