@@ -24,7 +24,7 @@ namespace ConsoleServer
             }
             else
             {
-                Console.WriteLine("Por favor comprobar la configuracion del app config e ingrse un puerto valido");
+                Console.WriteLine("Por favor comprobar la configuracion del app config e ingrese un puerto valido");
             }
         }
     }

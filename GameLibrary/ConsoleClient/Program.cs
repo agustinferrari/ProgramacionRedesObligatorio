@@ -23,7 +23,7 @@ namespace ConsoleClient
             }
             else
             {
-                Console.WriteLine("Please check your app config and enter a valid port");
+                Console.WriteLine("Por favor comprobar la configuracion del app config e ingrese un puerto valido");
             }
         }
     }
