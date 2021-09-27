@@ -1,4 +1,5 @@
-﻿using ConsoleServer.Domain;
+﻿using ConsoleServer.BussinessLogic.Interfaces;
+using ConsoleServer.Domain;
 using ConsoleServer.Utils;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace ConsoleServer.BussinessLogic
 {
-    public class GameController
+    public class GameController : IGameController
     {
         private static readonly object _padlock = new object();
         private static GameController _instance = null;

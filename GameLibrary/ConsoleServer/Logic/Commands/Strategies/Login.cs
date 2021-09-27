@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -9,9 +10,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class Login : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
-            string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
+            string userName = clientSocketHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
             if (_clientHandler.IsClientLogged(userName))
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;

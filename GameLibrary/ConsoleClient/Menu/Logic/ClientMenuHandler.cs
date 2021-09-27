@@ -1,8 +1,10 @@
 ﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleClient.Menu.Logic.Factory;
+using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic.Strategies;
 using ConsoleClient.Menu.Presentation;
 using System;
@@ -10,33 +12,38 @@ using System.Net.Sockets;
 
 namespace ConsoleClient.Menu.MenuHandler
 {
-    public class ClientMenuHandler
+    public class ClientMenuHandler : IClientMenuHandler
     {
         private IFileHandler _fileHandler;
+        private static readonly object _padlock = new object();
+        private static ClientMenuHandler _instance;
 
-        public ClientMenuHandler()
+        private ClientMenuHandler()
         {
             _fileHandler = new FileHandler();
         }
-
-        private static ClientMenuHandler _instance;
 
         public static ClientMenuHandler Instance
         {
             get
             {
-                if (_instance == null)
-                    _instance = new ClientMenuHandler();
-                return _instance;
+                lock (_padlock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new ClientMenuHandler();
+                    }
+                    return _instance;
+                }
             }
         }
-        public void LoadMainMenu(SocketHandler clientSocket)
+        public void LoadMainMenu(ISocketHandler clientSocket)
         {
             ClientMenuRenderer.RenderMainMenu();
             HandleMainMenuResponse(clientSocket);
         }
 
-        private void HandleMainMenuResponse(SocketHandler clientSocket)
+        private void HandleMainMenuResponse(ISocketHandler clientSocket)
         {
 
             string selectedOption = Console.ReadLine();
@@ -76,7 +83,7 @@ namespace ConsoleClient.Menu.MenuHandler
             return result;
         }
 
-        private void HandleLoggedUserMenuResponse(SocketHandler clientSocket)
+        private void HandleLoggedUserMenuResponse(ISocketHandler clientSocket)
         {
             string selectedOption = Console.ReadLine();
             Console.Clear();
@@ -103,9 +110,10 @@ namespace ConsoleClient.Menu.MenuHandler
         private int ParseLoggedUserMenuOption(string selectedOption)
         {
             int result;
+            int mainMenuOptions = 2;
             try
             {
-                result = Int32.Parse(selectedOption) + 2; //Sacar magic number, es la cantidad de opciones del main menu
+                result = Int32.Parse(selectedOption) + mainMenuOptions;
             }
             catch (FormatException)
             {
@@ -114,19 +122,19 @@ namespace ConsoleClient.Menu.MenuHandler
             return result;
         }
 
-        public void LoadLoggedUserMenu(SocketHandler clientSocket)
+        public void LoadLoggedUserMenu(ISocketHandler clientSocket)
         {
             ClientMenuRenderer.RenderLoggedUserMenu();
             HandleLoggedUserMenuResponse(clientSocket);
         }
 
-        public string SendMessageAndRecieveResponse(SocketHandler clientSocket, int command, string messageToSend)
+        public string SendMessageAndRecieveResponse(ISocketHandler clientSocket, int command, string messageToSend)
         {
             clientSocket.SendMessage(HeaderConstants.Request, command, messageToSend);
             return RecieveResponse(clientSocket);
         }
 
-        public string RecieveResponse(SocketHandler clientSocket)
+        public string RecieveResponse(ISocketHandler clientSocket)
         {
             string response;
             try
@@ -141,7 +149,7 @@ namespace ConsoleClient.Menu.MenuHandler
             return response;
         }
 
-        public void HandleListGamesFiltered(SocketHandler clientSocket)
+        public void HandleListGamesFiltered(ISocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
             string filterTitle = Console.ReadLine().ToLower();

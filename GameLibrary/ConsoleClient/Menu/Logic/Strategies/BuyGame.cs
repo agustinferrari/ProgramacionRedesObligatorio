@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class BuyGame : MenuStrategy
     {
-        public override void HandleSelectedOption(SocketHandler clientSocket)
+        public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine().ToLower();

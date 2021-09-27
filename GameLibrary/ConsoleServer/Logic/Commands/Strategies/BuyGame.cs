@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
@@ -10,7 +11,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class BuyGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string username;

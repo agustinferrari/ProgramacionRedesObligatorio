@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Utils.CustomExceptions;
 
@@ -7,7 +8,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             string responseMessage;
             try

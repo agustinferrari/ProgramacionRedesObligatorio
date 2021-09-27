@@ -1,17 +1,17 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.BussinessLogic;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using ConsoleServer.BussinessLogic.Interfaces;
+using ConsoleServer.Logic.Interfaces;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public abstract class CommandStrategy
     {
-        protected ClientHandler _clientHandler;
-        protected GameController _gameController;
-        protected UserController _userController;
+        protected IClientHandler _clientHandler;
+        protected IGameController _gameController;
+        protected IUserController _userController;
 
         public CommandStrategy()
         {
@@ -20,6 +20,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract void HandleRequest(Header header, SocketHandler clientSocketHandler);
+        public abstract void HandleRequest(Header header, ISocketHandler clientSocketHandler);
     }
 }

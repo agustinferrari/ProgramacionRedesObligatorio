@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class DeleteOwnedGame : MenuStrategy
     {
-        public override void HandleSelectedOption(SocketHandler clientSocket)
+        public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
             string gameName = Console.ReadLine();

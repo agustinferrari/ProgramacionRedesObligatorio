@@ -1,16 +1,18 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
+using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.MenuHandler;
 
 namespace ConsoleClient.Menu.Logic.Strategies
 {
     public abstract class MenuStrategy
     {
-        protected ClientMenuHandler _menuHandler;
+        protected IClientMenuHandler _menuHandler;
 
         public MenuStrategy()
         {
             _menuHandler = ClientMenuHandler.Instance;
         }
-        public abstract void HandleSelectedOption(SocketHandler clientSocket);
+        public abstract void HandleSelectedOption(ISocketHandler clientSocket);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class Logout : MenuStrategy
     {
-        public override void HandleSelectedOption(SocketHandler clientSocket)
+        public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
             int sendNoData = 0;
             Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, sendNoData);

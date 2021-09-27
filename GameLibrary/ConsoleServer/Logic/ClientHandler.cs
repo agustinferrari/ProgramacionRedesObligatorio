@@ -1,25 +1,28 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using Common.Utils.CustomExceptions;
 using ConsoleServer.Logic.Commands.Factory;
 using ConsoleServer.Logic.Commands.Strategies;
+using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 
 
 namespace ConsoleServer.Logic
 {
-    public class ClientHandler
+    public class ClientHandler : IClientHandler
     {
         public static bool stopHandling;
 
-        private Dictionary<SocketHandler, string> _loggedClients;
+        private Dictionary<ISocketHandler, string> _loggedClients;
         private static readonly object _padlock = new object();
         private static ClientHandler _instance;
         private int _clientClosedConnectionAbruptly = 0;
 
-        public ClientHandler()
+        private ClientHandler()
         {
-            _loggedClients = new Dictionary<SocketHandler, string>();
+            _loggedClients = new Dictionary<ISocketHandler, string>();
             stopHandling = false;
         }
 
@@ -44,31 +47,31 @@ namespace ConsoleServer.Logic
                 return _loggedClients.ContainsValue(userName);
         }
 
-        public bool IsSocketInUse(SocketHandler socketHandler)
+        public bool IsSocketInUse(ISocketHandler socketHandler)
         {
             lock (_padlock)
                 return _loggedClients.ContainsKey(socketHandler);
         }
 
-        public string GetUsername(SocketHandler socketHandler)
+        public string GetUsername(ISocketHandler socketHandler)
         {
             lock (_padlock)
                 return _loggedClients[socketHandler];
         }
 
-        public void AddClient(SocketHandler socketHandler, string userName)
+        public void AddClient(ISocketHandler socketHandler, string userName)
         {
             lock (_padlock)
                 _loggedClients.Add(socketHandler, userName);
         }
 
-        public void RemoveClient(SocketHandler socketHandler)
+        public void RemoveClient(ISocketHandler socketHandler)
         {
             lock (_padlock)
                 _loggedClients.Remove(socketHandler);
         }
 
-        public void HandleClient(SocketHandler clientSocketHandler)
+        public void HandleClient(ISocketHandler clientSocketHandler)
         {
             bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
@@ -102,7 +105,7 @@ namespace ConsoleServer.Logic
             }
         }
 
-        private void CloseConnection(SocketHandler clientSocketHandler)
+        private void CloseConnection(ISocketHandler clientSocketHandler)
         {
             _loggedClients.Remove(clientSocketHandler);
             clientSocketHandler.ShutdownSocket();

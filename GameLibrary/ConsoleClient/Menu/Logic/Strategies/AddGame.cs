@@ -1,6 +1,7 @@
 ﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class AddGame : MenuStrategy
     {
-        public override void HandleSelectedOption(SocketHandler clientSocket)
+        public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Ingrese el nombre del juego:");
             string name = Console.ReadLine();
