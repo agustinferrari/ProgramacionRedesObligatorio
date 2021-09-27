@@ -19,7 +19,7 @@ namespace ConsoleServer.Logic
         private static ClientHandler _instance;
         private int _clientClosedConnectionAbruptly = 0;
 
-        public ClientHandler()
+        private ClientHandler()
         {
             _loggedClients = new Dictionary<SocketHandler, string>();
             stopHandling = false;

@@ -2,12 +2,13 @@
 using Common.Protocol;
 using ConsoleServer.BussinessLogic;
 using ConsoleServer.BussinessLogic.Interfaces;
+using ConsoleServer.Logic.Interfaces;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public abstract class CommandStrategy
     {
-        protected ClientHandler _clientHandler;
+        protected IClientHandler _clientHandler;
         protected IGameController _gameController;
         protected IUserController _userController;
 

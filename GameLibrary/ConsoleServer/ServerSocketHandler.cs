@@ -1,5 +1,6 @@
 ﻿using Common.NetworkUtils;
 using ConsoleServer.Logic;
+using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net.Sockets;
@@ -45,7 +46,7 @@ namespace ConsoleServer
             {
                 try
                 {
-                    ClientHandler clientHandler = new ClientHandler();
+                    IClientHandler clientHandler = ClientHandler.Instance;
                     Socket clientConnected = socketServer.Accept();
                     SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
                     ClientsConnectedSockets.Add(clientConnectedHandler);

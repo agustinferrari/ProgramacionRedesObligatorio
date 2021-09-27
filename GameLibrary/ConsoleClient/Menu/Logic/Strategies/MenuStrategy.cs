@@ -1,11 +1,12 @@
 ﻿using Common.NetworkUtils;
+using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.MenuHandler;
 
 namespace ConsoleClient.Menu.Logic.Strategies
 {
     public abstract class MenuStrategy
     {
-        protected ClientMenuHandler _menuHandler;
+        protected IClientMenuHandler _menuHandler;
 
         public MenuStrategy()
         {

@@ -3,6 +3,7 @@ using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
 using Common.Protocol;
 using ConsoleClient.Menu.Logic.Factory;
+using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic.Strategies;
 using ConsoleClient.Menu.Presentation;
 using System;
@@ -10,24 +11,29 @@ using System.Net.Sockets;
 
 namespace ConsoleClient.Menu.MenuHandler
 {
-    public class ClientMenuHandler
+    public class ClientMenuHandler : IClientMenuHandler
     {
         private IFileHandler _fileHandler;
+        private static readonly object _padlock = new object();
+        private static ClientMenuHandler _instance;
 
-        public ClientMenuHandler()
+        private ClientMenuHandler()
         {
             _fileHandler = new FileHandler();
         }
-
-        private static ClientMenuHandler _instance;
 
         public static ClientMenuHandler Instance
         {
             get
             {
-                if (_instance == null)
-                    _instance = new ClientMenuHandler();
-                return _instance;
+                lock (_padlock)
+                {
+                    if (_instance == null)
+                    {
+                        _instance = new ClientMenuHandler();
+                    }
+                    return _instance;
+                }
             }
         }
         public void LoadMainMenu(SocketHandler clientSocket)

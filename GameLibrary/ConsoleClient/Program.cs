@@ -1,5 +1,6 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interface;
+using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.MenuHandler;
 using System;
 
@@ -16,7 +17,7 @@ namespace ConsoleClient
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ClientSocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, 0, parsedPort);
-                ClientMenuHandler menuHandler = new ClientMenuHandler();
+                IClientMenuHandler menuHandler = ClientMenuHandler.Instance;
                 menuHandler.LoadMainMenu(socketHandler);
             }
             else
