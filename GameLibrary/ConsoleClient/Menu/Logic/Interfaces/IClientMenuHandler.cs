@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-
+using Common.NetworkUtils.Interfaces;
 
 namespace ConsoleClient.Menu.Logic.Interfaces
 {
@@ -7,15 +7,15 @@ namespace ConsoleClient.Menu.Logic.Interfaces
     {
         public static IClientMenuHandler Instance;
 
-        public void LoadMainMenu(SocketHandler clientSocket);
+        public void LoadMainMenu(ISocketHandler clientSocket);
 
-        public void LoadLoggedUserMenu(SocketHandler clientSocket);
+        public void LoadLoggedUserMenu(ISocketHandler clientSocket);
 
-        public string SendMessageAndRecieveResponse(SocketHandler clientSocket, int command, string messageToSend);
+        public string SendMessageAndRecieveResponse(ISocketHandler clientSocket, int command, string messageToSend);
 
-        public string RecieveResponse(SocketHandler clientSocket);
+        public string RecieveResponse(ISocketHandler clientSocket);
 
-        public void HandleListGamesFiltered(SocketHandler clientSocket);
+        public void HandleListGamesFiltered(ISocketHandler clientSocket);
 
         public bool ValidateNotEmptyFields(string data);
     }

@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
 {
     public class GetGameDetails : MenuStrategy
     {
-        public override void HandleSelectedOption(SocketHandler clientSocket)
+        public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
