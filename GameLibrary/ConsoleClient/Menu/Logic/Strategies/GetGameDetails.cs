@@ -26,7 +26,6 @@ namespace ConsoleClient.Menu.Logic.Strategies
                     if (option == "1")
                     {
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        Header receivedHeader = clientSocket.ReceiveHeader();//Capaz que sacarlo
                         string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
                         ISettingsManager SettingsMgr = new SettingsManager();
                         string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);

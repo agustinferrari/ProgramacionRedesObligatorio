@@ -11,7 +11,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
         {
-            string userName = clientSocketHandler.ReceiveString(header.IDataLength); //Podriamos hacer un metodo que haga todo esto de una
+            string userName = clientSocketHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
             if (_clientHandler.IsClientLogged(userName))
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;

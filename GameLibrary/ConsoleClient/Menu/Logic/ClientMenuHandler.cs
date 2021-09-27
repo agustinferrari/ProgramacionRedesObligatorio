@@ -103,9 +103,10 @@ namespace ConsoleClient.Menu.MenuHandler
         private int ParseLoggedUserMenuOption(string selectedOption)
         {
             int result;
+            int mainMenuOptions = 2;
             try
             {
-                result = Int32.Parse(selectedOption) + 2; //Sacar magic number, es la cantidad de opciones del main menu
+                result = Int32.Parse(selectedOption) + mainMenuOptions;
             }
             catch (FormatException)
             {
