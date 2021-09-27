@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.BussinessLogic;
 using ConsoleServer.BussinessLogic.Interfaces;
@@ -19,6 +20,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract void HandleRequest(Header header, SocketHandler clientSocketHandler);
+        public abstract void HandleRequest(Header header, ISocketHandler clientSocketHandler);
     }
 }

@@ -10,7 +10,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class AddGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             int firstElement = 0;
             int secondElement = 1;

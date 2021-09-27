@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-
+using Common.NetworkUtils.Interfaces;
 
 namespace ConsoleServer.Logic.Interfaces
 {
@@ -9,15 +9,15 @@ namespace ConsoleServer.Logic.Interfaces
 
         public bool IsClientLogged(string userName);
 
-        public bool IsSocketInUse(SocketHandler socketHandler);
+        public bool IsSocketInUse(ISocketHandler socketHandler);
 
-        public string GetUsername(SocketHandler socketHandler);
+        public string GetUsername(ISocketHandler socketHandler);
 
-        public void AddClient(SocketHandler socketHandler, string userName);
+        public void AddClient(ISocketHandler socketHandler, string userName);
 
-        public void RemoveClient(SocketHandler socketHandler);
+        public void RemoveClient(ISocketHandler socketHandler);
 
-        public void HandleClient(SocketHandler clientSocketHandler);
+        public void HandleClient(ISocketHandler clientSocketHandler);
 
     }
 

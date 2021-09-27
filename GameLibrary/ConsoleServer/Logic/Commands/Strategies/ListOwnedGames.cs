@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -9,7 +10,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListOwnedGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, SocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             string emptyString = "";
             string responseMessage;

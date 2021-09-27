@@ -1,4 +1,5 @@
 ﻿using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using ConsoleServer.Logic;
 using ConsoleServer.Logic.Interfaces;
 using System;
@@ -11,7 +12,7 @@ namespace ConsoleServer
     public class ServerSocketHandler : SocketHandler
     {
         public bool Exit { get; set; }
-        private List<SocketHandler> ClientsConnectedSockets { get; set; }
+        private List<ISocketHandler> ClientsConnectedSockets { get; set; }
         private int _supportedConnections = 100;
 
         public ServerSocketHandler(string ipAddress, int port) :
@@ -41,16 +42,16 @@ namespace ConsoleServer
 
         private void ListenForConnections(Socket socketServer)
         {
-            ClientsConnectedSockets = new List<SocketHandler>();
+            ClientsConnectedSockets = new List<ISocketHandler>();
             while (!Exit)
             {
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
                     Socket clientConnected = socketServer.Accept();
-                    SocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
+                    ISocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
                     ClientsConnectedSockets.Add(clientConnectedHandler);
-                    Console.WriteLine("Accepted new connection...");
+                    Console.WriteLine("Nueva conexion aceptada...");
                     Thread threadcClient = new Thread(() => clientHandler.HandleClient(clientConnectedHandler));
                     threadcClient.Start();
                 }
