@@ -24,7 +24,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 responseMessageResult = ResponseConstants.InvalidGameError;
             }
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);//Capaz que hacer de otra forma
+            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);
             if (game != null)
                 clientSocketHandler.SendImage(game.PathToPhoto);
         }

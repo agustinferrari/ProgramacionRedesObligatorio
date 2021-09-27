@@ -1,6 +1,7 @@
 ﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
 using Common.Protocol;
+using Common.Utils.CustomExceptions;
 using System;
 using System.IO;
 using System.Net;
@@ -68,7 +69,7 @@ namespace Common.NetworkUtils
                     bool connectionCloseOnRemoteEndPoint = localRecv == 0;
                     if (connectionCloseOnRemoteEndPoint)
                     {
-                        throw new Exception("Connection has been closed"); // Catchear en server y si el server sigue andando cerrar la conexion 
+                        throw new SocketClientException();
                     }
                     iRecv += localRecv;
                 }
@@ -87,7 +88,7 @@ namespace Common.NetworkUtils
             byte[] buffer = new byte[headerLength];
             this.ReceiveData(headerLength, buffer);
             Header header = new Header();
-            if (header.DecodeData(buffer) == false) throw new FormatException() ;
+            if (header.DecodeData(buffer) == false) throw new FormatException();
             return header;
         }
 
@@ -146,12 +147,14 @@ namespace Common.NetworkUtils
             {
                 Directory.CreateDirectory(pathToImageFolder);
             }
-            string path = pathToImageFolder + gameName + "_" + fileName;
+            string newName = (gameName == "") ? fileName : gameName + "_" + fileName;
+            string path = pathToImageFolder + newName;
             return path;
         }
 
         public void SendImage(string path)
         {
+            bool imageSentCorrectly = true;
             long fileSize = _fileHandler.GetFileSize(path);
             string fileName = _fileHandler.GetFileName(path);
             string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
@@ -167,21 +170,30 @@ namespace Common.NetworkUtils
             while (fileSize > offset)
             {
                 byte[] data;
-                if (currentPart == parts)
+                int lastPartSize = (int)(fileSize - offset);
+                try
                 {
-                    int lastPartSize = (int)(fileSize - offset);
-                    data = _fileStreamHandler.Read(path, offset, lastPartSize);
-                    offset += lastPartSize;
+                    if (currentPart == parts)
+                        data = _fileStreamHandler.Read(path, offset, lastPartSize);
+                    else
+                        data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
                 }
-                else
+                catch (UnableToReadFileException)
                 {
-                    data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
-                    offset += Specification.MaxPacketSize;
+                    if (currentPart == parts)
+                        data = new byte[lastPartSize];
+                    else
+                        data = new byte[Specification.MaxPacketSize];
+                }
+                finally
+                {
+                    offset += (currentPart == parts) ? lastPartSize : Specification.MaxPacketSize;
                 }
 
                 SendData(data);
                 currentPart++;
             }
+
         }
 
         public void ShutdownSocket()
