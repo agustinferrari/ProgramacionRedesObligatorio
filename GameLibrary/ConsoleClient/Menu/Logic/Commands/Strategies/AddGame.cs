@@ -19,7 +19,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string genre = Console.ReadLine();
             Console.WriteLine("Ingrese un resumen del juego:");
             string synopsis = Console.ReadLine();
-            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir:");
+            Console.WriteLine("Ingrese el path de la caratula del juego que desea subir (.png):");
             string path = Console.ReadLine();
 
             string gameData = name + "%" + genre + "%" + synopsis;
@@ -27,7 +27,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             if (_menuHandler.ValidateNotEmptyFields(dataToCheck))
             {
                 IFileHandler fileStreamHandler = new FileHandler();
-                if (fileStreamHandler.FileExists(path))
+                if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
                     clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
                     bool imageSentCorrectly = clientSocket.SendImage(path);
@@ -44,7 +44,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 }
                 else
                 {
-                    Console.WriteLine("El path ingresado es invalido, intente de nuevo");
+                    Console.WriteLine("El path ingresado es invalido o no tiene permisos para leer la imagen, intente de nuevo (recuerde que debe ser de tipo png)");
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 }
             }

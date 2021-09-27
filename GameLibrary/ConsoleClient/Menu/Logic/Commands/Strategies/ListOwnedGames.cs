@@ -11,7 +11,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             int sendNoData = 0;
             Header header = new Header(HeaderConstants.Request, CommandConstants.ListOwnedGames, sendNoData);
             clientSocket.SendHeader(header);
-            string response = _menuHandler.RecieveResponse(clientSocket);
+            string response = clientSocket.RecieveResponse();
             Console.WriteLine("Lista de juegos propios:");
             Console.WriteLine(response);
             if (response == ResponseConstants.AuthenticationError)

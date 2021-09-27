@@ -15,7 +15,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string gameName = Console.ReadLine().ToLower();
             if (_menuHandler.ValidateNotEmptyFields(gameName))
             {
-                string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.BuyGame, gameName);
+                string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.BuyGame, gameName);
                 Console.WriteLine(response);
                 bool acceptedResponses = response == ResponseConstants.BuyGameSuccess;
                 acceptedResponses |= response == ResponseConstants.InvalidGameError;

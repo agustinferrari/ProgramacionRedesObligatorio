@@ -14,7 +14,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             int sendNoData = 0;
             Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, sendNoData);
             clientSocket.SendHeader(header);
-            string response = _menuHandler.RecieveResponse(clientSocket);
+            string response = clientSocket.RecieveResponse();
             Console.WriteLine(response);
             if (response == ResponseConstants.LogoutSuccess)
                 _menuHandler.LoadMainMenu(clientSocket);

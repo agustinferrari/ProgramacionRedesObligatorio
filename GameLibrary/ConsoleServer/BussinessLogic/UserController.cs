@@ -49,7 +49,7 @@ namespace ConsoleServer.BussinessLogic
             {
                 if (user.OwnedGames != null && user.OwnedGames.Exists(game => game.Name.ToLower() == gameName.ToLower()))
                     throw new GameAlreadyBoughtException();
-                else  
+                else
                     user.AddGame(game);
             }
         }
@@ -62,7 +62,7 @@ namespace ConsoleServer.BussinessLogic
                     if (user.Name == username)
                         return user;
                 }
-                throw new InvalidUsernameException();
+            throw new InvalidUsernameException();
         }
 
         public string ListOwnedGameByUser(string username)
@@ -88,7 +88,7 @@ namespace ConsoleServer.BussinessLogic
             return result;
         }
 
-        public void DeleteGameFromAllUsers( Game gameToDelete)
+        public void DeleteGameFromAllUsers(Game gameToDelete)
         {
             lock (_padlock)
                 foreach (User user in _users)
@@ -99,23 +99,24 @@ namespace ConsoleServer.BussinessLogic
         }
 
 
-        public void ModifyGameFromAllUser( Game gameToModify, Game newGame)
+        public void ModifyGameFromAllUser(Game gameToModify, Game newGame)
         {
             if (gameToModify == null)
                 throw new InvalidGameException();
             lock (_padlock)
                 foreach (User user in _users)
                 {
-                    if(user.OwnedGames != null)
+                    if (user.OwnedGames != null)
                     {
-                        Game game = user.OwnedGames.Find(game => game.userOwner.Name.ToLower() == gameToModify.userOwner.Name.ToLower() &&
+                        Game game = user.OwnedGames.Find(game => game.OwnerUser.Name.ToLower() == gameToModify.OwnerUser.Name.ToLower() &&
                         game.Name.ToLower() == gameToModify.Name.ToLower());
 
                         if (game != null)
                         {
-                            gameToModify.Name = newGame.Name;
-                            gameToModify.Genre = newGame.Genre;
-                            gameToModify.Synopsis = newGame.Synopsis;
+                            gameToModify.Name = (newGame.Name == "") ? gameToModify.Name : newGame.Name;
+                            gameToModify.Genre = (newGame.Genre == "") ? gameToModify.Genre : newGame.Genre;
+                            gameToModify.Synopsis = (newGame.Synopsis == "") ? gameToModify.Synopsis : newGame.Synopsis;
+                            gameToModify.PathToPhoto = (newGame.PathToPhoto == "") ? gameToModify.PathToPhoto : newGame.PathToPhoto;
                         }
                     }
                 }

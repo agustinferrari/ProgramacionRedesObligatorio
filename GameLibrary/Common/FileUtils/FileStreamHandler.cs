@@ -18,10 +18,6 @@ namespace Common.FileUtils
                 while (bytesRead < length)
                 {
                     int read = fs.Read(data, bytesRead, length - bytesRead);
-                    if (read == 0)
-                    {
-                        throw new UnableToReadFileException();
-                    }
                     bytesRead += read;
                 }
             }

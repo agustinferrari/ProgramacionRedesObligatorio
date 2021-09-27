@@ -7,29 +7,48 @@ namespace Common.FileUtils
 {
     public class FileHandler : IFileHandler
     {
-        public bool FileExists(string path)
+        public bool FileExistsAndIsReadable(string path)
         {
-            return File.Exists(path);
+            bool readable = File.Exists(path);
+            if (readable)
+                try
+                {
+                    File.OpenRead(path).Close();
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    readable = false;
+                }
+            return readable;
         }
 
         public string GetFileName(string path)
         {
-            if (FileExists(path))
-            {
-                return new FileInfo(path).Name;
-            }
-
-            throw new InvalidPathException();
+            string fileName = "";
+            if (FileExistsAndIsReadable(path))
+                fileName = new FileInfo(path).Name;
+            return fileName;
         }
 
         public long GetFileSize(string path)
         {
-            if (FileExists(path))
-            {
-                return new FileInfo(path).Length;
-            }
+            long fileSize = 0;
+            if (FileExistsAndIsReadable(path))
+                fileSize = new FileInfo(path).Length;
+            return fileSize;
+        }
 
-            throw new InvalidPathException();
+        public bool IsFilePNG(string path)
+        {
+            if (FileExistsAndIsReadable(path))
+                return new FileInfo(path).Extension.ToLower() == ".png";
+            return false;
+        }
+
+        public void DeleteFile(string path)
+        {
+            if (FileExistsAndIsReadable(path))
+                File.Delete(path);
         }
     }
 }

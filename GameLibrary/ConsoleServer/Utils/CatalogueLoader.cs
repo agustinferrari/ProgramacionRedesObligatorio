@@ -21,7 +21,7 @@ namespace ConsoleServer.Utils
                 PathToPhoto = "ahtddstd",
                 Synopsis = "A building world made of blocks",
                 Rating = 10,
-                userOwner = user
+                OwnerUser = user
             };
             Game newGame1 = new Game
             {
@@ -30,7 +30,7 @@ namespace ConsoleServer.Utils
                 PathToPhoto = "ahtddstd",
                 Synopsis = "First person online shooter",
                 Rating = 5,
-                userOwner = user
+                OwnerUser = user
             };
             Game newGame2 = new Game
             {
@@ -39,7 +39,7 @@ namespace ConsoleServer.Utils
                 PathToPhoto = "ahtddstd",
                 Synopsis = "Footbal game",
                 Rating = 3,
-                userOwner = user
+                OwnerUser = user
             };
             Game newGame3 = new Game
             {
@@ -48,7 +48,7 @@ namespace ConsoleServer.Utils
                 PathToPhoto = "ahtddstd",
                 Synopsis = "Son of Hades escaped underworld",
                 Rating = 7,
-                userOwner = user
+                OwnerUser = user
             };
             gameController.AddGame(newGame);
             gameController.AddGame(newGame1);

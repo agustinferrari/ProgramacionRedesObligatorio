@@ -61,7 +61,7 @@ namespace ConsoleServer.BussinessLogic
                 if (games != null && games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
                     return games.Find(game => game.Name.ToLower() == gameName.ToLower());
                 throw new InvalidGameException();
-            }     
+            }
         }
 
         public void AddReview(string gameName, Review newReview)
@@ -116,8 +116,8 @@ namespace ConsoleServer.BussinessLogic
             lock (_padlock)
             {
                 if (games == null)
-                return null;
-                Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.userOwner.Name.ToLower() == user.Name.ToLower());
+                    return null;
+                Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.OwnerUser.Name.ToLower() == user.Name.ToLower());
                 return userGame;
             }
         }
@@ -137,9 +137,10 @@ namespace ConsoleServer.BussinessLogic
                 throw new InvalidGameException();
             lock (_padlock)
             {
-                gameToModify.Name = newGame.Name;
-                gameToModify.Genre = newGame.Genre;
-                gameToModify.Synopsis = newGame.Synopsis;
+                gameToModify.Name = (newGame.Name == "") ? gameToModify.Name : newGame.Name;
+                gameToModify.Genre = (newGame.Genre == "") ? gameToModify.Genre : newGame.Genre;
+                gameToModify.Synopsis = (newGame.Synopsis == "") ? gameToModify.Synopsis : newGame.Synopsis;
+                gameToModify.PathToPhoto = (newGame.PathToPhoto == "") ? gameToModify.PathToPhoto : newGame.PathToPhoto;
             }
         }
     }

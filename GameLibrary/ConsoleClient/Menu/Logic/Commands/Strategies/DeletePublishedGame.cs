@@ -13,7 +13,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         {
             Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
             string gameName = Console.ReadLine();
-            string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeletePublishedGame, gameName);
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.DeletePublishedGame, gameName);
             Console.WriteLine(response);
             if(!(response == ResponseConstants.AuthenticationError))
                 _menuHandler.LoadLoggedUserMenu(clientSocket);

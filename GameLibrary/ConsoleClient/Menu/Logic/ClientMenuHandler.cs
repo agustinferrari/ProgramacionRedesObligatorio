@@ -158,7 +158,7 @@ namespace ConsoleClient.Menu.MenuHandler
             Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
             string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
-            string response = SendMessageAndRecieveResponse(clientSocket, CommandConstants.ListFilteredGames, totalFilter);
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter);
             Console.WriteLine("Lista de juegos:");
             Console.WriteLine(response);
         }
@@ -173,6 +173,17 @@ namespace ConsoleClient.Menu.MenuHandler
                     return false;
                 }
             return true;
+        }
+
+        public bool ValidateAtLeastOneField(string data)
+        {
+            string[] separatedData = data.Split("%");
+            foreach (string field in separatedData)
+                if (field != "")
+                {
+                    return true;
+                }
+            return false;
         }
     }
 }

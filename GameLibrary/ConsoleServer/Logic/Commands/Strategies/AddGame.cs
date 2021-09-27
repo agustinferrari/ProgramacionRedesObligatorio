@@ -24,12 +24,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
             string pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
+            string username = _clientHandler.GetUsername(clientSocketHandler);
+            User ownerUser = _userController.GetUser(username);
             Game newGame = new Game
             {
                 Name = gameName,
                 Genre = genre,
                 Synopsis = synopsis,
                 Rating = 0,
+                OwnerUser = ownerUser,
                 PathToPhoto = pathToImageGame
             };
             string responseMessageResult;
