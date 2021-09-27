@@ -1,7 +1,7 @@
-﻿using ConsoleClient.Menu.Logic.Strategies;
+﻿using ConsoleClient.Menu.Logic.Commands.Strategies;
 using System.Collections.Generic;
 
-namespace ConsoleClient.Menu.Logic.Factory
+namespace ConsoleClient.Menu.Logic.Commands.Factory
 {
     public static class MenuFactory
     {

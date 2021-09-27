@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleClient.Menu.Logic.Strategies
+namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
-    public class ListGamesMainMenu : MenuStrategy
+    public class ListGamesLoggedUser : MenuStrategy
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
@@ -25,8 +25,7 @@ namespace ConsoleClient.Menu.Logic.Strategies
                 Console.WriteLine("Lista de juegos:");
                 Console.WriteLine(response);
             }
-            _menuHandler.LoadMainMenu(clientSocket);
+            _menuHandler.LoadLoggedUserMenu(clientSocket);
         }
-
     }
 }

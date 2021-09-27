@@ -3,7 +3,7 @@ using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.MenuHandler;
 
-namespace ConsoleClient.Menu.Logic.Strategies
+namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public abstract class MenuStrategy
     {

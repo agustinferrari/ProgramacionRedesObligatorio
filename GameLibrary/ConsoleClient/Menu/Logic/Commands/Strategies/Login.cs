@@ -2,7 +2,7 @@
 using Common.Protocol;
 using System;
 
-namespace ConsoleClient.Menu.Logic.Strategies
+namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class Login : MenuStrategy
     {

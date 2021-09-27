@@ -13,7 +13,7 @@ namespace Common.NetworkUtils.Interfaces
         public Header ReceiveHeader();
         public string ReceiveString(int dataLength);
         public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName);  
-        public void SendImage(string path);
+        public bool SendImage(string path);
         public void ShutdownSocket();
     }
 }
