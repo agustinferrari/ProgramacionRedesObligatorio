@@ -1,4 +1,5 @@
-﻿using ConsoleServer.Logic.Commands.Strategies;
+﻿using Common.Protocol;
+using ConsoleServer.Logic.Commands.Strategies;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,18 +10,19 @@ namespace ConsoleServer.Logic.Commands.Factory
     {
         private static Dictionary<int, CommandStrategy> _commandMap = new Dictionary<int, CommandStrategy>()
         {
-            { 1, new Login() },
-            { 2, new Logout() },
-            { 3, new ListGames() },
-            { 4, new BuyGame() },
-            { 5, new AddGame() },
-            { 6, new ReviewGame() },
-            { 7, new GetGameDetails() },
-            { 8, new GetGameImage() },
-            { 9, new ListOwnedGames() },
-            { 10, new ListFilteredGames() },
-            { 11, new DeleteGamePublished() },
-            { 12, new ModifyGamePublished() },
+            { CommandConstants.Login, new Login() },
+            { CommandConstants.Logout, new Logout() },
+            { CommandConstants.ListGames, new ListGames() },
+            { CommandConstants.ListGamesLoggedUser, new ListGames() },
+            { CommandConstants.BuyGame, new BuyGame() },
+            { CommandConstants.AddGame, new AddGame() },
+            { CommandConstants.ReviewGame, new ReviewGame() },
+            { CommandConstants.GetGameDetails, new GetGameDetails() },
+            { CommandConstants.GetGameImage, new GetGameImage() },
+            { CommandConstants.ListOwnedGames, new ListOwnedGames() },
+            { CommandConstants.ListFilteredGames, new ListFilteredGames() },
+            { CommandConstants.DeletePublishedGame, new DeleteGamePublished() },
+            { CommandConstants.ModifyPublishedGame, new ModifyGamePublished() },
         };
 
         public static CommandStrategy GetStrategy(int commandConstant)

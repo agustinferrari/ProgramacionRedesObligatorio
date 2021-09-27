@@ -4,7 +4,7 @@ using System;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
-    public class ModifyOwnedGame : MenuStrategy
+    public class ModifyPublishedGame : MenuStrategy
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
@@ -21,11 +21,8 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             {
                 string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.ModifyPublishedGame, changes);
                 Console.WriteLine(response);
-                bool acceptedResponses = response == ResponseConstants.InvalidGameError;
-                acceptedResponses |= response == ResponseConstants.ModifyPublishedGameSuccess;
-                acceptedResponses |= response == ResponseConstants.InvalidUsernameError;
 
-                if (acceptedResponses)
+                if (!(response == ResponseConstants.AuthenticationError))
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 else
                     _menuHandler.LoadMainMenu(clientSocket);

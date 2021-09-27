@@ -1,4 +1,5 @@
-﻿using ConsoleClient.Menu.Logic.Commands.Strategies;
+﻿using Common.Protocol;
+using ConsoleClient.Menu.Logic.Commands.Strategies;
 using System.Collections.Generic;
 
 namespace ConsoleClient.Menu.Logic.Commands.Factory
@@ -7,17 +8,17 @@ namespace ConsoleClient.Menu.Logic.Commands.Factory
     {
         private static Dictionary<int, MenuStrategy> _commandMap = new Dictionary<int, MenuStrategy>()
         {
-            { 1, new Login() },
-            { 2, new ListGamesMainMenu()},
-            { 3, new Logout()},
-            { 4, new ListGamesLoggedUser()},
-            { 5, new BuyGame()},
-            { 6, new AddGame()},
-            { 7, new GameReview()},
-            { 8, new ListOwnedGames()},
-            { 9, new GetGameDetails()},
-            { 10, new ModifyOwnedGame()},
-            { 11, new DeleteOwnedGame()},
+            { CommandConstants.Login, new Login() },
+            { CommandConstants.ListGames, new ListGamesMainMenu()},
+            { CommandConstants.Logout, new Logout()},
+            { CommandConstants.ListGamesLoggedUser, new ListGamesLoggedUser()},
+            { CommandConstants.BuyGame, new BuyGame()},
+            { CommandConstants.AddGame, new AddGame()},
+            { CommandConstants.ReviewGame, new GameReview()},
+            { CommandConstants.ListOwnedGames, new ListOwnedGames()},
+            { CommandConstants.GetGameDetails, new GetGameDetails()},
+            { CommandConstants.ModifyPublishedGame, new ModifyPublishedGame()},
+            { CommandConstants.DeletePublishedGame, new DeletePublishedGame()},
         };
 
         public static MenuStrategy GetStrategy(int commandConstant)

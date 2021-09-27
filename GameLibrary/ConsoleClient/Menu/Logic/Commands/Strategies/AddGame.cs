@@ -3,7 +3,6 @@ using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using ConsoleClient.Menu.Logic.Strategies;
 using System;
 using System.Collections.Generic;
 using System.Text;

@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
-    public class DeleteOwnedGame : MenuStrategy
+    public class DeletePublishedGame : MenuStrategy
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
@@ -15,10 +15,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string gameName = Console.ReadLine();
             string response = _menuHandler.SendMessageAndRecieveResponse(clientSocket, CommandConstants.DeletePublishedGame, gameName);
             Console.WriteLine(response);
-            bool acceptedResponses = response == ResponseConstants.DeleteGameSuccess;
-            acceptedResponses |= response == ResponseConstants.InvalidGameError;
-            acceptedResponses |= response == ResponseConstants.InvalidUsernameError;
-            if (acceptedResponses)
+            if(!(response == ResponseConstants.AuthenticationError))
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
             else
                 _menuHandler.LoadMainMenu(clientSocket);

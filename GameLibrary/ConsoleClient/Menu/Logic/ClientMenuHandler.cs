@@ -51,7 +51,7 @@ namespace ConsoleClient.Menu.MenuHandler
             try
             {
                 int parsedOption = ParseMainMenuOption(selectedOption);
-                if (parsedOption >= CommandConstants.Login && parsedOption <= CommandConstants.Logout)
+                if (parsedOption == CommandConstants.Login || parsedOption == CommandConstants.ListGames)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
                     menuStrategy.HandleSelectedOption(clientSocket);
@@ -90,7 +90,7 @@ namespace ConsoleClient.Menu.MenuHandler
             try
             {
                 int parsedOption = ParseLoggedUserMenuOption(selectedOption);
-                if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.ModifyPublishedGame)
+                if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.DeletePublishedGame)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
                     menuStrategy.HandleSelectedOption(clientSocket);
