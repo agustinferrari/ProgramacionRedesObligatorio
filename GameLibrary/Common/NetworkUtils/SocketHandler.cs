@@ -1,5 +1,6 @@
 ﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using Common.Utils.CustomExceptions;
 using System;
@@ -10,7 +11,7 @@ using System.Text;
 
 namespace Common.NetworkUtils
 {
-    public class SocketHandler
+    public class SocketHandler : ISocketHandler
     {
         public Socket _socket;
         protected string _ipAddress;

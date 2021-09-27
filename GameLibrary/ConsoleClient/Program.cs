@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interface;
+using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.MenuHandler;
 using System;
@@ -13,7 +13,8 @@ namespace ConsoleClient
         {
             string serverIpAddress = SettingsMgr.ReadSetting(ClientConfig.ClientIpConfigKey);
             string serverPort = SettingsMgr.ReadSetting(ClientConfig.ClientPortConfigKey);
-            if (PortValidator.Validate(serverPort))
+            IPortValidator validatorPort = new PortValidator();
+            if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ClientSocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, 0, parsedPort);

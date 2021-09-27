@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Common.NetworkUtils.Interfaces;
+using System;
 
 namespace Common.NetworkUtils
 {
-    public class PortValidator
+    public class PortValidator : IPortValidator
     {
-        public static bool Validate(string port)
+        public bool Validate(string port)
         {
             bool result;
             try

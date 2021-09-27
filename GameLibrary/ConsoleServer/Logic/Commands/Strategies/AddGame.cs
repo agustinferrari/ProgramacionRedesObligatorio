@@ -1,5 +1,5 @@
 ﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interface;
+using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;

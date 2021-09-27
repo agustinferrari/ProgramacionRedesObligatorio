@@ -1,8 +1,6 @@
-﻿using Common.NetworkUtils.Interface;
+﻿using Common.NetworkUtils.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Text;
 
 namespace Common.NetworkUtils
 {

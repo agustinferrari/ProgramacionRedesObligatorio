@@ -1,7 +1,6 @@
 ﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interface;
+using Common.NetworkUtils.Interfaces;
 using ConsoleServer.Presentation;
-using ConsoleServer.Utils;
 using System;
 
 namespace ConsoleServer
@@ -13,7 +12,8 @@ namespace ConsoleServer
         {
             string serverIpAddress = SettingsMgr.ReadSetting(ServerConfig.ServerIpConfigKey);
             string serverPort = SettingsMgr.ReadSetting(ServerConfig.SeverPortConfigKey);
-            if (PortValidator.Validate(serverPort))
+            IPortValidator validatorPort = new PortValidator();
+            if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ServerSocketHandler socketHandler = new ServerSocketHandler(serverIpAddress, parsedPort);
@@ -24,7 +24,7 @@ namespace ConsoleServer
             }
             else
             {
-                Console.WriteLine("Please check your app config and enter a valid port");
+                Console.WriteLine("Por favor comprobar la configuracion del app config e ingrse un puerto valido");
             }
         }
     }
