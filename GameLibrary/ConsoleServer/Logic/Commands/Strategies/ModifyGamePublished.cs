@@ -75,7 +75,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             return responseMessage;
         }
 
-        private string UpdateImage(SocketHandler clientSocketHandler, string gameName)
+        private string UpdateImage(ISocketHandler clientSocketHandler, string gameName)
         {
             int imageDataLength = SpecificationHelper.GetImageDataLength();
             string rawImageData = clientSocketHandler.ReceiveString(imageDataLength);

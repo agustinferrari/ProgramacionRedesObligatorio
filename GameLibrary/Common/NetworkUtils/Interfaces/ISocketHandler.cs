@@ -12,8 +12,11 @@ namespace Common.NetworkUtils.Interfaces
         public void ReceiveData(int Length, byte[] buffer);
         public Header ReceiveHeader();
         public string ReceiveString(int dataLength);
-        public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName);  
+        public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName);
+        string SendMessageAndRecieveResponse(int deletePublishedGame, string gameName);
+        string RecieveResponse();
         public bool SendImage(string path);
         public void ShutdownSocket();
+        public void SendImageProtocolData(string fileName, long fileSize);
     }
 }

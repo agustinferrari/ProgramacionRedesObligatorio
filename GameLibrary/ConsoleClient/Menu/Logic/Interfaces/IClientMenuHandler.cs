@@ -18,5 +18,6 @@ namespace ConsoleClient.Menu.Logic.Interfaces
         public void HandleListGamesFiltered(ISocketHandler clientSocket);
 
         public bool ValidateNotEmptyFields(string data);
+        bool ValidateAtLeastOneField(string changes);
     }
 }
