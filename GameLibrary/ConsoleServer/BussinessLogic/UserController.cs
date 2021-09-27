@@ -1,9 +1,7 @@
 ﻿using ConsoleServer.BussinessLogic.Interfaces;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleServer.BussinessLogic
 {

@@ -1,14 +1,16 @@
 ﻿using Common.NetworkUtils;
 using Common.Protocol;
+using Common.Utils.CustomExceptions;
 using ConsoleServer.Logic.Commands.Factory;
 using ConsoleServer.Logic.Commands.Strategies;
+using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 
 
 namespace ConsoleServer.Logic
 {
-    public class ClientHandler
+    public class ClientHandler : IClientHandler
     {
         public static bool stopHandling;
 
