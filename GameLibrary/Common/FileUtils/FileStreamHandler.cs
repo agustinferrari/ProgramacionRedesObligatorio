@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Common.FileUtils.Interfaces;
+using Common.Utils.CustomExceptions;
 
 namespace Common.FileUtils
 {
@@ -10,16 +11,16 @@ namespace Common.FileUtils
         {
             var data = new byte[length];
 
-            using (var fs = new FileStream(path, FileMode.Open))
+            using (FileStream fs = new FileStream(path, FileMode.Open))
             {
                 fs.Position = offset;
-                var bytesRead = 0;
+                int bytesRead = 0;
                 while (bytesRead < length)
                 {
-                    var read = fs.Read(data, bytesRead, length - bytesRead);
+                    int read = fs.Read(data, bytesRead, length - bytesRead);
                     if (read == 0)
                     {
-                        throw new Exception("Couldn't not read file");
+                        throw new UnableToReadFileException();
                     }
                     bytesRead += read;
                 }
@@ -30,7 +31,7 @@ namespace Common.FileUtils
 
         public void Write(string wantedPath, byte[] data)
         {
-           
+
             if (File.Exists(wantedPath))
             {
                 using (var fs = new FileStream(wantedPath, FileMode.Append))

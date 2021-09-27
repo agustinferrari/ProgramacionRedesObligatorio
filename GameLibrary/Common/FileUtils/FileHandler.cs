@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Common.FileUtils.Interfaces;
+using Common.Utils.CustomExceptions;
 
 namespace Common.FileUtils
 {
@@ -18,7 +19,7 @@ namespace Common.FileUtils
                 return new FileInfo(path).Name;
             }
 
-            throw new Exception("File does not exist");
+            throw new InvalidPathException();
         }
 
         public long GetFileSize(string path)
@@ -28,7 +29,7 @@ namespace Common.FileUtils
                 return new FileInfo(path).Length;
             }
 
-            throw new Exception("File does not exist");
+            throw new InvalidPathException();
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Common.NetworkUtils;
+﻿using Common.FileUtils;
+using Common.FileUtils.Interfaces;
+using Common.NetworkUtils;
 using Common.Protocol;
 using System;
 using System.Collections.Generic;
@@ -23,16 +25,25 @@ namespace ConsoleClient.Menu.Logic.Strategies
             string dataToCheck = gameData + "%" + path;
             if (_menuHandler.ValidateNotEmptyFields(dataToCheck))
             {
-                clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-                clientSocket.SendImage(path);
+                IFileHandler fileStreamHandler = new FileHandler();
+                if (fileStreamHandler.FileExists(path))
+                {
+                    clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+                    clientSocket.SendImage(path);
 
-                Header recivedHeader = clientSocket.ReceiveHeader();
-                string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
-                Console.WriteLine(response);
-                if (response == ResponseConstants.AddGameSuccess)
-                    _menuHandler.LoadLoggedUserMenu(clientSocket);
+                    Header recivedHeader = clientSocket.ReceiveHeader();
+                    string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+                    Console.WriteLine(response);
+                    if (response == ResponseConstants.AddGameSuccess)
+                        _menuHandler.LoadLoggedUserMenu(clientSocket);
+                    else
+                        _menuHandler.LoadMainMenu(clientSocket);
+                }
                 else
-                    _menuHandler.LoadMainMenu(clientSocket);
+                {
+                    Console.WriteLine("El path ingresado es invalido, intente de nuevo");
+                    _menuHandler.LoadLoggedUserMenu(clientSocket);
+                }
             }
             else
                 _menuHandler.LoadLoggedUserMenu(clientSocket);

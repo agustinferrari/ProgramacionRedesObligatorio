@@ -49,7 +49,7 @@ namespace ConsoleServer.Logic
             lock (_padlock)
                 return _loggedClients.ContainsKey(socketHandler);
         }
-       
+
         public string GetUsername(SocketHandler socketHandler)
         {
             lock (_padlock)
@@ -79,8 +79,7 @@ namespace ConsoleServer.Logic
                     if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
                         isSocketActive = false;
-                        _loggedClients.Remove(clientSocketHandler);
-                        clientSocketHandler.ShutdownSocket();
+                        CloseConnection(clientSocketHandler);
                     }
                     else
                     {
@@ -88,11 +87,25 @@ namespace ConsoleServer.Logic
                         commandStrategy.HandleRequest(header, clientSocketHandler);
                     }
                 }
-                catch (Exception e)
+                catch (SocketClientException)
                 {
-                    Console.WriteLine($"Server is closing, will not process more data -> Message {e.Message}..");
+                    isSocketActive = false;
+                    CloseConnection(clientSocketHandler);
+                    Console.WriteLine($"Se perdio la conexion con un socket");
+                }
+                catch (FormatException)
+                {
+                    isSocketActive = false;
+                    CloseConnection(clientSocketHandler);
+                    Console.WriteLine($"Error en formato de protocolo, cerrando conexion con el cliente");
                 }
             }
+        }
+
+        private void CloseConnection(SocketHandler clientSocketHandler)
+        {
+            _loggedClients.Remove(clientSocketHandler);
+            clientSocketHandler.ShutdownSocket();
         }
     }
 }
