@@ -18,7 +18,7 @@ namespace ConsoleClient
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ISocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, 0, parsedPort);
-                IClientMenuHandler menuHandler = ClientMenuHandler.Instance;
+                IClientMenuHandler menuHandler = new ClientMenuHandler();
                 menuHandler.LoadMainMenu(socketHandler);
             }
             else
