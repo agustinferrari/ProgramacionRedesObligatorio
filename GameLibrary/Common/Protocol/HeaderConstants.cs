@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Common.Protocol
+
 {
     public static class HeaderConstants
     {

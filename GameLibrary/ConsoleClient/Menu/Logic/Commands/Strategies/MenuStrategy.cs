@@ -13,6 +13,6 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         {
             _menuHandler = new ClientMenuHandler();
         }
-        public abstract void HandleSelectedOption(ISocketHandler clientSocket);
+        public abstract string HandleSelectedOption(ISocketHandler clientSocket);
     }
 }

@@ -14,7 +14,7 @@ namespace ConsoleClient.Menu.Logic.Interfaces
 
         public string RecieveResponse(ISocketHandler clientSocket);
 
-        public void HandleListGamesFiltered(ISocketHandler clientSocket);
+        //public void HandleListGamesFiltered(ISocketHandler clientSocket);
 
         public bool ValidateNotEmptyFields(string data);
         bool ValidateAtLeastOneField(string changes);

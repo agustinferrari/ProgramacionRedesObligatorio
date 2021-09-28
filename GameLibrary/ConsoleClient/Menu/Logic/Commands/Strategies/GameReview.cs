@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class GameReview : MenuStrategy
     {
-        public override void HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Ingrese el nombre del juego:");
             string gameName = Console.ReadLine();
@@ -18,20 +18,11 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Ingrese un comentario acerca del juego:");
             string comment = Console.ReadLine();
             string review = gameName + "%" + rating + "%" + comment;
+            string response = "";
             if (_menuHandler.ValidateNotEmptyFields(gameName))
-            {
-                string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ReviewGame, review);
-                Console.WriteLine(response);
-                bool acceptedResponses = response == ResponseConstants.ReviewGameSuccess;
-                acceptedResponses |= response == ResponseConstants.InvalidGameError;
-                acceptedResponses |= response == ResponseConstants.InvalidRatingException;
-                if (acceptedResponses)
-                    _menuHandler.LoadLoggedUserMenu(clientSocket);
-                else
-                    _menuHandler.LoadMainMenu(clientSocket);
-            }
-            else
-                _menuHandler.LoadLoggedUserMenu(clientSocket);
+                response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ReviewGame, review);
+            return response;
+
         }
     }
 }
