@@ -11,6 +11,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
+            ListGamesAvailable(clientSocket);
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
             string detailsResponse = "";
@@ -61,6 +62,14 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
             Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
         }
+
+        private void ListGamesAvailable(ISocketHandler clientSocket)
+        {
+            ListGamesLoggedUser listGames = new ListGamesLoggedUser();
+            listGames.ListGamesAvailable(clientSocket);
+        }
+
+
     }
 }
 
