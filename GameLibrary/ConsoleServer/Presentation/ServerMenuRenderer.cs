@@ -10,7 +10,7 @@ namespace ConsoleServer.Presentation
         {
             Console.WriteLine("Bienvenido a GameLibrary Server");
             Console.WriteLine("Opciones validas: ");
-            Console.WriteLine("1. exit -> abandonar el programa");
+            Console.WriteLine("1. Salir del sistema -> abandonar el programa");
             Console.WriteLine("Ingrese su opcion: ");
         }
     }
