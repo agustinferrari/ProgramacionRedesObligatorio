@@ -17,15 +17,20 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 _menuHandler.HandleListGamesFiltered(clientSocket);
             else
             {
-                int sendNoData = 0;
-                Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
-                clientSocket.SendHeader(header);
-                Header recivedHeader = clientSocket.ReceiveHeader();
-                string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
-                Console.WriteLine("Lista de juegos:");
-                Console.WriteLine(response);
+                ListGamesAvailable(clientSocket);
             }
             _menuHandler.LoadLoggedUserMenu(clientSocket);
+        }
+
+        public void ListGamesAvailable(ISocketHandler clientSocket)
+        {
+            int sendNoData = 0;
+            Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
+            clientSocket.SendHeader(header);
+            Header recivedHeader = clientSocket.ReceiveHeader();
+            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+            Console.WriteLine("Lista de juegos:");
+            Console.WriteLine(response);
         }
     }
 }

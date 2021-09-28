@@ -1,9 +1,6 @@
-﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+﻿using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
@@ -11,6 +8,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
+            ListGamesAvailable(clientSocket);
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine().ToLower();
             if (_menuHandler.ValidateNotEmptyFields(gameName))
@@ -27,6 +25,12 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             }
             else
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
+        }
+
+        private void ListGamesAvailable(ISocketHandler clientSocket)
+        {
+            ListGamesLoggedUser listGames = new ListGamesLoggedUser();
+            listGames.ListGamesAvailable(clientSocket);
         }
     }
 }
