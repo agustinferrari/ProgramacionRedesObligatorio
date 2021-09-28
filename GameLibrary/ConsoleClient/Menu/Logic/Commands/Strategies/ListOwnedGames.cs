@@ -8,16 +8,22 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
+            string response = ListOwnedGamesByUser(clientSocket);
+            if (response == ResponseConstants.AuthenticationError)
+                _menuHandler.LoadMainMenu(clientSocket);
+            else
+                _menuHandler.LoadLoggedUserMenu(clientSocket);
+        }
+
+        public string ListOwnedGamesByUser(ISocketHandler clientSocket)
+        {
             int sendNoData = 0;
             Header header = new Header(HeaderConstants.Request, CommandConstants.ListOwnedGames, sendNoData);
             clientSocket.SendHeader(header);
             string response = clientSocket.RecieveResponse();
             Console.WriteLine("Lista de juegos propios:");
             Console.WriteLine(response);
-            if (response == ResponseConstants.AuthenticationError)
-                _menuHandler.LoadMainMenu(clientSocket);
-            else
-                _menuHandler.LoadLoggedUserMenu(clientSocket);
+            return response;
         }
     }
 }

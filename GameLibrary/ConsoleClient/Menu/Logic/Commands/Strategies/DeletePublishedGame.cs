@@ -1,9 +1,7 @@
-﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+﻿using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
-using System.Collections.Generic;
-using System.Text;
+
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
@@ -11,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
     {
         public override void HandleSelectedOption(ISocketHandler clientSocket)
         {
-            Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
+            Console.WriteLine("Ingrese nombre del juego de su lista a eliminar:");
             string gameName = Console.ReadLine();
             string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.DeletePublishedGame, gameName);
             Console.WriteLine(response);
