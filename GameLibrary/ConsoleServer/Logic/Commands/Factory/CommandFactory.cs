@@ -13,7 +13,6 @@ namespace ConsoleServer.Logic.Commands.Factory
             { CommandConstants.Login, new Login() },
             { CommandConstants.Logout, new Logout() },
             { CommandConstants.ListGames, new ListGames() },
-            { CommandConstants.ListGamesLoggedUser, new ListGames() },
             { CommandConstants.BuyGame, new BuyGame() },
             { CommandConstants.AddGame, new AddGame() },
             { CommandConstants.ReviewGame, new ReviewGame() },

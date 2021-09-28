@@ -7,29 +7,23 @@ using System.Text;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
-    public class ListGamesLoggedUser : MenuStrategy
+    public class ListGames : MenuStrategy
     {
         public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
             string filters = Console.ReadLine().ToLower();
-            string response = "";
+            string response;
             if (filters == "y" || filters == "yes")
                 response = HandleListGamesFiltered(clientSocket);
             else
-            {
                 response = ListGamesAvailable(clientSocket);
-            }
-            //_menuHandler.LoadLoggedUserMenu(clientSocket);
             return response;
         }
 
         public string ListGamesAvailable(ISocketHandler clientSocket)
         {
             string sendNoData = "";
-            /*Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
-            clientSocket.SendHeader(header);
-            Header recivedHeader = clientSocket.ReceiveHeader();*/
             string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData);
             return "Lista de juegos: \n" + response;
         }

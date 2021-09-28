@@ -14,11 +14,6 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             clientSocket.SendHeader(header);
             string response = clientSocket.RecieveResponse();
             return response;
-            /*Console.WriteLine(response);
-            if (response == ResponseConstants.LogoutSuccess)
-                _menuHandler.LoadMainMenu(clientSocket);
-            else
-                _menuHandler.LoadLoggedUserMenu(clientSocket);*/
         }
     }
 }

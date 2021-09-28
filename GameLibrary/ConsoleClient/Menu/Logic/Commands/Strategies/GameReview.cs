@@ -20,21 +20,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string review = gameName + "%" + rating + "%" + comment;
             string response = "";
             if (_menuHandler.ValidateNotEmptyFields(gameName))
-            {
                 response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ReviewGame, review);
-                /*Console.WriteLine(response);
-                bool acceptedResponses = response == ResponseConstants.ReviewGameSuccess;
-                acceptedResponses |= response == ResponseConstants.InvalidGameError;
-                acceptedResponses |= response == ResponseConstants.InvalidRatingException;
-                if (acceptedResponses)
-                    _menuHandler.LoadLoggedUserMenu(clientSocket);
-                else
-                    _menuHandler.LoadMainMenu(clientSocket);*/
-            }
-            else
-            {
-                //_menuHandler.LoadLoggedUserMenu(clientSocket);
-            }
             return response;
 
         }

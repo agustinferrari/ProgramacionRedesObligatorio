@@ -28,27 +28,14 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
                         imageResponse = clientSocket.RecieveResponse();
                         if (imageResponse != ResponseConstants.InvalidGameError && imageResponse != ResponseConstants.AuthenticationError)
-                        {
                             imageResponse = ReciveAndDownloadImage(clientSocket);
-                        }
-                        else
-                        {
-                            //Console.WriteLine(imageResponse);
-                        }
                     }
                     else
-                    {
                         imageResponse = "La foto no fue descargada";
-                        //Console.WriteLine("La foto no fue descargada");
-                    }
                 }
                 else
                     imageResponse = detailsResponse;
             }
-            /*if (detailsResponse == ResponseConstants.AuthenticationError || imageResponse == ResponseConstants.AuthenticationError)
-                _menuHandler.LoadMainMenu(clientSocket);
-            else
-                _menuHandler.LoadLoggedUserMenu(clientSocket);*/
             return imageResponse;
         }
 
@@ -71,7 +58,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 
         private void ListGamesAvailable(ISocketHandler clientSocket)
         {
-            ListGamesLoggedUser listGames = new ListGamesLoggedUser();
+            ListGames listGames = new ListGames();
             listGames.ListGamesAvailable(clientSocket);
         }
 
