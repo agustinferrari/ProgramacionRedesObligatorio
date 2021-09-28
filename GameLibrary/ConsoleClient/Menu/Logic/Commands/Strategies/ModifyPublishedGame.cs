@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ModifyPublishedGame : MenuStrategy
     {
-        public override void HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
             string actualGameName = Console.ReadLine();
@@ -25,6 +25,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string newGameData = newName + "%" + genre + "%" + synopsis;
             string gameData = actualGameName + "%" + newGameData;
             string changes = newGameData + "%" + path;
+            string response = "";
             if (actualGameName != "" && _menuHandler.ValidateAtLeastOneField(changes))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
@@ -33,7 +34,8 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 {
                     bool imageSentCorrectly = clientSocket.SendImage(path);
                     if (!imageSentCorrectly)
-                        Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
+                        response = "No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.";
+                    //Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
                 }
                 else
                 {
@@ -42,19 +44,21 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     clientSocket.SendImageProtocolData(emptyPath, noData);
                 }
 
-                string response = clientSocket.RecieveResponse();
-                Console.WriteLine(response);
+                response = clientSocket.RecieveResponse();
+                /*Console.WriteLine(response);
 
                 if (!(response == ResponseConstants.AuthenticationError))
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 else
-                    _menuHandler.LoadMainMenu(clientSocket);
+                    _menuHandler.LoadMainMenu(clientSocket);*/
             }
             else
             {
-                Console.WriteLine("Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar");
-                _menuHandler.LoadLoggedUserMenu(clientSocket);
+                response = "Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar";
+                //Console.WriteLine("Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar");
+                //_menuHandler.LoadLoggedUserMenu(clientSocket);
             }
+            return response;
         }
     }
 }

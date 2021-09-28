@@ -54,7 +54,12 @@ namespace ConsoleClient.Menu.MenuHandler
                 if (parsedOption == CommandConstants.Login || parsedOption == CommandConstants.ListGames)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    menuStrategy.HandleSelectedOption(clientSocket);
+                    string response = menuStrategy.HandleSelectedOption(clientSocket);
+                    Console.WriteLine(response);
+                    if (response == ResponseConstants.LoginSuccess)
+                        LoadLoggedUserMenu(clientSocket);
+                    else
+                        LoadMainMenu(clientSocket);
 
                 }
                 else
@@ -93,7 +98,13 @@ namespace ConsoleClient.Menu.MenuHandler
                 if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.DeletePublishedGame)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    menuStrategy.HandleSelectedOption(clientSocket);
+                    string response = menuStrategy.HandleSelectedOption(clientSocket);
+                    Console.WriteLine(response);
+                    if (response == ResponseConstants.LogoutSuccess || response == ResponseConstants.LogoutSuccess
+                        || response == ResponseConstants.AuthenticationError)
+                        LoadMainMenu(clientSocket);
+                    else
+                        LoadLoggedUserMenu(clientSocket);
                 }
                 else
                 {
@@ -149,7 +160,7 @@ namespace ConsoleClient.Menu.MenuHandler
             return response;
         }
 
-        public void HandleListGamesFiltered(ISocketHandler clientSocket)
+        /*public void HandleListGamesFiltered(ISocketHandler clientSocket)
         {
             Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
             string filterTitle = Console.ReadLine().ToLower();
@@ -161,7 +172,7 @@ namespace ConsoleClient.Menu.MenuHandler
             string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter);
             Console.WriteLine("Lista de juegos:");
             Console.WriteLine(response);
-        }
+        }*/
 
         public bool ValidateNotEmptyFields(string data)
         {
@@ -185,5 +196,6 @@ namespace ConsoleClient.Menu.MenuHandler
                 }
             return false;
         }
+
     }
 }

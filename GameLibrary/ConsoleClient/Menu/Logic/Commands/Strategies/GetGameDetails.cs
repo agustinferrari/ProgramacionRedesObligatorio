@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class GetGameDetails : MenuStrategy
     {
-        public override void HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             ListGamesAvailable(clientSocket);
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
@@ -28,21 +28,29 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     {
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
                         imageResponse = clientSocket.RecieveResponse();
-                        if (imageResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
+                        if (imageResponse != ResponseConstants.InvalidGameError && imageResponse != ResponseConstants.AuthenticationError)
                         {
-                            ReciveAndDownloadImage(clientSocket);
+                            imageResponse = ReciveAndDownloadImage(clientSocket);
                         }
                         else
-                            Console.WriteLine(imageResponse);
+                        {
+                            //Console.WriteLine(imageResponse);
+                        }
                     }
                     else
-                        Console.WriteLine("La foto no fue descargada");
+                    {
+                        imageResponse = "La foto no fue descargada";
+                        //Console.WriteLine("La foto no fue descargada");
+                    }
                 }
+                else
+                    imageResponse = detailsResponse;
             }
-            if (detailsResponse == ResponseConstants.AuthenticationError || imageResponse == ResponseConstants.AuthenticationError)
+            /*if (detailsResponse == ResponseConstants.AuthenticationError || imageResponse == ResponseConstants.AuthenticationError)
                 _menuHandler.LoadMainMenu(clientSocket);
             else
-                _menuHandler.LoadLoggedUserMenu(clientSocket);
+                _menuHandler.LoadLoggedUserMenu(clientSocket);*/
+            return imageResponse;
         }
 
         private string ListGameDetails(ISocketHandler clientSocket, string gameName)
@@ -50,17 +58,16 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
             Header header = clientSocket.ReceiveHeader();
             string detailsResponse = clientSocket.ReceiveString(header.IDataLength);
-            Console.WriteLine(detailsResponse);
             return detailsResponse;
         }
 
-        private void ReciveAndDownloadImage(ISocketHandler clientSocket)
+        private string ReciveAndDownloadImage(ISocketHandler clientSocket)
         {
             string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
             string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
-            Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
+            return "La foto fue guardada en: " + pathToImageGame;
         }
 
         private void ListGamesAvailable(ISocketHandler clientSocket)

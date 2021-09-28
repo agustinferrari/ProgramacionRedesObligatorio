@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Factory
         private static Dictionary<int, MenuStrategy> _commandMap = new Dictionary<int, MenuStrategy>()
         {
             { CommandConstants.Login, new Login() },
-            { CommandConstants.ListGames, new ListGamesMainMenu()},
+            { CommandConstants.ListGames, new ListGamesLoggedUser()},
             { CommandConstants.Logout, new Logout()},
             { CommandConstants.ListGamesLoggedUser, new ListGamesLoggedUser()},
             { CommandConstants.BuyGame, new BuyGame()},

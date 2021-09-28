@@ -9,28 +9,42 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ListGamesLoggedUser : MenuStrategy
     {
-        public override void HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
-            string filterResponse = Console.ReadLine().ToLower();
-            if (filterResponse == "y" || filterResponse == "yes")
-                _menuHandler.HandleListGamesFiltered(clientSocket);
+            string filters = Console.ReadLine().ToLower();
+            string response = "";
+            if (filters == "y" || filters == "yes")
+                response = HandleListGamesFiltered(clientSocket);
             else
             {
-                ListGamesAvailable(clientSocket);
+                response = ListGamesAvailable(clientSocket);
             }
-            _menuHandler.LoadLoggedUserMenu(clientSocket);
+            //_menuHandler.LoadLoggedUserMenu(clientSocket);
+            return response;
         }
 
-        public void ListGamesAvailable(ISocketHandler clientSocket)
+        public string ListGamesAvailable(ISocketHandler clientSocket)
         {
-            int sendNoData = 0;
-            Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
+            string sendNoData = "";
+            /*Header header = new Header(HeaderConstants.Request, CommandConstants.ListGames, sendNoData);
             clientSocket.SendHeader(header);
-            Header recivedHeader = clientSocket.ReceiveHeader();
-            string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
-            Console.WriteLine("Lista de juegos:");
-            Console.WriteLine(response);
+            Header recivedHeader = clientSocket.ReceiveHeader();*/
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData);
+            return "Lista de juegos: \n" + response;
+        }
+
+        private string HandleListGamesFiltered(ISocketHandler clientSocket)
+        {
+            Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
+            string filterTitle = Console.ReadLine().ToLower();
+            Console.WriteLine("Por favor ingrese genero a filtrar, si no desea esta opción, ingrese enter:");
+            string genreFIlter = Console.ReadLine().ToLower();
+            Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
+            string ratingTitle = Console.ReadLine().ToLower();
+            string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter);
+            return "Lista de juegos: \n" + response;
         }
     }
 }
