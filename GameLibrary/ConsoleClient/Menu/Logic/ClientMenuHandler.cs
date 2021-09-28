@@ -87,7 +87,7 @@ namespace ConsoleClient.Menu.MenuHandler
         private int ParseLoggedUserMenuOption(string selectedOption)
         {
             int result;
-            int mainMenuOptions = 2;
+            int mainMenuOptions = 1;
             try
             {
                 result = Int32.Parse(selectedOption) + mainMenuOptions;
