@@ -34,10 +34,9 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
 
-                    Header recivedHeader = clientSocket.ReceiveHeader();
-                    string response = clientSocket.ReceiveString(recivedHeader.IDataLength);
+                    string response = clientSocket.RecieveResponse();
                     Console.WriteLine(response);
-                    if (response == ResponseConstants.AddGameSuccess)
+                    if (response == ResponseConstants.AddGameSuccess || response == ResponseConstants.AddGameError)
                         _menuHandler.LoadLoggedUserMenu(clientSocket);
                     else
                         _menuHandler.LoadMainMenu(clientSocket);
