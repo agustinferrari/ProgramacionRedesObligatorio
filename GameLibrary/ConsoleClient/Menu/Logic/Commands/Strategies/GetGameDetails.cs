@@ -59,7 +59,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         private void ListGamesAvailable(ISocketHandler clientSocket)
         {
             ListGames listGames = new ListGames();
-            listGames.ListGamesAvailable(clientSocket);
+            Console.WriteLine(listGames.ListGamesAvailable(clientSocket));
         }
 
 
