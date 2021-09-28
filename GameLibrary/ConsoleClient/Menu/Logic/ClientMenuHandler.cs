@@ -13,25 +13,19 @@ namespace ConsoleClient.Menu.MenuHandler
 {
     public class ClientMenuHandler : IClientMenuHandler
     {
-        private IFileHandler _fileHandler;
-        private static readonly object _padlock = new object();
-        private static ClientMenuHandler _instance;
-
-        public ClientMenuHandler()
-        {
-            _fileHandler = new FileHandler();
-        }
-
-
         public void LoadMainMenu(ISocketHandler clientSocket)
         {
             ClientMenuRenderer.RenderMainMenu();
             HandleMainMenuResponse(clientSocket);
         }
+        public void LoadLoggedUserMenu(ISocketHandler clientSocket)
+        {
+            ClientMenuRenderer.RenderLoggedUserMenu();
+            HandleLoggedUserMenuResponse(clientSocket);
+        }
 
         private void HandleMainMenuResponse(ISocketHandler clientSocket)
         {
-
             string selectedOption = Console.ReadLine();
             Console.Clear();
             try
@@ -58,20 +52,6 @@ namespace ConsoleClient.Menu.MenuHandler
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
-        }
-
-        private int ParseMainMenuOption(string selectedOption)
-        {
-            int result;
-            try
-            {
-                result = Int32.Parse(selectedOption);
-            }
-            catch (FormatException)
-            {
-                result = CommandConstants.InvalidOption;
-            }
-            return result;
         }
 
         private void HandleLoggedUserMenuResponse(ISocketHandler clientSocket)
@@ -118,32 +98,18 @@ namespace ConsoleClient.Menu.MenuHandler
             }
             return result;
         }
-
-        public void LoadLoggedUserMenu(ISocketHandler clientSocket)
+        private int ParseMainMenuOption(string selectedOption)
         {
-            ClientMenuRenderer.RenderLoggedUserMenu();
-            HandleLoggedUserMenuResponse(clientSocket);
-        }
-
-        public string SendMessageAndRecieveResponse(ISocketHandler clientSocket, int command, string messageToSend)
-        {
-            clientSocket.SendMessage(HeaderConstants.Request, command, messageToSend);
-            return RecieveResponse(clientSocket);
-        }
-
-        public string RecieveResponse(ISocketHandler clientSocket)
-        {
-            string response;
+            int result;
             try
             {
-                Header header = clientSocket.ReceiveHeader();
-                response = clientSocket.ReceiveString(header.IDataLength);
+                result = Int32.Parse(selectedOption);
             }
             catch (FormatException)
             {
-                response = "No se pudo decodificar correctamente";
+                result = CommandConstants.InvalidOption;
             }
-            return response;
+            return result;
         }
 
         public bool ValidateNotEmptyFields(string data)
@@ -156,17 +122,6 @@ namespace ConsoleClient.Menu.MenuHandler
                     return false;
                 }
             return true;
-        }
-
-        public bool ValidateAtLeastOneField(string data)
-        {
-            string[] separatedData = data.Split("%");
-            foreach (string field in separatedData)
-                if (field != "")
-                {
-                    return true;
-                }
-            return false;
         }
 
     }

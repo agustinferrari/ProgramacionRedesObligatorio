@@ -26,7 +26,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string gameData = actualGameName + "%" + newGameData;
             string changes = newGameData + "%" + path;
             string response;
-            if (actualGameName != "" && _menuHandler.ValidateAtLeastOneField(changes))
+            if (actualGameName != "" && ValidateAtLeastOneField(changes))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
                 IFileHandler fileStreamHandler = new FileHandler();
@@ -47,6 +47,17 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             else
                 response = "Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar";
             return response;
+        }
+
+        private bool ValidateAtLeastOneField(string data)
+        {
+            string[] separatedData = data.Split("%");
+            foreach (string field in separatedData)
+                if (field != "")
+                {
+                    return true;
+                }
+            return false;
         }
     }
 }
