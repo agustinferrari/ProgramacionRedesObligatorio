@@ -44,7 +44,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 }
                 else
                 {
-                    Console.WriteLine("El path ingresado es invalido o no tiene permisos para leer la imagen, intente de nuevo (recuerde que debe ser de tipo png)");
+                    Console.WriteLine("El path ingresado es invalido o no tiene permisos para leer la imagen, intente de nuevo \n(recuerde que debe ser de tipo png)");
                     _menuHandler.LoadLoggedUserMenu(clientSocket);
                 }
             }

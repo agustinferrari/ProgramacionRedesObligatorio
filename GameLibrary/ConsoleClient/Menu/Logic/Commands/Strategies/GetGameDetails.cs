@@ -26,16 +26,20 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     if (option == "1")
                     {
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
-                        ISettingsManager SettingsMgr = new SettingsManager();
-                        string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-                        string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
-                        Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
+                        string imageResponse = clientSocket.RecieveResponse();
+                        if (imageResponse != ResponseConstants.InvalidGameError)
+                        {
+                            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
+                            ISettingsManager SettingsMgr = new SettingsManager();
+                            string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
+                            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
+                            Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
+                        }
+                        else
+                            Console.WriteLine(imageResponse);
                     }
                     else
-                    {
                         Console.WriteLine("La foto no fue descargada");
-                    }
                 }
             }
             _menuHandler.LoadLoggedUserMenu(clientSocket);

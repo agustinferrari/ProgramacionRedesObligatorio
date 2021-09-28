@@ -11,7 +11,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class GetGameImage : CommandStrategy
     {
-
         public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
