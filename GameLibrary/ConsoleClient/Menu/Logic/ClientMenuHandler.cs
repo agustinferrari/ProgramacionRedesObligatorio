@@ -9,7 +9,7 @@ using ConsoleClient.Menu.Presentation;
 using System;
 using System.Net.Sockets;
 
-namespace ConsoleClient.Menu.MenuHandler
+namespace ConsoleClient.Menu.Logic
 {
     public class ClientMenuHandler : IClientMenuHandler
     {

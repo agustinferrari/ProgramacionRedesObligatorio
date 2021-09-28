@@ -1,7 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Logic.Interfaces;
-using ConsoleClient.Menu.MenuHandler;
+using ConsoleClient.Menu.Logic;
 using System;
 
 namespace ConsoleClient
