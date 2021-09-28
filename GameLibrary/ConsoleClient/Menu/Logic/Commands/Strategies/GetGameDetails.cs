@@ -17,10 +17,8 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string imageResponse = "";
             if (_menuHandler.ValidateNotEmptyFields(gameName))
             {
-                clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
-                Header header = clientSocket.ReceiveHeader();
-                detailsResponse = clientSocket.ReceiveString(header.IDataLength);
-                Console.WriteLine(detailsResponse);
+                detailsResponse = ListGameDetails(clientSocket, gameName);
+
                 if (detailsResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                 {
                     Console.WriteLine("Para descargar la caratula ingrese 1:");
@@ -31,11 +29,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                         imageResponse = clientSocket.RecieveResponse();
                         if (imageResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                         {
-                            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
-                            ISettingsManager SettingsMgr = new SettingsManager();
-                            string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-                            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
-                            Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
+                            ReciveAndDownloadImage(clientSocket);
                         }
                         else
                             Console.WriteLine(imageResponse);
@@ -48,6 +42,24 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 _menuHandler.LoadMainMenu(clientSocket);
             else
                 _menuHandler.LoadLoggedUserMenu(clientSocket);
+        }
+
+        private string ListGameDetails(ISocketHandler clientSocket, string gameName)
+        {
+            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
+            Header header = clientSocket.ReceiveHeader();
+            string detailsResponse = clientSocket.ReceiveString(header.IDataLength);
+            Console.WriteLine(detailsResponse);
+            return detailsResponse;
+        }
+
+        private void ReciveAndDownloadImage(ISocketHandler clientSocket)
+        {
+            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
+            ISettingsManager SettingsMgr = new SettingsManager();
+            string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
+            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
+            Console.WriteLine("La foto fue guardada en: " + pathToImageGame);
         }
     }
 }
