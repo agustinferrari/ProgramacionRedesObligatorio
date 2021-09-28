@@ -11,7 +11,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 
         public MenuStrategy()
         {
-            _menuHandler = ClientMenuHandler.Instance;
+            _menuHandler = new ClientMenuHandler();
         }
         public abstract void HandleSelectedOption(ISocketHandler clientSocket);
     }

@@ -1,6 +1,5 @@
 ﻿using Common.FileUtils;
 using Common.FileUtils.Interfaces;
-using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleClient.Menu.Logic.Commands.Factory;
@@ -18,25 +17,12 @@ namespace ConsoleClient.Menu.MenuHandler
         private static readonly object _padlock = new object();
         private static ClientMenuHandler _instance;
 
-        private ClientMenuHandler()
+        public ClientMenuHandler()
         {
             _fileHandler = new FileHandler();
         }
 
-        public static ClientMenuHandler Instance
-        {
-            get
-            {
-                lock (_padlock)
-                {
-                    if (_instance == null)
-                    {
-                        _instance = new ClientMenuHandler();
-                    }
-                    return _instance;
-                }
-            }
-        }
+
         public void LoadMainMenu(ISocketHandler clientSocket)
         {
             ClientMenuRenderer.RenderMainMenu();

@@ -5,7 +5,6 @@ namespace ConsoleClient.Menu.Logic.Interfaces
 {
     public interface IClientMenuHandler
     {
-        public static IClientMenuHandler Instance;
 
         public void LoadMainMenu(ISocketHandler clientSocket);
 
