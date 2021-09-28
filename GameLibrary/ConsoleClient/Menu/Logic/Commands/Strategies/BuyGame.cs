@@ -12,7 +12,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine().ToLower();
             string response = "";
-            if (_menuHandler.ValidateNotEmptyFields(gameName))
+            if (_menuValidator.ValidateNotEmptyFields(gameName))
                 response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.BuyGame, gameName);
             return response;
         }

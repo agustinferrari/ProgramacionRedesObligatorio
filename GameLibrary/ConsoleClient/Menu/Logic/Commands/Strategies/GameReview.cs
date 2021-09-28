@@ -19,7 +19,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string comment = Console.ReadLine();
             string review = gameName + "%" + rating + "%" + comment;
             string response = "";
-            if (_menuHandler.ValidateNotEmptyFields(gameName))
+            if (_menuValidator.ValidateNotEmptyFields(gameName))
                 response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ReviewGame, review);
             return response;
 

@@ -12,7 +12,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Ingrese nombre del juego de su lista a eliminar:");
             string gameName = Console.ReadLine();
             string response = "";
-            if (_menuHandler.ValidateNotEmptyFields(gameName))
+            if (_menuValidator.ValidateNotEmptyFields(gameName))
                 response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.DeletePublishedGame, gameName);
             return response;
         }

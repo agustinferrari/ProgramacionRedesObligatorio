@@ -22,7 +22,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string gameData = name + "%" + genre + "%" + synopsis;
             string dataToCheck = gameData + "%" + path;
             string response = "";
-            if (_menuHandler.ValidateNotEmptyFields(dataToCheck))
+            if (_menuValidator.ValidateNotEmptyFields(dataToCheck))
             {
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
