@@ -13,21 +13,23 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         {
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
+            string detailsResponse = "";
+            string imageResponse = "";
             if (_menuHandler.ValidateNotEmptyFields(gameName))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
                 Header header = clientSocket.ReceiveHeader();
-                string response = clientSocket.ReceiveString(header.IDataLength);
-                Console.WriteLine(response);
-                if (response != ResponseConstants.InvalidGameError)
+                detailsResponse = clientSocket.ReceiveString(header.IDataLength);
+                Console.WriteLine(detailsResponse);
+                if (detailsResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                 {
                     Console.WriteLine("Para descargar la caratula ingrese 1:");
                     string option = Console.ReadLine();
                     if (option == "1")
                     {
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        string imageResponse = clientSocket.RecieveResponse();
-                        if (imageResponse != ResponseConstants.InvalidGameError)
+                        imageResponse = clientSocket.RecieveResponse();
+                        if (imageResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                         {
                             string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
                             ISettingsManager SettingsMgr = new SettingsManager();
@@ -42,7 +44,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                         Console.WriteLine("La foto no fue descargada");
                 }
             }
-            _menuHandler.LoadLoggedUserMenu(clientSocket);
+            if (detailsResponse == ResponseConstants.AuthenticationError || imageResponse == ResponseConstants.AuthenticationError)
+                _menuHandler.LoadMainMenu(clientSocket);
+            else
+                _menuHandler.LoadLoggedUserMenu(clientSocket);
         }
     }
 }

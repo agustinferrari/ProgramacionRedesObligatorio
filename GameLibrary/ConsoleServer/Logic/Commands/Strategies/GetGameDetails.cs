@@ -16,15 +16,20 @@ namespace ConsoleServer.Logic.Commands.Strategies
         {
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
-            try
+            if (_clientHandler.IsSocketInUse(clientSocketHandler))
             {
-                Game game = _gameController.GetGame(gameName);
-                responseMessageResult = game.ToString();
+                try
+                {
+                    Game game = _gameController.GetGame(gameName);
+                    responseMessageResult = game.ToString();
+                }
+                catch (InvalidGameException)
+                {
+                    responseMessageResult = ResponseConstants.InvalidGameError;
+                }
             }
-            catch (InvalidGameException)
-            {
-                responseMessageResult = ResponseConstants.InvalidGameError;
-            }
+            else
+                responseMessageResult = ResponseConstants.AuthenticationError;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
         }
     }

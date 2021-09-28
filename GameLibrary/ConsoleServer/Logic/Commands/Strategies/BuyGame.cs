@@ -38,9 +38,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 }
             }
             else
-            {
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            }
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
         }
     }

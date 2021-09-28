@@ -16,14 +16,20 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
             string responseMessageResult = "";
             Game game = null;
-            try
+            if (_clientHandler.IsSocketInUse(clientSocketHandler))
             {
-                game = _gameController.GetGame(gameName);
+
+                try
+                {
+                    game = _gameController.GetGame(gameName);
+                }
+                catch (InvalidGameException)
+                {
+                    responseMessageResult = ResponseConstants.InvalidGameError;
+                }
             }
-            catch (InvalidGameException)
-            {
-                responseMessageResult = ResponseConstants.InvalidGameError;
-            }
+            else
+                responseMessageResult = ResponseConstants.AuthenticationError;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);
             if (game != null)
                 clientSocketHandler.SendImage(game.PathToPhoto);

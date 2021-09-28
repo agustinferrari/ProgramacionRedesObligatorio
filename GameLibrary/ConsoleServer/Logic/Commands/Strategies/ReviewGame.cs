@@ -11,7 +11,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ReviewGame : CommandStrategy
     {
-
         public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
             int firstElement = 0;
@@ -22,7 +21,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string gameName = gameData[firstElement];
             string rating = gameData[secondElement];
             string comment = gameData[thirdElement];
-
 
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientSocketHandler))
