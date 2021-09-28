@@ -1,7 +1,7 @@
 ﻿using ConsoleServer.Domain;
 
 
-namespace ConsoleServer.BussinessLogic.Interfaces
+namespace ConsoleServer.BusinessLogic.Interfaces
 {
     public interface IUserController
     {

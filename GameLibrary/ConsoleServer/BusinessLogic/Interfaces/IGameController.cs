@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleServer.BussinessLogic.Interfaces
-{ 
+namespace ConsoleServer.BusinessLogic.Interfaces
+{
     public interface IGameController
     {
 

@@ -1,9 +1,9 @@
-﻿using ConsoleServer.BussinessLogic.Interfaces;
+﻿using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System.Collections.Generic;
 
-namespace ConsoleServer.BussinessLogic
+namespace ConsoleServer.BusinessLogic
 {
     public class UserController : IUserController
     {

@@ -1,4 +1,4 @@
-﻿using ConsoleServer.BussinessLogic;
+﻿using ConsoleServer.BusinessLogic;
 using ConsoleServer.Domain;
 using System;
 using System.Collections.Generic;

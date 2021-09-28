@@ -1,4 +1,4 @@
-﻿using ConsoleServer.BussinessLogic.Interfaces;
+﻿using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils;
 using ConsoleServer.Utils.CustomExceptions;
@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace ConsoleServer.BussinessLogic
+namespace ConsoleServer.BusinessLogic
 {
     public class GameController : IGameController
     {

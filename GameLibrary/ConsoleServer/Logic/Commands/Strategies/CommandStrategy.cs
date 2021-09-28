@@ -1,8 +1,8 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using ConsoleServer.BussinessLogic;
-using ConsoleServer.BussinessLogic.Interfaces;
+using ConsoleServer.BusinessLogic;
+using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Logic.Interfaces;
 
 namespace ConsoleServer.Logic.Commands.Strategies
