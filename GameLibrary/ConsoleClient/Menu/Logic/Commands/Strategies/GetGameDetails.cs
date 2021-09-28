@@ -13,9 +13,9 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             ListGamesAvailable(clientSocket);
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
-            string detailsResponse = "";
+            string detailsResponse;
             string imageResponse = "";
-            if (_menuHandler.ValidateNotEmptyFields(gameName))
+            if (_menuValidator.ValidateNotEmptyFields(gameName))
             {
                 detailsResponse = ListGameDetails(clientSocket, gameName);
 

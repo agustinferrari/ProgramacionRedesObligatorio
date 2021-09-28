@@ -11,7 +11,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Por favor ingrese el nombre de usuario para logearse: ");
             string user = Console.ReadLine().ToLower();
             string response = "";
-            if (_menuHandler.ValidateNotEmptyFields(user))
+            if (_menuValidator.ValidateNotEmptyFields(user))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
                 Header header = clientSocket.ReceiveHeader();
