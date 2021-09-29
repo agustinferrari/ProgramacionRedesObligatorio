@@ -76,13 +76,12 @@ namespace ConsoleServer.Logic
             bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
             {
-                isSocketActive = !clientSocketHandler.IsSocketClosed();
                 try
                 {
                     Header header = clientSocketHandler.ReceiveHeader();
                     if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
-                        if (isSocketActive)
+                        if (!clientSocketHandler.IsSocketClosed())
                             CloseConnection(clientSocketHandler);
                         isSocketActive = false;
                     }
@@ -94,14 +93,14 @@ namespace ConsoleServer.Logic
                 }
                 catch (SocketClientException)
                 {
-                    if (isSocketActive)
+                    if (!clientSocketHandler.IsSocketClosed())
                         CloseConnection(clientSocketHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Se perdio la conexion con un socket");
                 }
                 catch (FormatException)
                 {
-                    if (isSocketActive)
+                    if (!clientSocketHandler.IsSocketClosed())
                         CloseConnection(clientSocketHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Error en formato de protocolo, cerrando conexion con el cliente");

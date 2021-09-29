@@ -7,7 +7,6 @@ namespace ConsoleServer.BusinessLogic.Interfaces
     {
         public static IGameController Instance;
 
-
         public void TryAddUser(string name);
 
         public void BuyGame(string username, string gameName);
