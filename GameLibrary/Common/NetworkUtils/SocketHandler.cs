@@ -87,7 +87,7 @@ namespace Common.NetworkUtils
             int headerLength = HeaderConstants.Request.Length + HeaderConstants.CommandLength +
                                    HeaderConstants.DataLength;
             byte[] buffer = new byte[headerLength];
-            this.ReceiveData(headerLength, buffer);
+            ReceiveData(headerLength, buffer);
             Header header = new Header();
             if (header.DecodeData(buffer) == false) throw new FormatException();
             return header;
@@ -96,7 +96,7 @@ namespace Common.NetworkUtils
         public string ReceiveString(int dataLength)
         {
             byte[] bufferData = new byte[dataLength];
-            this.ReceiveData(dataLength, bufferData);
+            ReceiveData(dataLength, bufferData);
             string data = Encoding.UTF8.GetString(bufferData);
             return data;
         }
@@ -226,6 +226,11 @@ namespace Common.NetworkUtils
         {
             _socket.Shutdown(SocketShutdown.Both);
             _socket.Close();
+        }
+
+        public bool IsSocketClosed()
+        {
+            return _socket.SafeHandle.IsClosed;
         }
     }
 }

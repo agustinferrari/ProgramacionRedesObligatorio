@@ -29,5 +29,6 @@ namespace Common.NetworkUtils.Interfaces
 
         public void SendImageProtocolData(string fileName, long fileSize);
 
+        public bool IsSocketClosed();
     }
 }
