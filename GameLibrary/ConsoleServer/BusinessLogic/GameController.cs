@@ -12,11 +12,11 @@ namespace ConsoleServer.BusinessLogic
     {
         private static readonly object _padlock = new object();
         private static GameController _instance = null;
-        private List<Game> games;
+        private List<Game> _games;
 
         private GameController()
         {
-            games = new List<Game>();
+            _games = new List<Game>();
             CatalogueLoader.AddGames(this);
         }
 
@@ -39,18 +39,18 @@ namespace ConsoleServer.BusinessLogic
         {
             lock (_padlock)
             {
-                if (games != null && games.Exists(game => game.Name.ToLower() == gameToAdd.Name.ToLower()))
+                if (_games != null && _games.Exists(game => game.Name.ToLower() == gameToAdd.Name.ToLower()))
                     throw new GameAlreadyAddedException();
                 else
-                    games.Add(gameToAdd);
+                    _games.Add(gameToAdd);
             }
         }
 
         public string GetGames()
         {
             lock (_padlock)
-                if (games != null)
-                    return GameListToString(games);
+                if (_games != null)
+                    return GameListToString(_games);
             throw new InvalidGameException();
         }
 
@@ -58,8 +58,8 @@ namespace ConsoleServer.BusinessLogic
         {
             lock (_padlock)
             {
-                if (games != null && games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
-                    return games.Find(game => game.Name.ToLower() == gameName.ToLower());
+                if (_games != null && _games.Exists(game => game.Name.ToLower() == gameName.ToLower()))
+                    return _games.Find(game => game.Name.ToLower() == gameName.ToLower());
                 throw new InvalidGameException();
             }
         }
@@ -84,9 +84,9 @@ namespace ConsoleServer.BusinessLogic
                 rating = Int32.Parse(gamesFilters[2]);
 
             lock (_padlock)
-                if (games != null)
+                if (_games != null)
                 {
-                    List<Game> filteredGames = games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
+                    List<Game> filteredGames = _games.FindAll(game => game.Name.ToLower().Contains(gameName) && game.Genre.ToLower().Contains(genre)
                                                            && game.Rating >= rating);
                     string filteredGamesResult = GameListToString(filteredGames);
                     return filteredGamesResult;
@@ -115,20 +115,20 @@ namespace ConsoleServer.BusinessLogic
         {
             lock (_padlock)
             {
-                if (games == null)
+                if (_games == null)
                     return null;
-                Game userGame = games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.OwnerUser.Name.ToLower() == user.Name.ToLower());
+                Game userGame = _games.Find(game => game.Name.ToLower() == gameName.ToLower() && game.OwnerUser.Name.ToLower() == user.Name.ToLower());
                 return userGame;
             }
         }
 
         public void DeletePublishedGameByUser(Game gameToDelete)
         {
-            if (games == null)
+            if (_games == null)
                 throw new InvalidGameException();
 
             lock (_padlock)
-                games.Remove(gameToDelete);
+                _games.Remove(gameToDelete);
         }
 
         public void ModifyGame(Game gameToModify, Game newGame)

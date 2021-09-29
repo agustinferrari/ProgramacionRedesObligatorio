@@ -38,7 +38,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                         OwnerUser = ownerUser,
                         PathToPhoto = pathToImage
                     };
-                    this._gameController.AddGame(newGame);
+                    _gameController.AddGame(newGame);
                     responseMessageResult = ResponseConstants.AddGameSuccess;
                 }
                 catch (GameAlreadyAddedException)
