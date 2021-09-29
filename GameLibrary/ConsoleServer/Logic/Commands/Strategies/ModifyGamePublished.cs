@@ -68,10 +68,10 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 responseMessage = ResponseConstants.InvalidUsernameError;
             }
-         /*   catch (GameDoesNotExistOnLibraryExcpetion)
+            catch (InvalidGameException)
             {
                 responseMessage = ResponseConstants.InvalidGameError;
-            }*/
+            }
             return responseMessage;
         }
 
