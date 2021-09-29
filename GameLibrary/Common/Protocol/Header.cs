@@ -12,7 +12,6 @@ namespace Common.Protocol
         private String _sDirection;
         private int _iCommand;
         private int _iDataLength;
-        private string _sDataLength;
 
         public string SDirection
         {
@@ -30,12 +29,6 @@ namespace Common.Protocol
         {
             get => _iDataLength;
             set => _iDataLength = value;
-        }
-
-        public string SDataLength
-        {
-            get => _sDataLength;
-            set => _sDataLength = value;
         }
 
         public Header()
@@ -71,8 +64,8 @@ namespace Common.Protocol
                 _sDirection = Encoding.UTF8.GetString(data, initialPositionSource, HeaderConstants.Request.Length);
                 string command = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length, HeaderConstants.CommandLength);
                 _iCommand = int.Parse(command);
-                _sDataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
-                _iDataLength = int.Parse(_sDataLength);
+                string dataLength = Encoding.UTF8.GetString(data, HeaderConstants.Request.Length + HeaderConstants.CommandLength, HeaderConstants.DataLength);
+                _iDataLength = int.Parse(dataLength);
                 return true;
             }
             catch (FormatException)

@@ -53,7 +53,12 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
             string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
-            return "La foto fue guardada en: " + pathToImageGame;
+            string result = "";
+            if (pathToImageGame != "")
+                result = "La foto fue guardada en: " + pathToImageGame;
+            else
+                result = "El juego no tiene caratula, contactar con el administrador";
+            return result;
         }
 
         private void ListGamesAvailable(ISocketHandler clientSocket)

@@ -124,9 +124,6 @@ namespace Common.NetworkUtils
 
         public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName)
         {
-            // 1) Recibo 12 bytes
-            // 2) Tomo los 4 primeros bytes para saber el largo del nombre del archivo
-            // 3) Tomo los siguientes 8 bytes para saber el tamaño del archivo
             string fileNameBytes = rawImageData.Substring(0, Specification.FixedFileNameLength);
             string fileSizeBytes = rawImageData.Substring(Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
             int fileNameSize = (Int32.Parse(fileNameBytes));
@@ -135,11 +132,9 @@ namespace Common.NetworkUtils
             string dir = "";
             if (fileNameSize != 0 && fileSize != 0)
             {
-                // 4) Recibo el nombre del archivo
                 string fileName = ReceiveString(fileNameSize);
                 dir = CreateFolder(pathToImageFolder, fileName, gameName);
 
-                // 5) Calculo la cantidad de partes a recibir
                 long parts = SpecificationHelper.GetParts(fileSize);
                 long offset = 0;
                 long currentPart = 1;
