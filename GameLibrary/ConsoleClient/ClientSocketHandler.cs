@@ -4,10 +4,10 @@ namespace ConsoleClient
 {
     public class ClientSocketHandler : SocketHandler
     {
-        public ClientSocketHandler(string ipAddress, int port, int serverPort) :
-            base(ipAddress, port)
+        public ClientSocketHandler(string ipAddress, int serverPort) :
+            base()
         {
-            _socket.Connect(_ipAddress, serverPort);
+            _socket.Connect(ipAddress, serverPort);
         }
     }
 }

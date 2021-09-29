@@ -17,8 +17,7 @@ namespace ConsoleClient
             if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
-                int anyPort = 0;
-                ISocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, anyPort, parsedPort);
+                ISocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, parsedPort);
                 IClientMenuHandler menuHandler = new ClientMenuHandler();
                 menuHandler.LoadMainMenu(socketHandler);
             }

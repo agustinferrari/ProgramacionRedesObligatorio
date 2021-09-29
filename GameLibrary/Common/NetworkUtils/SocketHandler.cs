@@ -36,6 +36,13 @@ namespace Common.NetworkUtils
             _socket.Bind(new IPEndPoint(IPAddress.Parse(_ipAddress), _port));
         }
 
+        public SocketHandler()
+        {
+            _fileHandler = new FileHandler();
+            _fileStreamHandler = new FileStreamHandler();
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+        }
+
         public void SendMessage(string headerConstant, int commandNumber, string message)
         {
             Header header = new Header(headerConstant, commandNumber, message.Length);

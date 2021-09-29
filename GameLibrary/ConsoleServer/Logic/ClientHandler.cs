@@ -76,7 +76,7 @@ namespace ConsoleServer.Logic
             bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
             {
-                isSocketActive = clientSocketHandler.IsSocketClosed();
+                isSocketActive = !clientSocketHandler.IsSocketClosed();
                 try
                 {
                     Header header = clientSocketHandler.ReceiveHeader();
