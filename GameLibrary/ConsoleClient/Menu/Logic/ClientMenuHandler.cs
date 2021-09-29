@@ -98,6 +98,7 @@ namespace ConsoleClient.Menu.Logic
             }
             return result;
         }
+
         private int ParseMainMenuOption(string selectedOption)
         {
             int result;
