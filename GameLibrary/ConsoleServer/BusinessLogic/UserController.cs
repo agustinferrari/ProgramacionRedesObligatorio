@@ -47,10 +47,7 @@ namespace ConsoleServer.BusinessLogic
             User user = GetUser(username);
             lock (_padlock)
             {
-                if (user.OwnedGames != null && user.OwnedGames.Exists(game => game.Name.ToLower() == gameName.ToLower()))
-                    throw new GameAlreadyBoughtException();
-                else
-                    user.AddGame(game);
+               user.AddGame(game);
             }
         }
 

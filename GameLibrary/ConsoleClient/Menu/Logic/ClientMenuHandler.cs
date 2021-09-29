@@ -66,7 +66,7 @@ namespace ConsoleClient.Menu.Logic
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
                     string response = menuStrategy.HandleSelectedOption(clientSocket);
                     Console.WriteLine(response);
-                    if (response == ResponseConstants.LogoutSuccess || response == ResponseConstants.LogoutSuccess
+                    if (response == ResponseConstants.LogoutSuccess || response == ResponseConstants.InvalidUsernameError
                         || response == ResponseConstants.AuthenticationError)
                         LoadMainMenu(clientSocket);
                     else
