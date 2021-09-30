@@ -98,7 +98,7 @@ namespace ConsoleServer.Logic
                     isSocketActive = false;
                     Console.WriteLine($"Se perdio la conexion con un socket");
                 }
-                catch (FormatException)
+                catch (Exception e) when (e is FormatException || e is KeyNotFoundException)
                 {
                     if (!clientSocketHandler.IsSocketClosed())
                         CloseConnection(clientSocketHandler);
