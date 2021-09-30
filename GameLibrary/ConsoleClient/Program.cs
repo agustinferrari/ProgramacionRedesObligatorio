@@ -3,6 +3,7 @@ using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic;
 using System;
+using System.Net.Sockets;
 
 namespace ConsoleClient
 {
@@ -17,9 +18,16 @@ namespace ConsoleClient
             if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
-                ISocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, parsedPort);
-                IClientMenuHandler menuHandler = new ClientMenuHandler();
-                menuHandler.LoadMainMenu(socketHandler);
+                try
+                {
+                    ISocketHandler socketHandler = new ClientSocketHandler(serverIpAddress, parsedPort);
+                    IClientMenuHandler menuHandler = new ClientMenuHandler();
+                    menuHandler.LoadMainMenu(socketHandler);
+                }
+                catch (SocketException)
+                {
+                    Console.WriteLine("Error al conectarse con el servidor.");
+                }
             }
             else
             {
