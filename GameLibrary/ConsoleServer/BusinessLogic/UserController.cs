@@ -89,7 +89,6 @@ namespace ConsoleServer.BusinessLogic
         {
             lock (_padlock)
             {
-                _gameController.DeletePublishedGameByUser(gameToDelete);
                 foreach (User user in _users)
                 {
                     if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))

@@ -12,13 +12,11 @@ namespace ConsoleServer.BusinessLogic
     {
         private static readonly object _padlock = new object();
         private static GameController _instance = null;
-        private IUserController _userController;
         private List<Game> _games;
 
         private GameController()
         {
             _games = new List<Game>();
-            _userController = UserController.Instance;
             CatalogueLoader.AddGames(this);
         }
 
@@ -126,11 +124,12 @@ namespace ConsoleServer.BusinessLogic
 
         public void DeletePublishedGameByUser(Game gameToDelete)
         {
-            if (_games == null)
-                throw new InvalidGameException();
+            IUserController _userController = UserController.Instance;
 
             lock (_padlock)
             {
+                if (_games == null)
+                    throw new InvalidGameException();
                 _userController.DeleteGameFromAllUsers(gameToDelete);
                 _games.Remove(gameToDelete);
             }
@@ -138,10 +137,10 @@ namespace ConsoleServer.BusinessLogic
 
         public void ModifyGame(Game gameToModify, Game newGame)
         {
-            if (gameToModify == null)
-                throw new InvalidGameException();
             lock (_padlock)
             {
+                if (gameToModify == null)
+                    throw new InvalidGameException();
                 gameToModify.Name = (newGame.Name == "") ? gameToModify.Name : newGame.Name;
                 gameToModify.Genre = (newGame.Genre == "") ? gameToModify.Genre : newGame.Genre;
                 gameToModify.Synopsis = (newGame.Synopsis == "") ? gameToModify.Synopsis : newGame.Synopsis;
