@@ -55,7 +55,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 if (gameToModify != null)
                 {
                     DeletePreviousImage(gameToModify, newGame);
-                    _userController.ModifyGameFromAllUser(gameToModify, newGame);
+                    //_userController.ModifyGameFromAllUser(gameToModify, newGame);
                     _gameController.ModifyGame(gameToModify, newGame);
                     responseMessage = ResponseConstants.ModifyPublishedGameSuccess;
                 }

@@ -22,7 +22,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     Game gameToDelete = _gameController.GetCertainGamePublishedByUser(user, gameName);
                     if (gameToDelete != null)
                     {
-                        _userController.DeleteGameFromAllUsers(gameToDelete);
                         _gameController.DeletePublishedGameByUser(gameToDelete);
                         responseMessage = ResponseConstants.DeleteGameSuccess;
                     }
@@ -41,7 +40,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessage = ResponseConstants.AuthenticationError;
             clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
-             
+
         }
     }
 }

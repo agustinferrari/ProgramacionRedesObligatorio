@@ -47,7 +47,7 @@ namespace ConsoleServer.BusinessLogic
             User user = GetUser(username);
             lock (_padlock)
             {
-               user.AddGame(game);
+                user.AddGame(game);
             }
         }
 
@@ -88,11 +88,14 @@ namespace ConsoleServer.BusinessLogic
         public void DeleteGameFromAllUsers(Game gameToDelete)
         {
             lock (_padlock)
+            {
+                _gameController.DeletePublishedGameByUser(gameToDelete);
                 foreach (User user in _users)
                 {
                     if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))
                         user.OwnedGames.Remove(gameToDelete);
                 }
+            }
         }
 
 
