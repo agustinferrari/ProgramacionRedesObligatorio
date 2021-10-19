@@ -13,34 +13,23 @@ namespace Common.NetworkUtils
 {
     public class SocketHandler : ISocketHandler
     {
-        public Socket _socket;
+        protected NetworkStream _networkStream;
         protected string _ipAddress;
         protected int _port;
         private IFileHandler _fileHandler;
         private IFileStreamHandler _fileStreamHandler;
 
-        public SocketHandler(Socket socket)
+        public SocketHandler(NetworkStream networkStream)
         {
-            _socket = socket;
+            _networkStream = networkStream;
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
-        }
-
-        public SocketHandler(string ipAddress, int port)
-        {
-            _fileHandler = new FileHandler();
-            _fileStreamHandler = new FileStreamHandler();
-            _ipAddress = ipAddress;
-            _port = port;
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _socket.Bind(new IPEndPoint(IPAddress.Parse(_ipAddress), _port));
         }
 
         public SocketHandler()
         {
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
-            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         }
 
         public void SendMessage(string headerConstant, int commandNumber, string message)
@@ -59,11 +48,7 @@ namespace Common.NetworkUtils
 
         public void SendData(byte[] data)
         {
-            int sentBytes = 0;
-            while (sentBytes < data.Length)
-            {
-                sentBytes += _socket.Send(data, sentBytes, data.Length - sentBytes, SocketFlags.None);
-            }
+            _networkStream.Write(data, 0, data.Length);
         }
 
         public void ReceiveData(int Length, byte[] buffer)
@@ -73,7 +58,7 @@ namespace Common.NetworkUtils
             {
                 try
                 {
-                    int localRecv = _socket.Receive(buffer, iRecv, Length - iRecv, SocketFlags.None);
+                    int localRecv = _networkStream.Read(buffer, iRecv, Length - iRecv);
                     bool connectionCloseOnRemoteEndPoint = localRecv == 0;
                     if (connectionCloseOnRemoteEndPoint)
                     {
@@ -231,13 +216,14 @@ namespace Common.NetworkUtils
 
         public void ShutdownSocket()
         {
-            _socket.Shutdown(SocketShutdown.Both);
-            _socket.Close();
+            //_networkStream.Shutdown(SocketShutdown.Both);
+            _networkStream.Close();
         }
 
         public bool IsSocketClosed()
         {
-            return _socket.SafeHandle.IsClosed;
+            //return _networkStream.SafeHandle.IsClosed;
+            return true;
         }
     }
 }
