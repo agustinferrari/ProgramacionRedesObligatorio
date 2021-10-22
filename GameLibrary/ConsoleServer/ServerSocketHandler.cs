@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleServer
 {
@@ -20,14 +21,12 @@ namespace ConsoleServer
         public ServerSocketHandler(string ipAddress, int port) :
             base()
         {
-            //_networkStream.Listen(_supportedConnections);
             _tcpListener = new TcpListener(IPAddress.Parse(ipAddress), port);
         }
 
-        public void CreateClientConectionThread()
+        public async Task CreateClientConectionTask()
         {
-            Thread threadServer = new Thread(() => ListenForConnections());
-            threadServer.Start();
+            var task = Task.Run(async () => await ListenForConnections().ConfigureAwait(false));
         }
 
         public void CloseConections()
@@ -43,7 +42,7 @@ namespace ConsoleServer
             _networkStream.Close(0);
         }
 
-        private void ListenForConnections()
+        private async Task ListenForConnections()
         {
             ClientsConnectedSockets = new List<ISocketHandler>();
             while (!Exit)
@@ -51,15 +50,14 @@ namespace ConsoleServer
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
-                    _tcpListener.Start(1);
-                    TcpClient tcpClient = _tcpListener.AcceptTcpClient();
+                    _tcpListener.Start(100);
+                    TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
                     _tcpListener.Stop();
-                    //Socket clientConnected = socketServer.Accept();
                     ISocketHandler clientConnectedHandler = new SocketHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Nueva conexion aceptada...");
-                    Thread threadcClient = new Thread(() => clientHandler.HandleClient(clientConnectedHandler));
-                    threadcClient.Start();
+                    //Ver si iba el await despues de => o no
+                    var task = Task.Run(async () => clientHandler.HandleClient(clientConnectedHandler).ConfigureAwait(false));
                 }
                 catch (Exception e)
                 {

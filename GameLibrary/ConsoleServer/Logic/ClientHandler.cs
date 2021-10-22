@@ -8,6 +8,7 @@ using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic
 {
@@ -71,7 +72,7 @@ namespace ConsoleServer.Logic
                 _loggedClients.Remove(socketHandler);
         }
 
-        public void HandleClient(ISocketHandler clientSocketHandler)
+        public async Task HandleClient(ISocketHandler clientSocketHandler)
         {
             bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
@@ -81,8 +82,7 @@ namespace ConsoleServer.Logic
                     Header header = clientSocketHandler.ReceiveHeader();
                     if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
-                        if (!clientSocketHandler.IsSocketClosed())
-                            CloseConnection(clientSocketHandler);
+                        CloseConnection(clientSocketHandler);
                         isSocketActive = false;
                     }
                     else
@@ -93,15 +93,13 @@ namespace ConsoleServer.Logic
                 }
                 catch (IOException)
                 {
-                    if (!clientSocketHandler.IsSocketClosed())
-                        CloseConnection(clientSocketHandler);
+                    CloseConnection(clientSocketHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Se perdio la conexion con un socket");
                 }
                 catch (Exception e) when (e is FormatException || e is KeyNotFoundException)
                 {
-                    if (!clientSocketHandler.IsSocketClosed())
-                        CloseConnection(clientSocketHandler);
+                    CloseConnection(clientSocketHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Error en formato de protocolo, cerrando conexion con el cliente");
                 }

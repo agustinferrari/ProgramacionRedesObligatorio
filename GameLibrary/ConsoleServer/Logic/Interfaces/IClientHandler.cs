@@ -1,4 +1,5 @@
-﻿using Common.NetworkUtils;
+﻿using System.Threading.Tasks;
+using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 
 namespace ConsoleServer.Logic.Interfaces
@@ -17,7 +18,7 @@ namespace ConsoleServer.Logic.Interfaces
 
         public void RemoveClient(ISocketHandler socketHandler);
 
-        public void HandleClient(ISocketHandler clientSocketHandler);
+        public Task HandleClient(ISocketHandler clientSocketHandler);
 
     }
 

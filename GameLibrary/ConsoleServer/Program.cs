@@ -2,13 +2,14 @@
 using Common.NetworkUtils.Interfaces;
 using ConsoleServer.Presentation;
 using System;
+using System.Threading.Tasks;
 
 namespace ConsoleServer
 {
     public class Program
     {
         private static readonly ISettingsManager SettingsMgr = new SettingsManager();
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             string serverIpAddress = SettingsMgr.ReadSetting(ServerConfig.ServerIpConfigKey);
             string serverPort = SettingsMgr.ReadSetting(ServerConfig.SeverPortConfigKey);
@@ -17,7 +18,8 @@ namespace ConsoleServer
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ServerSocketHandler socketHandler = new ServerSocketHandler(serverIpAddress, parsedPort);
-                socketHandler.CreateClientConectionThread();
+                
+                socketHandler.CreateClientConectionTask();
 
                 ServerMenuRenderer.LoadMainMenu();
                 ServerMenuHandler.HandleMainMenuResponse(socketHandler);

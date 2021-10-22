@@ -8,6 +8,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Common.NetworkUtils
 {
@@ -58,7 +59,7 @@ namespace Common.NetworkUtils
             {
                 try
                 {
-                    int localRecv = _networkStream.Read(buffer, iRecv, Length - iRecv);
+                    int localRecv =  _networkStream.Read(buffer, iRecv, Length - iRecv);
                     bool connectionCloseOnRemoteEndPoint = localRecv == 0;
                     if (connectionCloseOnRemoteEndPoint)
                     {
@@ -216,14 +217,8 @@ namespace Common.NetworkUtils
 
         public void ShutdownSocket()
         {
-            //_networkStream.Shutdown(SocketShutdown.Both);
             _networkStream.Close();
         }
-
-        public bool IsSocketClosed()
-        {
-            //return _networkStream.SafeHandle.IsClosed;
-            return true;
-        }
+        
     }
 }

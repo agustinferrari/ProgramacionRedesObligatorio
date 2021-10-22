@@ -1,4 +1,5 @@
-﻿using Common.Protocol;
+﻿using System.Threading.Tasks;
+using Common.Protocol;
 
 
 namespace Common.NetworkUtils.Interfaces
@@ -29,6 +30,5 @@ namespace Common.NetworkUtils.Interfaces
 
         public void SendImageProtocolData(string fileName, long fileSize);
 
-        public bool IsSocketClosed();
     }
 }
