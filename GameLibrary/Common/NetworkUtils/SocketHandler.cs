@@ -66,7 +66,7 @@ namespace Common.NetworkUtils
                     }
                     iRecv += localRecv;
                 }
-                catch (SocketException se)
+                catch (IOException se)
                 {
                     Console.WriteLine(se.Message);
                     return;

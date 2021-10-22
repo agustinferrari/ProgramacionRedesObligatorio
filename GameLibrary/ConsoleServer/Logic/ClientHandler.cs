@@ -7,7 +7,7 @@ using ConsoleServer.Logic.Commands.Strategies;
 using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
-
+using System.IO;
 
 namespace ConsoleServer.Logic
 {
@@ -91,7 +91,7 @@ namespace ConsoleServer.Logic
                         commandStrategy.HandleRequest(header, clientSocketHandler);
                     }
                 }
-                catch (SocketClientException)
+                catch (IOException)
                 {
                     if (!clientSocketHandler.IsSocketClosed())
                         CloseConnection(clientSocketHandler);
