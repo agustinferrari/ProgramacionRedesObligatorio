@@ -8,6 +8,7 @@ using ConsoleClient.Menu.Logic.Commands.Strategies;
 using ConsoleClient.Menu.Presentation;
 using System;
 using System.Net.Sockets;
+using System.IO;
 
 namespace ConsoleClient.Menu.Logic
 {
@@ -48,7 +49,7 @@ namespace ConsoleClient.Menu.Logic
                     LoadMainMenu(clientSocket);
                 }
             }
-            catch (SocketException)
+            catch (IOException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
@@ -78,7 +79,7 @@ namespace ConsoleClient.Menu.Logic
                     LoadLoggedUserMenu(clientSocket);
                 }
             }
-            catch (SocketException)
+            catch (IOException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }

@@ -4,6 +4,7 @@ using ConsoleServer.Logic;
 using ConsoleServer.Logic.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
@@ -14,16 +15,18 @@ namespace ConsoleServer
         public bool Exit { get; set; }
         private List<ISocketHandler> ClientsConnectedSockets { get; set; }
         private int _supportedConnections = 100;
+        private TcpListener _tcpListener;
 
         public ServerSocketHandler(string ipAddress, int port) :
-            base(ipAddress, port)
+            base()
         {
-            _socket.Listen(_supportedConnections);
+            //_networkStream.Listen(_supportedConnections);
+            _tcpListener = new TcpListener(IPAddress.Parse(ipAddress), port);
         }
 
         public void CreateClientConectionThread()
         {
-            Thread threadServer = new Thread(() => ListenForConnections(_socket));
+            Thread threadServer = new Thread(() => ListenForConnections());
             threadServer.Start();
         }
 
@@ -37,10 +40,10 @@ namespace ConsoleServer
             }
             var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             fakeSocket.Connect(_ipAddress, _port);
-            _socket.Close(0);
+            _networkStream.Close(0);
         }
 
-        private void ListenForConnections(Socket socketServer)
+        private void ListenForConnections()
         {
             ClientsConnectedSockets = new List<ISocketHandler>();
             while (!Exit)
@@ -48,8 +51,11 @@ namespace ConsoleServer
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
-                    Socket clientConnected = socketServer.Accept();
-                    ISocketHandler clientConnectedHandler = new SocketHandler(clientConnected);
+                    _tcpListener.Start(1);
+                    TcpClient tcpClient = _tcpListener.AcceptTcpClient();
+                    _tcpListener.Stop();
+                    //Socket clientConnected = socketServer.Accept();
+                    ISocketHandler clientConnectedHandler = new SocketHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Nueva conexion aceptada...");
                     Thread threadcClient = new Thread(() => clientHandler.HandleClient(clientConnectedHandler));

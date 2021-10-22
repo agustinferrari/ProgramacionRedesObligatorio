@@ -4,6 +4,7 @@ using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic;
 using System;
 using System.Net.Sockets;
+using System.IO;
 
 namespace ConsoleClient
 {
@@ -24,7 +25,7 @@ namespace ConsoleClient
                     IClientMenuHandler menuHandler = new ClientMenuHandler();
                     menuHandler.LoadMainMenu(socketHandler);
                 }
-                catch (SocketException)
+                catch (IOException)
                 {
                     Console.WriteLine("Error al conectarse con el servidor.");
                 }
