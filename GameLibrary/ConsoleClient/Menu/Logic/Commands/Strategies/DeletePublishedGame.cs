@@ -13,7 +13,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string gameName = Console.ReadLine();
             string response = "";
             if (_menuValidator.ValidateNotEmptyFields(gameName))
-                response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.DeletePublishedGame, gameName);
+                response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.DeletePublishedGame, gameName).Result;
             return response;
         }
     }

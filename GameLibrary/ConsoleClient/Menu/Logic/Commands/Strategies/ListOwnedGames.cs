@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         public override string HandleSelectedOption(ISocketHandler clientSocket)
         {
             string sendNoData = "";
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListOwnedGames, sendNoData);
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListOwnedGames, sendNoData).Result;
             return response;
         }
     }

@@ -6,29 +6,29 @@ namespace Common.NetworkUtils.Interfaces
 {
     public interface ISocketHandler
     {
-        public void SendMessage(string headerConstant, int commandNumber, string message);
+        public Task SendMessage(string headerConstant, int commandNumber, string message);
 
-        public void SendHeader(Header header);
+        public Task SendHeader(Header header);
 
-        public void SendData(byte[] data);
+        public Task SendData(byte[] data);
 
-        public void ReceiveData(int Length, byte[] buffer);
+        public Task ReceiveData(int Length, byte[] buffer);
 
-        public Header ReceiveHeader();
+        public Task<Header> ReceiveHeader();
 
-        public string ReceiveString(int dataLength);
+        public Task<string> ReceiveString(int dataLength);
 
-        public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName);
+        public Task<string> ReceiveImage(string rawImageData, string pathToImageFolder, string gameName);
 
-        public string RecieveResponse();
+        public Task<string> RecieveResponse();
 
-        public string SendMessageAndRecieveResponse(int deletePublishedGame, string gameName);
+        public Task<string> SendMessageAndRecieveResponse(int deletePublishedGame, string gameName);
 
-        public bool SendImage(string path);
+        public Task<bool> SendImage(string path);
 
         public void ShutdownSocket();
 
-        public void SendImageProtocolData(string fileName, long fileSize);
+        public Task SendImageProtocolData(string fileName, long fileSize);
 
     }
 }

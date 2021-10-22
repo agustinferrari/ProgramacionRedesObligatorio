@@ -50,7 +50,7 @@ namespace ConsoleServer
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
-                    _tcpListener.Start(100);
+                    _tcpListener.Start(_supportedConnections);
                     TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
                     _tcpListener.Stop();
                     ISocketHandler clientConnectedHandler = new SocketHandler(tcpClient.GetStream());

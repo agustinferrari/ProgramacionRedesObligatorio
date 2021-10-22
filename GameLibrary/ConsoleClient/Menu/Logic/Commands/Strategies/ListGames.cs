@@ -24,7 +24,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         public string ListGamesAvailable(ISocketHandler clientSocket)
         {
             string sendNoData = "";
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData);
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData).Result;
             return "Lista de juegos: \n" + response;
         }
 
@@ -37,7 +37,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
             string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter);
+            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter).Result;
             return "Lista de juegos: \n" + response;
         }
     }

@@ -11,7 +11,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
-            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
             try
             {

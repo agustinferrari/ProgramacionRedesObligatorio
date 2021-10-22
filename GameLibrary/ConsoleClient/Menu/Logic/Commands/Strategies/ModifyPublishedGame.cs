@@ -32,7 +32,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
-                    bool imageSentCorrectly = clientSocket.SendImage(path);
+                    bool imageSentCorrectly = clientSocket.SendImage(path).Result;
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
                 }
@@ -42,7 +42,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     int noData = 0;
                     clientSocket.SendImageProtocolData(emptyPath, noData);
                 }
-                response = clientSocket.RecieveResponse();
+                response = clientSocket.RecieveResponse().Result;
             }
             else
                 response = "Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar";

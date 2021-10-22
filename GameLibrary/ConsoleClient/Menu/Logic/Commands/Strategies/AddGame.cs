@@ -28,11 +28,11 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
                     clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-                    bool imageSentCorrectly = clientSocket.SendImage(path);
+                    bool imageSentCorrectly = clientSocket.SendImage(path).Result;
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
 
-                    response = clientSocket.RecieveResponse();
+                    response = clientSocket.RecieveResponse().Result;
                 }
                 else
                 {

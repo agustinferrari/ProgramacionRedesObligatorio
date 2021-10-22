@@ -5,7 +5,6 @@ using Common.Protocol;
 using Common.Utils.CustomExceptions;
 using System;
 using System.IO;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
@@ -33,33 +32,33 @@ namespace Common.NetworkUtils
             _fileStreamHandler = new FileStreamHandler();
         }
 
-        public void SendMessage(string headerConstant, int commandNumber, string message)
+        public async Task SendMessage(string headerConstant, int commandNumber, string message)
         {
             Header header = new Header(headerConstant, commandNumber, message.Length);
-            SendHeader(header);
+            await SendHeader(header);
             byte[] bytesMessage = Encoding.UTF8.GetBytes(message);
-            SendData(bytesMessage);
+            await SendData(bytesMessage);
         }
 
-        public void SendHeader(Header header)
+        public async Task SendHeader(Header header)
         {
             byte[] data = header.GetRequest();
-            SendData(data);
+            await SendData(data);
         }
 
-        public void SendData(byte[] data)
+        public async Task SendData(byte[] data)
         {
-            _networkStream.Write(data, 0, data.Length);
+            await _networkStream.WriteAsync(data, 0, data.Length);
         }
 
-        public void ReceiveData(int Length, byte[] buffer)
+        public async Task ReceiveData(int Length, byte[] buffer)
         {
             var iRecv = 0;
             while (iRecv < Length)
             {
                 try
                 {
-                    int localRecv =  _networkStream.Read(buffer, iRecv, Length - iRecv);
+                    int localRecv =  await _networkStream.ReadAsync(buffer, iRecv, Length - iRecv);
                     bool connectionCloseOnRemoteEndPoint = localRecv == 0;
                     if (connectionCloseOnRemoteEndPoint)
                     {
@@ -75,38 +74,38 @@ namespace Common.NetworkUtils
             }
         }
 
-        public Header ReceiveHeader()
+        public async Task<Header> ReceiveHeader()
         {
             int headerLength = HeaderConstants.Request.Length + HeaderConstants.CommandLength +
                                    HeaderConstants.DataLength;
             byte[] buffer = new byte[headerLength];
-            ReceiveData(headerLength, buffer);
+            await ReceiveData(headerLength, buffer);
             Header header = new Header();
             if (header.DecodeData(buffer) == false) throw new FormatException();
             return header;
         }
 
-        public string ReceiveString(int dataLength)
+        public async Task<string> ReceiveString(int dataLength)
         {
             byte[] bufferData = new byte[dataLength];
-            ReceiveData(dataLength, bufferData);
+            await ReceiveData(dataLength, bufferData);
             string data = Encoding.UTF8.GetString(bufferData);
             return data;
         }
 
-        public string SendMessageAndRecieveResponse(int command, string messageToSend)
+        public async Task<string> SendMessageAndRecieveResponse(int command, string messageToSend)
         {
-            SendMessage(HeaderConstants.Request, command, messageToSend);
-            return RecieveResponse();
+            await SendMessage(HeaderConstants.Request, command, messageToSend);
+            return await RecieveResponse();
         }
 
-        public string RecieveResponse()
+        public async Task<string> RecieveResponse()
         {
             string response;
             try
             {
-                Header header = ReceiveHeader();
-                response = ReceiveString(header.IDataLength);
+                Header header = await ReceiveHeader();
+                response = await ReceiveString(header.IDataLength);
             }
             catch (FormatException)
             {
@@ -115,7 +114,7 @@ namespace Common.NetworkUtils
             return response;
         }
 
-        public string ReceiveImage(string rawImageData, string pathToImageFolder, string gameName)
+        public async Task<string> ReceiveImage(string rawImageData, string pathToImageFolder, string gameName)
         {
             string fileNameBytes = rawImageData.Substring(0, Specification.FixedFileNameLength);
             string fileSizeBytes = rawImageData.Substring(Specification.FixedFileNameLength, Specification.FixedFileSizeLength);
@@ -125,7 +124,7 @@ namespace Common.NetworkUtils
             string dir = "";
             if (fileNameSize != 0 && fileSize != 0)
             {
-                string fileName = ReceiveString(fileNameSize);
+                string fileName = await ReceiveString(fileNameSize);
                 dir = CreateFolder(pathToImageFolder, fileName, gameName);
 
                 long parts = SpecificationHelper.GetParts(fileSize);
@@ -139,13 +138,13 @@ namespace Common.NetworkUtils
                     {
                         int lastPartSize = (int)(fileSize - offset);
                         data = new byte[lastPartSize];
-                        ReceiveData(lastPartSize, data);
+                        await ReceiveData(lastPartSize, data);
                         offset += lastPartSize;
                     }
                     else
                     {
                         data = new byte[Specification.MaxPacketSize];
-                        ReceiveData(Specification.MaxPacketSize, data);
+                        await ReceiveData(Specification.MaxPacketSize, data);
                         offset += Specification.MaxPacketSize;
                     }
                     _fileStreamHandler.Write(dir, data);
@@ -166,13 +165,13 @@ namespace Common.NetworkUtils
             return path;
         }
 
-        public bool SendImage(string path)
+        public async Task<bool> SendImage(string path)
         {
             bool imageSentCorrectly = true;
             long fileSize = _fileHandler.GetFileSize(path);
             string fileName = _fileHandler.GetFileName(path);
             SendImageProtocolData(fileName, fileSize);
-            SendData(Encoding.UTF8.GetBytes(fileName));
+            await SendData(Encoding.UTF8.GetBytes(fileName));
 
             long parts = SpecificationHelper.GetParts(fileSize);
             long offset = 0;
@@ -202,17 +201,17 @@ namespace Common.NetworkUtils
                     offset += (currentPart == parts) ? lastPartSize : Specification.MaxPacketSize;
                 }
 
-                SendData(data);
+                await SendData(data);
                 currentPart++;
             }
             return imageSentCorrectly;
         }
 
-        public void SendImageProtocolData(string fileName, long fileSize)
+        public async Task SendImageProtocolData(string fileName, long fileSize)
         {
             string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
             protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
-            SendData(Encoding.UTF8.GetBytes(protocolData));
+             await SendData(Encoding.UTF8.GetBytes(protocolData));
         }
 
         public void ShutdownSocket()

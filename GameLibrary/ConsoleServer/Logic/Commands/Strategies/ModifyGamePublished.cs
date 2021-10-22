@@ -21,7 +21,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 int thirdElement = 2;
                 int fouthElement = 3;
                 string userName = _clientHandler.GetUsername(clientSocketHandler);
-                string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+                string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
                 string[] gameData = rawData.Split('%');
                 string oldGameName = gameData[firstElement];
                 string newGameName = gameData[secondElement];
@@ -78,7 +78,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
         private string UpdateImage(ISocketHandler clientSocketHandler, string gameName)
         {
             int imageDataLength = SpecificationHelper.GetImageDataLength();
-            string rawImageData = clientSocketHandler.ReceiveString(imageDataLength);
+            string rawImageData = clientSocketHandler.ReceiveString(imageDataLength).Result;
             string emptyImageData = 0.ToString("D" + imageDataLength);
             string pathToImageGame = "";
 
@@ -86,7 +86,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 ISettingsManager SettingsMgr = new SettingsManager();
                 string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-                pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
+                pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
             }
             return pathToImageGame;
         }

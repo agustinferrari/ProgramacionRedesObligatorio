@@ -18,7 +18,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 int firstElement = 0;
                 int secondElement = 1;
                 int thirdElement = 2;
-                string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+                string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
                 string[] gameData = rawData.Split('%');
                 string gameName = gameData[firstElement];
                 string genre = gameData[secondElement];
@@ -57,10 +57,10 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         private string UploadImage(ISocketHandler clientSocketHandler, string gameName)
         {
-            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
+            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-            return clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
+            return clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
         }
     }
 }

@@ -14,7 +14,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
-            string gameName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string gameName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientSocketHandler))
             {

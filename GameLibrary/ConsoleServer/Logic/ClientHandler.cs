@@ -79,7 +79,7 @@ namespace ConsoleServer.Logic
             {
                 try
                 {
-                    Header header = clientSocketHandler.ReceiveHeader();
+                    Header header = await clientSocketHandler.ReceiveHeader();
                     if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
                         CloseConnection(clientSocketHandler);

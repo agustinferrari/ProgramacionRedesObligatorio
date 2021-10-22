@@ -16,7 +16,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             int firstElement = 0;
             int secondElement = 1;
             int thirdElement = 2;
-            string rawData = clientSocketHandler.ReceiveString(header.IDataLength);
+            string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
             string[] gameData = rawData.Split('%');
             string gameName = gameData[firstElement];
             string rating = gameData[secondElement];

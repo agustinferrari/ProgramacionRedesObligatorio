@@ -12,7 +12,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
         {
-            string userName = clientSocketHandler.ReceiveString(header.IDataLength);
+            string userName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
             if (_clientHandler.IsClientLogged(userName))
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;

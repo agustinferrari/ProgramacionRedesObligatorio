@@ -14,8 +14,8 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             if (_menuValidator.ValidateNotEmptyFields(user))
             {
                 clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.Login, user);
-                Header header = clientSocket.ReceiveHeader();
-                response = clientSocket.ReceiveString(header.IDataLength);
+                Header header = clientSocket.ReceiveHeader().Result;
+                response = clientSocket.ReceiveString(header.IDataLength).Result;
             }
             return response;
         }

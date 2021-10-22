@@ -12,7 +12,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             int sendNoData = 0;
             Header header = new Header(HeaderConstants.Request, CommandConstants.Logout, sendNoData);
             clientSocket.SendHeader(header);
-            string response = clientSocket.RecieveResponse();
+            string response = clientSocket.RecieveResponse().Result;
             return response;
         }
     }

@@ -3,7 +3,6 @@ using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic;
 using System;
-using System.Net.Sockets;
 using System.IO;
 
 namespace ConsoleClient

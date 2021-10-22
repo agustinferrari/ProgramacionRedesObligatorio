@@ -26,7 +26,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     if (option == "1")
                     {
                         clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        imageResponse = clientSocket.RecieveResponse();
+                        imageResponse = clientSocket.RecieveResponse().Result;
                         if (imageResponse != ResponseConstants.InvalidGameError && imageResponse != ResponseConstants.AuthenticationError)
                             imageResponse = ReciveAndDownloadImage(clientSocket);
                     }
@@ -42,17 +42,17 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         private string ListGameDetails(ISocketHandler clientSocket, string gameName)
         {
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
-            Header header = clientSocket.ReceiveHeader();
-            string detailsResponse = clientSocket.ReceiveString(header.IDataLength);
+            Header header = clientSocket.ReceiveHeader().Result;
+            string detailsResponse = clientSocket.ReceiveString(header.IDataLength).Result;
             return detailsResponse;
         }
 
         private string ReciveAndDownloadImage(ISocketHandler clientSocket)
         {
-            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength());
+            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "");
+            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "").Result;
             string result = "";
             if (pathToImageGame != "")
                 result = "La foto fue guardada en: " + pathToImageGame;
