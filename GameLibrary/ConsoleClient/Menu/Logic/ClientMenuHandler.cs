@@ -41,7 +41,6 @@ namespace ConsoleClient.Menu.Logic
                         LoadLoggedUserMenu(clientSocket);
                     else
                         LoadMainMenu(clientSocket);
-
                 }
                 else
                 {

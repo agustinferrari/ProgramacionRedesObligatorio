@@ -6,8 +6,11 @@ namespace ConsoleClient
 {
     public class ClientConfig
     {
-        public static string ClientIpConfigKey = "ServerIpAddress";
-        public static string ClientPortConfigKey = "ServerPort";
+        public static string ClientIpConfigKey = "ClientIpAddress";
+        public static string ClientPortConfigKey = "ClientPort";
         public static string ClientPathToImages = "ClientPathToImages";
+        public static string ServerIpConfigKey = "ServerIpAddress";
+        public static string SeverPortConfigKey = "ServerPort";
+        
     }
 }

@@ -6,7 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace ConsoleServer
@@ -26,7 +25,7 @@ namespace ConsoleServer
 
         public async Task CreateClientConectionTask()
         {
-            var task = Task.Run(async () => await ListenForConnections().ConfigureAwait(false));
+            Task.Run(async () => await ListenForConnections().ConfigureAwait(false));
         }
 
         public void CloseConections()
@@ -45,13 +44,14 @@ namespace ConsoleServer
         private async Task ListenForConnections()
         {
             ClientsConnectedSockets = new List<ISocketHandler>();
+            TcpClient tcpClient = null;
             while (!Exit)
             {
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
                     _tcpListener.Start(_supportedConnections);
-                    TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
+                     tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
                     _tcpListener.Stop();
                     ISocketHandler clientConnectedHandler = new SocketHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
@@ -65,6 +65,8 @@ namespace ConsoleServer
                     Exit = true;
                 }
             }
+            //Esto lo agregue para probar
+            //tcpClient.Close();
             Console.WriteLine("Exiting....");
         }
     }
