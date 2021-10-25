@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Threading.Tasks;
 using Common.FileUtils.Interfaces;
 using Common.Utils.CustomExceptions;
 
@@ -7,7 +8,7 @@ namespace Common.FileUtils
 {
     public class FileStreamHandler : IFileStreamHandler
     {
-        public byte[] Read(string path, long offset, int length)
+        public async Task<byte[]> Read(string path, long offset, int length)
         {
             byte[] data = new byte[length];
 
@@ -17,7 +18,7 @@ namespace Common.FileUtils
                 int bytesRead = 0;
                 while (bytesRead < length)
                 {
-                    int read = fs.Read(data, bytesRead, length - bytesRead);
+                    int read = await fs.ReadAsync(data, bytesRead, length - bytesRead);
                     bytesRead += read;
                 }
             }

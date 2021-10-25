@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Common.NetworkUtils
 {
-    public class SocketHandler : ISocketHandler
+    public class NetworkStreamHandler : ISocketHandler
     {
         protected NetworkStream _networkStream;
         protected string _ipAddress;
@@ -19,14 +19,14 @@ namespace Common.NetworkUtils
         private IFileHandler _fileHandler;
         private IFileStreamHandler _fileStreamHandler;
 
-        public SocketHandler(NetworkStream networkStream)
+        public NetworkStreamHandler(NetworkStream networkStream)
         {
             _networkStream = networkStream;
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
         }
 
-        public SocketHandler()
+        public NetworkStreamHandler()
         {
             _fileHandler = new FileHandler();
             _fileStreamHandler = new FileStreamHandler();
@@ -184,9 +184,9 @@ namespace Common.NetworkUtils
                 try
                 {
                     if (currentPart == parts)
-                        data = _fileStreamHandler.Read(path, offset, lastPartSize);
+                        data = await _fileStreamHandler.Read(path, offset, lastPartSize);
                     else
-                        data = _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
+                        data = await _fileStreamHandler.Read(path, offset, Specification.MaxPacketSize);
                 }
                 catch (UnauthorizedAccessException)
                 {

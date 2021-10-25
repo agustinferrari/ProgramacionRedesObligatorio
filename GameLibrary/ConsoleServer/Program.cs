@@ -17,7 +17,7 @@ namespace ConsoleServer
             if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
-                ServerSocketHandler socketHandler = new ServerSocketHandler(serverIpAddress, parsedPort);
+                ServerNetworkStreamHandler socketHandler = new ServerNetworkStreamHandler(serverIpAddress, parsedPort);
 
                 await socketHandler.CreateClientConectionTask();
 

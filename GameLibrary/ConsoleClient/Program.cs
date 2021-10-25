@@ -19,7 +19,7 @@ namespace ConsoleClient
                 IPEndPoint clientIpEndPoint = new IPEndPoint(
                     IPAddress.Parse(SettingsMgr.ReadSetting(ClientConfig.ClientIpConfigKey)),
                     int.Parse(SettingsMgr.ReadSetting(ClientConfig.ClientPortConfigKey)));
-                ISocketHandler socketHandler = new ClientSocketHandler(clientIpEndPoint);
+                ISocketHandler socketHandler = new ClientNetworkStreamHandler(clientIpEndPoint);
                 IClientMenuHandler menuHandler = new ClientMenuHandler();
                 menuHandler.LoadMainMenu(socketHandler);
             }

@@ -1,8 +1,10 @@
-﻿namespace Common.FileUtils.Interfaces
+﻿using System.Threading.Tasks;
+
+namespace Common.FileUtils.Interfaces
 {
     public interface IFileStreamHandler
     {
-        byte[] Read(string path, long offset, int length);
+        Task<byte[]> Read(string path, long offset, int length);
         void Write(string fileName, byte[] data);
     }
 }

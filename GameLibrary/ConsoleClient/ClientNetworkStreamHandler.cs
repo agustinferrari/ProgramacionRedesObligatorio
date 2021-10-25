@@ -6,12 +6,12 @@ using Common.NetworkUtils.Interfaces;
 
 namespace ConsoleClient
 {
-    public class ClientSocketHandler : SocketHandler
+    public class ClientNetworkStreamHandler : NetworkStreamHandler
     {
         private readonly TcpClient _tcpClient;
         private static readonly ISettingsManager SettingsMgr = new SettingsManager();
 
-        public ClientSocketHandler(IPEndPoint clientIpEndPoint) :
+        public ClientNetworkStreamHandler(IPEndPoint clientIpEndPoint) :
             base()
         {
             _tcpClient = new TcpClient(clientIpEndPoint);

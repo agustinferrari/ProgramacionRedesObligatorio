@@ -4,7 +4,7 @@ namespace ConsoleServer.Presentation
 {
     public static class ServerMenuHandler
     {
-        public static void HandleMainMenuResponse(ServerSocketHandler serverSocket)
+        public static void HandleMainMenuResponse(ServerNetworkStreamHandler serverSocket)
         {
             bool exit = false;
 
