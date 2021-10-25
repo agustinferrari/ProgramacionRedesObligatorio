@@ -44,6 +44,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
             Header header = clientSocket.ReceiveHeader().Result;
             string detailsResponse = clientSocket.ReceiveString(header.IDataLength).Result;
+            Console.WriteLine(detailsResponse);
             return detailsResponse;
         }
 
