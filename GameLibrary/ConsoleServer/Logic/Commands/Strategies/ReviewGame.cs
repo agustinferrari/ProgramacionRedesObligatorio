@@ -11,21 +11,21 @@ namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ReviewGame : CommandStrategy
     {
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             int firstElement = 0;
             int secondElement = 1;
             int thirdElement = 2;
-            string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string[] gameData = rawData.Split('%');
             string gameName = gameData[firstElement];
             string rating = gameData[secondElement];
             string comment = gameData[thirdElement];
 
             string responseMessageResult;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
-                string userName = _clientHandler.GetUsername(clientSocketHandler);
+                string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
                 try
                 {
                     Review newReview = new Review
@@ -53,7 +53,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
         }
     }
 }

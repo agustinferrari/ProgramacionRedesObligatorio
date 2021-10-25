@@ -9,13 +9,13 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class DeleteGamePublished : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string responseMessage;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
-                string userName = _clientHandler.GetUsername(clientSocketHandler);
+                string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
                 try
                 {
                     User user = _userController.GetUser(userName);
@@ -39,7 +39,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
 
         }
     }

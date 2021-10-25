@@ -14,18 +14,18 @@ namespace ConsoleClient.Menu.Logic
 {
     public class ClientMenuHandler : IClientMenuHandler
     {
-        public void LoadMainMenu(ISocketHandler clientSocket)
+        public void LoadMainMenu(INetworkStreamHandler clientNetworkStream)
         {
             ClientMenuRenderer.RenderMainMenu();
-            HandleMainMenuResponse(clientSocket);
+            HandleMainMenuResponse(clientNetworkStream);
         }
-        public void LoadLoggedUserMenu(ISocketHandler clientSocket)
+        public void LoadLoggedUserMenu(INetworkStreamHandler clientNetworkStream)
         {
             ClientMenuRenderer.RenderLoggedUserMenu();
-            HandleLoggedUserMenuResponse(clientSocket);
+            HandleLoggedUserMenuResponse(clientNetworkStream);
         }
 
-        private void HandleMainMenuResponse(ISocketHandler clientSocket)
+        private void HandleMainMenuResponse(INetworkStreamHandler clientNetworkStream)
         {
             string selectedOption = Console.ReadLine();
             Console.Clear();
@@ -35,17 +35,17 @@ namespace ConsoleClient.Menu.Logic
                 if (parsedOption == CommandConstants.Login || parsedOption == CommandConstants.ListGames)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    string response = menuStrategy.HandleSelectedOption(clientSocket);
+                    string response = menuStrategy.HandleSelectedOption(clientNetworkStream);
                     Console.WriteLine(response);
                     if (response == ResponseConstants.LoginSuccess)
-                        LoadLoggedUserMenu(clientSocket);
+                        LoadLoggedUserMenu(clientNetworkStream);
                     else
-                        LoadMainMenu(clientSocket);
+                        LoadMainMenu(clientNetworkStream);
                 }
                 else
                 {
                     Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadMainMenu(clientSocket);
+                    LoadMainMenu(clientNetworkStream);
                 }
             }
             catch (Exception e) when (e is IOException || e is AggregateException)
@@ -54,7 +54,7 @@ namespace ConsoleClient.Menu.Logic
             }
         }
 
-        private void HandleLoggedUserMenuResponse(ISocketHandler clientSocket)
+        private void HandleLoggedUserMenuResponse(INetworkStreamHandler clientNetworkStream)
         {
             string selectedOption = Console.ReadLine();
             Console.Clear();
@@ -64,18 +64,18 @@ namespace ConsoleClient.Menu.Logic
                 if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.DeletePublishedGame)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    string response = menuStrategy.HandleSelectedOption(clientSocket);
+                    string response = menuStrategy.HandleSelectedOption(clientNetworkStream);
                     Console.WriteLine(response);
                     if (response == ResponseConstants.LogoutSuccess || response == ResponseConstants.InvalidUsernameError
                         || response == ResponseConstants.AuthenticationError)
-                        LoadMainMenu(clientSocket);
+                        LoadMainMenu(clientNetworkStream);
                     else
-                        LoadLoggedUserMenu(clientSocket);
+                        LoadLoggedUserMenu(clientNetworkStream);
                 }
                 else
                 {
                     Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadLoggedUserMenu(clientSocket);
+                    LoadLoggedUserMenu(clientNetworkStream);
                 }
             }
             catch (Exception e) when (e is IOException || e is AggregateException)

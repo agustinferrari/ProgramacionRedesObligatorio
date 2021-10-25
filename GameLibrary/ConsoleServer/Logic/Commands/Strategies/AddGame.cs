@@ -10,24 +10,24 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class AddGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string responseMessageResult;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
                 int firstElement = 0;
                 int secondElement = 1;
                 int thirdElement = 2;
-                string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+                string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
                 string[] gameData = rawData.Split('%');
                 string gameName = gameData[firstElement];
                 string genre = gameData[secondElement];
                 string synopsis = gameData[thirdElement];
-                string pathToImage = UploadImage(clientSocketHandler, gameName);
+                string pathToImage = UploadImage(clientNetworkStreamHandler, gameName);
 
                 try
                 {
-                    string username = _clientHandler.GetUsername(clientSocketHandler);
+                    string username = _clientHandler.GetUsername(clientNetworkStreamHandler);
                     User ownerUser = _userController.GetUser(username);
                     Game newGame = new Game
                     {
@@ -52,15 +52,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
         }
 
-        private string UploadImage(ISocketHandler clientSocketHandler, string gameName)
+        private string UploadImage(INetworkStreamHandler clientNetworkStreamHandler, string gameName)
         {
-            string rawImageData = clientSocketHandler.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
+            string rawImageData = clientNetworkStreamHandler.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-            return clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
+            return clientNetworkStreamHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
         }
     }
 }

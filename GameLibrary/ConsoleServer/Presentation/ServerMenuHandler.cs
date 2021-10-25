@@ -4,7 +4,7 @@ namespace ConsoleServer.Presentation
 {
     public static class ServerMenuHandler
     {
-        public static void HandleMainMenuResponse(ServerNetworkStreamHandler serverSocket)
+        public static void HandleMainMenuResponse(ServerNetworkStreamHandler serverNetworkStreamHandler)
         {
             bool exit = false;
 
@@ -14,7 +14,7 @@ namespace ConsoleServer.Presentation
                 switch (selectedOption)
                 {
                     case "1":
-                        serverSocket.CloseConections();
+                        serverNetworkStreamHandler.CloseConections();
                         exit = true;
                         break;
                     default:

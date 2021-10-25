@@ -8,14 +8,14 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class BuyGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string username;
             string responseMessageResult;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
-                username = _clientHandler.GetUsername(clientSocketHandler);
+                username = _clientHandler.GetUsername(clientNetworkStreamHandler);
                 try
                 {
                     _userController.BuyGame(username, gameName);
@@ -36,7 +36,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
         }
     }
 }

@@ -6,21 +6,21 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class BuyGame : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
-            ListGamesAvailable(clientSocket);
+            ListGamesAvailable(clientNetworkStream);
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine().ToLower();
             string response = "";
             if (_menuValidator.ValidateNotEmptyFields(gameName))
-                response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.BuyGame, gameName).Result;
+                response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.BuyGame, gameName).Result;
             return response;
         }
 
-        private void ListGamesAvailable(ISocketHandler clientSocket)
+        private void ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             ListGames listGames = new ListGames();
-            Console.WriteLine(listGames.ListGamesAvailable(clientSocket));
+            Console.WriteLine(listGames.ListGamesAvailable(clientNetworkStream));
         }
     }
 }

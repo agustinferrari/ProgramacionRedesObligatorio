@@ -10,13 +10,13 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListOwnedGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string emptyString = "";
             string responseMessage;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
-                string userName = _clientHandler.GetUsername(clientSocketHandler);
+                string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
                 string gameList = _userController.ListOwnedGameByUser(userName);
                 responseMessage = gameList;
                 if (gameList == emptyString)
@@ -25,7 +25,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
     }
 }

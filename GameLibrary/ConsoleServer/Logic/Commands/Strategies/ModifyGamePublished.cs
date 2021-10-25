@@ -11,24 +11,24 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ModifyGamePublished : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string responseMessage;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
                 int firstElement = 0;
                 int secondElement = 1;
                 int thirdElement = 2;
                 int fouthElement = 3;
-                string userName = _clientHandler.GetUsername(clientSocketHandler);
-                string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+                string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
+                string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
                 string[] gameData = rawData.Split('%');
                 string oldGameName = gameData[firstElement];
                 string newGameName = gameData[secondElement];
                 string newGamegenre = gameData[thirdElement];
                 string newGameSynopsis = gameData[fouthElement];
                 string gameName = (newGameName == "") ? oldGameName : newGameName;
-                string pathToImage = UpdateImage(clientSocketHandler, gameName);
+                string pathToImage = UpdateImage(clientNetworkStreamHandler, gameName);
 
                 User user = _userController.GetUser(userName);
                 Game newGame = new Game
@@ -43,7 +43,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
 
         private string ModifyGame(Game newGame, User user, string oldGameName)
@@ -75,10 +75,10 @@ namespace ConsoleServer.Logic.Commands.Strategies
             return responseMessage;
         }
 
-        private string UpdateImage(ISocketHandler clientSocketHandler, string gameName)
+        private string UpdateImage(INetworkStreamHandler clientNetworkStreamHandler, string gameName)
         {
             int imageDataLength = SpecificationHelper.GetImageDataLength();
-            string rawImageData = clientSocketHandler.ReceiveString(imageDataLength).Result;
+            string rawImageData = clientNetworkStreamHandler.ReceiveString(imageDataLength).Result;
             string emptyImageData = 0.ToString("D" + imageDataLength);
             string pathToImageGame = "";
 
@@ -86,7 +86,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 ISettingsManager SettingsMgr = new SettingsManager();
                 string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-                pathToImageGame = clientSocketHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
+                pathToImageGame = clientNetworkStreamHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
             }
             return pathToImageGame;
         }

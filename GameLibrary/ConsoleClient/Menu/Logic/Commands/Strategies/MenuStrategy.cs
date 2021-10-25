@@ -12,6 +12,6 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         {
             _menuValidator = new MenuValidator();
         }
-        public abstract string HandleSelectedOption(ISocketHandler clientSocket);
+        public abstract string HandleSelectedOption(INetworkStreamHandler clientNetworkStream);
     }
 }

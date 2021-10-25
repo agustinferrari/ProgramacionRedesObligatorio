@@ -9,26 +9,26 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ListGames : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
             string filters = Console.ReadLine().ToLower();
             string response;
             if (filters == "y" || filters == "yes")
-                response = HandleListGamesFiltered(clientSocket);
+                response = HandleListGamesFiltered(clientNetworkStream);
             else
-                response = ListGamesAvailable(clientSocket);
+                response = ListGamesAvailable(clientNetworkStream);
             return response;
         }
 
-        public string ListGamesAvailable(ISocketHandler clientSocket)
+        public string ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             string sendNoData = "";
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData).Result;
+            string response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData).Result;
             return "Lista de juegos: \n" + response;
         }
 
-        private string HandleListGamesFiltered(ISocketHandler clientSocket)
+        private string HandleListGamesFiltered(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
             string filterTitle = Console.ReadLine().ToLower();
@@ -37,7 +37,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
             string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter).Result;
+            string response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter).Result;
             return "Lista de juegos: \n" + response;
         }
     }

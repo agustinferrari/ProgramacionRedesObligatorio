@@ -6,9 +6,9 @@ namespace ConsoleClient.Menu.Logic.Interfaces
     public interface IClientMenuHandler
     {
 
-        public void LoadMainMenu(ISocketHandler clientSocket);
+        public void LoadMainMenu(INetworkStreamHandler clientNetworkStream);
 
-        public void LoadLoggedUserMenu(ISocketHandler clientSocket);
+        public void LoadLoggedUserMenu(INetworkStreamHandler clientNetworkStream);
 
         public bool ValidateNotEmptyFields(string data);
     }

@@ -8,7 +8,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class AddGame : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Ingrese el nombre del juego:");
             string name = Console.ReadLine();
@@ -27,12 +27,12 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
-                    clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-                    bool imageSentCorrectly = clientSocket.SendImage(path).Result;
+                    clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+                    bool imageSentCorrectly = clientNetworkStream.SendImage(path).Result;
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
 
-                    response = clientSocket.RecieveResponse().Result;
+                    response = clientNetworkStream.RecieveResponse().Result;
                 }
                 else
                 {

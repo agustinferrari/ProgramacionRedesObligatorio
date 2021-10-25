@@ -10,12 +10,12 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class Logout : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
-                _clientHandler.RemoveClient(clientSocketHandler);
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
+                _clientHandler.RemoveClient(clientNetworkStreamHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
         }
     }
 }

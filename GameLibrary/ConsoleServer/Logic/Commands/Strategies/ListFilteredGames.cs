@@ -9,9 +9,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListFilteredGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string rawData = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
             try
             {
@@ -23,7 +23,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 responseMessageResult = ResponseConstants.NoAvailableGames;
             }
 
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
         }
     }
 }

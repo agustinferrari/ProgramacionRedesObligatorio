@@ -12,11 +12,11 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class GetGameDetails : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
                 try
                 {
@@ -30,7 +30,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
         }
     }
 }

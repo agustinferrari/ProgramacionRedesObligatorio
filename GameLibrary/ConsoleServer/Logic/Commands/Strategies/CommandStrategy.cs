@@ -20,6 +20,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract void HandleRequest(Header header, ISocketHandler clientSocketHandler);
+        public abstract void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
     }
 }

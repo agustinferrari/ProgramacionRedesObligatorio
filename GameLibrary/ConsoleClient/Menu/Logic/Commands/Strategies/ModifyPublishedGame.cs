@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ModifyPublishedGame : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
             string actualGameName = Console.ReadLine();
@@ -28,11 +28,11 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string response;
             if (actualGameName != "" && ValidateAtLeastOneField(changes))
             {
-                clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
+                clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
-                    bool imageSentCorrectly = clientSocket.SendImage(path).Result;
+                    bool imageSentCorrectly = clientNetworkStream.SendImage(path).Result;
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
                 }
@@ -40,9 +40,9 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 {
                     string emptyPath = "";
                     int noData = 0;
-                    clientSocket.SendImageProtocolData(emptyPath, noData);
+                    clientNetworkStream.SendImageProtocolData(emptyPath, noData);
                 }
-                response = clientSocket.RecieveResponse().Result;
+                response = clientNetworkStream.RecieveResponse().Result;
             }
             else
                 response = "Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar";

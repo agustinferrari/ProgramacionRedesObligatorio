@@ -10,15 +10,15 @@ namespace ConsoleServer.Logic.Interfaces
 
         public bool IsClientLogged(string userName);
 
-        public bool IsSocketInUse(ISocketHandler socketHandler);
+        public bool IsSocketInUse(INetworkStreamHandler networkStreamHandler);
 
-        public string GetUsername(ISocketHandler socketHandler);
+        public string GetUsername(INetworkStreamHandler networkStreamHandler);
 
-        public void AddClient(ISocketHandler socketHandler, string userName);
+        public void AddClient(INetworkStreamHandler networkStreamHandler, string userName);
 
-        public void RemoveClient(ISocketHandler socketHandler);
+        public void RemoveClient(INetworkStreamHandler networkStreamHandler);
 
-        public Task HandleClient(ISocketHandler clientSocketHandler);
+        public Task HandleClient(INetworkStreamHandler clientNetworkStreamHandler);
 
     }
 

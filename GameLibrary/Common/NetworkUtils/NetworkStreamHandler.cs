@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Common.NetworkUtils
 {
-    public class NetworkStreamHandler : ISocketHandler
+    public class NetworkStreamHandler : INetworkStreamHandler
     {
         protected NetworkStream _networkStream;
         protected string _ipAddress;

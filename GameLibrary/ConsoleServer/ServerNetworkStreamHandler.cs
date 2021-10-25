@@ -13,7 +13,7 @@ namespace ConsoleServer
     public class ServerNetworkStreamHandler : NetworkStreamHandler
     {
         public bool Exit { get; set; }
-        private List<ISocketHandler> ClientsConnectedSockets { get; set; }
+        private List<INetworkStreamHandler> ClientsConnectedSockets { get; set; }
         private int _supportedConnections = 100;
         private TcpListener _tcpListener;
 
@@ -41,7 +41,7 @@ namespace ConsoleServer
 
         private async Task ListenForConnections()
         {
-            ClientsConnectedSockets = new List<ISocketHandler>();
+            ClientsConnectedSockets = new List<INetworkStreamHandler>();
             while (!Exit)
             {
                 try
@@ -50,7 +50,7 @@ namespace ConsoleServer
                     _tcpListener.Start(_supportedConnections);
                     TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
                     _tcpListener.Stop();
-                    ISocketHandler clientConnectedHandler = new NetworkStreamHandler(tcpClient.GetStream());
+                    INetworkStreamHandler clientConnectedHandler = new NetworkStreamHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Nueva conexion aceptada...");
                     Task.Run(async () => await clientHandler.HandleClient(clientConnectedHandler).ConfigureAwait(false));

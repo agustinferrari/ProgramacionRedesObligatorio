@@ -4,7 +4,7 @@ using Common.Protocol;
 
 namespace Common.NetworkUtils.Interfaces
 {
-    public interface ISocketHandler
+    public interface INetworkStreamHandler
     {
         public Task SendMessage(string headerConstant, int commandNumber, string message);
 

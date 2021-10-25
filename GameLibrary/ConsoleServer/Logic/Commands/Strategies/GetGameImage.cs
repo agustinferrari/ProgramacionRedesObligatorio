@@ -11,12 +11,12 @@ namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class GetGameImage : CommandStrategy
     {
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientSocketHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult = "";
             Game game = null;
-            if (_clientHandler.IsSocketInUse(clientSocketHandler))
+            if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
 
                 try
@@ -30,9 +30,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameImage, responseMessageResult);
             if (game != null)
-                clientSocketHandler.SendImage(game.PathToPhoto);
+                clientNetworkStreamHandler.SendImage(game.PathToPhoto);
         }
     }
 }

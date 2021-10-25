@@ -16,14 +16,14 @@ namespace ConsoleServer.Logic
     {
         public static bool stopHandling;
 
-        private Dictionary<ISocketHandler, string> _loggedClients;
+        private Dictionary<INetworkStreamHandler, string> _loggedClients;
         private static readonly object _padlock = new object();
         private static ClientHandler _instance;
         private int _clientClosedConnectionAbruptly = 0;
 
         private ClientHandler()
         {
-            _loggedClients = new Dictionary<ISocketHandler, string>();
+            _loggedClients = new Dictionary<INetworkStreamHandler, string>();
             stopHandling = false;
         }
 
@@ -48,68 +48,68 @@ namespace ConsoleServer.Logic
                 return _loggedClients.ContainsValue(userName);
         }
 
-        public bool IsSocketInUse(ISocketHandler socketHandler)
+        public bool IsSocketInUse(INetworkStreamHandler networkStreamHandler)
         {
             lock (_padlock)
-                return _loggedClients.ContainsKey(socketHandler);
+                return _loggedClients.ContainsKey(networkStreamHandler);
         }
 
-        public string GetUsername(ISocketHandler socketHandler)
+        public string GetUsername(INetworkStreamHandler networkStreamHandler)
         {
             lock (_padlock)
-                return _loggedClients[socketHandler];
+                return _loggedClients[networkStreamHandler];
         }
 
-        public void AddClient(ISocketHandler socketHandler, string userName)
+        public void AddClient(INetworkStreamHandler networkStreamHandler, string userName)
         {
             lock (_padlock)
-                _loggedClients.Add(socketHandler, userName);
+                _loggedClients.Add(networkStreamHandler, userName);
         }
 
-        public void RemoveClient(ISocketHandler socketHandler)
+        public void RemoveClient(INetworkStreamHandler networkStreamHandler)
         {
             lock (_padlock)
-                _loggedClients.Remove(socketHandler);
+                _loggedClients.Remove(networkStreamHandler);
         }
 
-        public async Task HandleClient(ISocketHandler clientSocketHandler)
+        public async Task HandleClient(INetworkStreamHandler clientNetworkStreamHandler)
         {
             bool isSocketActive = true;
             while (!stopHandling && isSocketActive)
             {
                 try
                 {
-                    Header header = await clientSocketHandler.ReceiveHeader();
+                    Header header = await clientNetworkStreamHandler.ReceiveHeader();
                     if (header.ICommand == _clientClosedConnectionAbruptly)
                     {
-                        CloseConnection(clientSocketHandler);
+                        CloseConnection(clientNetworkStreamHandler);
                         isSocketActive = false;
                     }
                     else
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
-                        commandStrategy.HandleRequest(header, clientSocketHandler);
+                        commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
                     }
                 }
                 catch (Exception e) when (e is IOException || e is AggregateException)
                 {
-                    CloseConnection(clientSocketHandler);
+                    CloseConnection(clientNetworkStreamHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Se perdio la conexion con un socket");
                 }
                 catch (Exception e) when (e is FormatException || e is KeyNotFoundException)
                 {
-                    CloseConnection(clientSocketHandler);
+                    CloseConnection(clientNetworkStreamHandler);
                     isSocketActive = false;
                     Console.WriteLine($"Error en formato de protocolo, cerrando conexion con el cliente");
                 }
             }
         }
 
-        private void CloseConnection(ISocketHandler clientSocketHandler)
+        private void CloseConnection(INetworkStreamHandler clientNetworkStreamHandler)
         {
-            _loggedClients.Remove(clientSocketHandler);
-            clientSocketHandler.ShutdownSocket();
+            _loggedClients.Remove(clientNetworkStreamHandler);
+            clientNetworkStreamHandler.ShutdownSocket();
         }
     }
 }

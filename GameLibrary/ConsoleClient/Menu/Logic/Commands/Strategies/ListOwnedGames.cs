@@ -6,10 +6,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ListOwnedGames : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             string sendNoData = "";
-            string response = clientSocket.SendMessageAndRecieveResponse(CommandConstants.ListOwnedGames, sendNoData).Result;
+            string response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListOwnedGames, sendNoData).Result;
             return response;
         }
     }

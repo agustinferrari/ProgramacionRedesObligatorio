@@ -8,7 +8,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, ISocketHandler clientSocketHandler)
+        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string responseMessage;
             try
@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 responseMessage = ResponseConstants.NoAvailableGames;
             }
-            clientSocketHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
+            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
     }
 }

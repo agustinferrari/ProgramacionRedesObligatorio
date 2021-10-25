@@ -17,12 +17,12 @@ namespace ConsoleServer
             if (validatorPort.Validate(serverPort))
             {
                 int parsedPort = Int32.Parse(serverPort);
-                ServerNetworkStreamHandler socketHandler = new ServerNetworkStreamHandler(serverIpAddress, parsedPort);
+                ServerNetworkStreamHandler serverNetworkStreamHandler = new ServerNetworkStreamHandler(serverIpAddress, parsedPort);
 
-                await socketHandler.CreateClientConectionTask();
+                await serverNetworkStreamHandler.CreateClientConectionTask();
 
                 ServerMenuRenderer.LoadMainMenu();
-                ServerMenuHandler.HandleMainMenuResponse(socketHandler);
+                ServerMenuHandler.HandleMainMenuResponse(serverNetworkStreamHandler);
             }
             else
             {

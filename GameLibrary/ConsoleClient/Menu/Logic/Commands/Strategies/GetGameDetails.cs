@@ -8,16 +8,16 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class GetGameDetails : MenuStrategy
     {
-        public override string HandleSelectedOption(ISocketHandler clientSocket)
+        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
-            ListGamesAvailable(clientSocket);
+            ListGamesAvailable(clientNetworkStream);
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
             string detailsResponse;
             string imageResponse = "";
             if (_menuValidator.ValidateNotEmptyFields(gameName))
             {
-                detailsResponse = ListGameDetails(clientSocket, gameName);
+                detailsResponse = ListGameDetails(clientNetworkStream, gameName);
 
                 if (detailsResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                 {
@@ -25,10 +25,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     string option = Console.ReadLine();
                     if (option == "1")
                     {
-                        clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        imageResponse = clientSocket.RecieveResponse().Result;
+                        clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
+                        imageResponse = clientNetworkStream.RecieveResponse().Result;
                         if (imageResponse != ResponseConstants.InvalidGameError && imageResponse != ResponseConstants.AuthenticationError)
-                            imageResponse = ReciveAndDownloadImage(clientSocket);
+                            imageResponse = ReciveAndDownloadImage(clientNetworkStream);
                     }
                     else
                         imageResponse = "La foto no fue descargada";
@@ -39,21 +39,21 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             return imageResponse;
         }
 
-        private string ListGameDetails(ISocketHandler clientSocket, string gameName)
+        private string ListGameDetails(INetworkStreamHandler clientNetworkStream, string gameName)
         {
-            clientSocket.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
-            Header header = clientSocket.ReceiveHeader().Result;
-            string detailsResponse = clientSocket.ReceiveString(header.IDataLength).Result;
+            clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
+            Header header = clientNetworkStream.ReceiveHeader().Result;
+            string detailsResponse = clientNetworkStream.ReceiveString(header.IDataLength).Result;
             Console.WriteLine(detailsResponse);
             return detailsResponse;
         }
 
-        private string ReciveAndDownloadImage(ISocketHandler clientSocket)
+        private string ReciveAndDownloadImage(INetworkStreamHandler clientNetworkStream)
         {
-            string rawImageData = clientSocket.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
+            string rawImageData = clientNetworkStream.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-            string pathToImageGame = clientSocket.ReceiveImage(rawImageData, pathToImageFolder, "").Result;
+            string pathToImageGame = clientNetworkStream.ReceiveImage(rawImageData, pathToImageFolder, "").Result;
             string result = "";
             if (pathToImageGame != "")
                 result = "La foto fue guardada en: " + pathToImageGame;
@@ -62,10 +62,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             return result;
         }
 
-        private void ListGamesAvailable(ISocketHandler clientSocket)
+        private void ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             ListGames listGames = new ListGames();
-            Console.WriteLine(listGames.ListGamesAvailable(clientSocket));
+            Console.WriteLine(listGames.ListGamesAvailable(clientNetworkStream));
         }
 
 
