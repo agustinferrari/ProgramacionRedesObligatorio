@@ -36,9 +36,9 @@ namespace ConsoleServer
             {
                 client.ShutdownSocket();
             }
-            var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            fakeSocket.Connect(_ipAddress, _port);
-            _networkStream.Close(0);
+            // var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            // fakeSocket.Connect(_ipAddress, _port);
+            //_networkStream.Close(0);
         }
 
         private async Task ListenForConnections()
