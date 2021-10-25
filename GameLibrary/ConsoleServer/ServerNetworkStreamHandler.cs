@@ -53,7 +53,7 @@ namespace ConsoleServer
                     ISocketHandler clientConnectedHandler = new NetworkStreamHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
                     Console.WriteLine("Nueva conexion aceptada...");
-                    Task.Run(async () => clientHandler.HandleClient(clientConnectedHandler).ConfigureAwait(false));
+                    Task.Run(async () => await clientHandler.HandleClient(clientConnectedHandler).ConfigureAwait(false));
                 }
                 catch (Exception e)
                 {
