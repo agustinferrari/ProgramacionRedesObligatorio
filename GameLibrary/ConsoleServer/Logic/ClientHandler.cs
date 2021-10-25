@@ -91,7 +91,7 @@ namespace ConsoleServer.Logic
                         commandStrategy.HandleRequest(header, clientSocketHandler);
                     }
                 }
-                catch (IOException)
+                catch (Exception e) when (e is IOException || e is AggregateException)
                 {
                     CloseConnection(clientSocketHandler);
                     isSocketActive = false;

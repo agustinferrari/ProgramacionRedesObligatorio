@@ -16,7 +16,6 @@ namespace ConsoleClient
         {
             _tcpClient = new TcpClient(clientIpEndPoint);
             ConnectClient();
-            _networkStream = _tcpClient.GetStream();
         }
 
         private async Task ConnectClient()
@@ -24,6 +23,7 @@ namespace ConsoleClient
             await _tcpClient.ConnectAsync(
                 IPAddress.Parse(SettingsMgr.ReadSetting(ClientConfig.ServerIpConfigKey)),
                 int.Parse(SettingsMgr.ReadSetting(ClientConfig.SeverPortConfigKey))).ConfigureAwait(false);
+            _networkStream = _tcpClient.GetStream();
         }
     }
 }

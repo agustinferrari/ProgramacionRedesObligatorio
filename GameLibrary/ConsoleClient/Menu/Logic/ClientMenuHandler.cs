@@ -48,7 +48,7 @@ namespace ConsoleClient.Menu.Logic
                     LoadMainMenu(clientSocket);
                 }
             }
-            catch (IOException)
+            catch (Exception e) when (e is IOException || e is AggregateException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
@@ -78,7 +78,7 @@ namespace ConsoleClient.Menu.Logic
                     LoadLoggedUserMenu(clientSocket);
                 }
             }
-            catch (IOException)
+            catch (Exception e) when (e is IOException || e is AggregateException)
             {
                 Console.WriteLine("Se perdio la conexion con el server, intente mas tarde");
             }
