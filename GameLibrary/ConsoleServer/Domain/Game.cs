@@ -45,7 +45,7 @@ namespace ConsoleServer.Domain
                 reviewList = "Aun no hay calificaciones";
             else
                 foreach (Review review in Reviews)
-                    reviewList = review.ToString() + "\n";
+                    reviewList += review.ToString() + "\n";
             result += reviewList;
 
             return result;
