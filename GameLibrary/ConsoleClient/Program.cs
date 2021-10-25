@@ -12,7 +12,7 @@ namespace ConsoleClient
     public class Program
     {
         private static readonly ISettingsManager SettingsMgr = new SettingsManager();
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             try
             {

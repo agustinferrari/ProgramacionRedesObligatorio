@@ -9,7 +9,7 @@ namespace Common.FileUtils
     {
         public byte[] Read(string path, long offset, int length)
         {
-            var data = new byte[length];
+            byte[] data = new byte[length];
 
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
@@ -30,14 +30,14 @@ namespace Common.FileUtils
 
             if (File.Exists(wantedPath))
             {
-                using (var fs = new FileStream(wantedPath, FileMode.Append))
+                using (FileStream fs = new FileStream(wantedPath, FileMode.Append))
                 {
                     fs.Write(data, 0, data.Length);
                 }
             }
             else
             {
-                using (var fs = new FileStream(wantedPath, FileMode.Create))
+                using (FileStream fs = new FileStream(wantedPath, FileMode.Create))
                 {
                     fs.Write(data, 0, data.Length);
                 }

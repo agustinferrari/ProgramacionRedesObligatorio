@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils.Interfaces;
 using System;
 using System.Configuration;
+using System.Collections.Specialized;
 
 namespace Common.NetworkUtils
 {
@@ -10,7 +11,7 @@ namespace Common.NetworkUtils
         {
             try
             {
-                var appSettings = ConfigurationManager.AppSettings;
+                NameValueCollection appSettings = ConfigurationManager.AppSettings;
                 return appSettings[key] ?? string.Empty;
             }
             catch (ConfigurationErrorsException)

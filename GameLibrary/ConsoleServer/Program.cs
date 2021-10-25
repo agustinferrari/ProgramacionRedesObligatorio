@@ -18,8 +18,8 @@ namespace ConsoleServer
             {
                 int parsedPort = Int32.Parse(serverPort);
                 ServerSocketHandler socketHandler = new ServerSocketHandler(serverIpAddress, parsedPort);
-                
-                socketHandler.CreateClientConectionTask();
+
+                await socketHandler.CreateClientConectionTask();
 
                 ServerMenuRenderer.LoadMainMenu();
                 ServerMenuHandler.HandleMainMenuResponse(socketHandler);

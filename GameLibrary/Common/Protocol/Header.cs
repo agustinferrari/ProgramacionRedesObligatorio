@@ -38,9 +38,9 @@ namespace Common.Protocol
         public Header(string direction, int command, int datalength)
         {
             _direction = Encoding.UTF8.GetBytes(direction);
-            var stringCommand = command.ToString("D2");
+            string stringCommand = command.ToString("D2");
             _command = Encoding.UTF8.GetBytes(stringCommand);
-            var stringData = datalength.ToString("D4");
+            string stringData = datalength.ToString("D4");
             _dataLength = Encoding.UTF8.GetBytes(stringData);
         }
 

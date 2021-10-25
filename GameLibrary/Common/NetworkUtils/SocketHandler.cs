@@ -53,12 +53,12 @@ namespace Common.NetworkUtils
 
         public async Task ReceiveData(int Length, byte[] buffer)
         {
-            var iRecv = 0;
+            int iRecv = 0;
             while (iRecv < Length)
             {
                 try
                 {
-                    int localRecv =  await _networkStream.ReadAsync(buffer, iRecv, Length - iRecv);
+                    int localRecv = await _networkStream.ReadAsync(buffer, iRecv, Length - iRecv);
                     bool connectionCloseOnRemoteEndPoint = localRecv == 0;
                     if (connectionCloseOnRemoteEndPoint)
                     {
@@ -170,7 +170,7 @@ namespace Common.NetworkUtils
             bool imageSentCorrectly = true;
             long fileSize = _fileHandler.GetFileSize(path);
             string fileName = _fileHandler.GetFileName(path);
-            SendImageProtocolData(fileName, fileSize);
+            await SendImageProtocolData(fileName, fileSize);
             await SendData(Encoding.UTF8.GetBytes(fileName));
 
             long parts = SpecificationHelper.GetParts(fileSize);
@@ -211,13 +211,13 @@ namespace Common.NetworkUtils
         {
             string protocolData = fileName.Length.ToString("D" + Specification.FixedFileNameLength);
             protocolData += fileSize.ToString("D" + Specification.FixedFileSizeLength);
-             await SendData(Encoding.UTF8.GetBytes(protocolData));
+            await SendData(Encoding.UTF8.GetBytes(protocolData));
         }
 
         public void ShutdownSocket()
         {
             _networkStream.Close();
         }
-        
+
     }
 }
