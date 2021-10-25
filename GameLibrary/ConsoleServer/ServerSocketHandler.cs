@@ -36,22 +36,19 @@ namespace ConsoleServer
             {
                 client.ShutdownSocket();
             }
-            // var fakeSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            // fakeSocket.Connect(_ipAddress, _port);
-            //_networkStream.Close(0);
+            _tcpListener.Stop();
         }
 
         private async Task ListenForConnections()
         {
             ClientsConnectedSockets = new List<ISocketHandler>();
-            TcpClient tcpClient = null;
             while (!Exit)
             {
                 try
                 {
                     IClientHandler clientHandler = ClientHandler.Instance;
                     _tcpListener.Start(_supportedConnections);
-                     tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
+                    TcpClient tcpClient = await _tcpListener.AcceptTcpClientAsync().ConfigureAwait(false);
                     _tcpListener.Stop();
                     ISocketHandler clientConnectedHandler = new SocketHandler(tcpClient.GetStream());
                     ClientsConnectedSockets.Add(clientConnectedHandler);
@@ -65,8 +62,6 @@ namespace ConsoleServer
                     Exit = true;
                 }
             }
-            //Esto lo agregue para probar
-            //tcpClient.Close();
             Console.WriteLine("Exiting....");
         }
     }
