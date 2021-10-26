@@ -9,7 +9,7 @@ namespace ConsoleServer
     public class Program
     {
         private static readonly ISettingsManager SettingsMgr = new SettingsManager();
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             string serverIpAddress = SettingsMgr.ReadSetting(ServerConfig.ServerIpConfigKey);
             string serverPort = SettingsMgr.ReadSetting(ServerConfig.SeverPortConfigKey);
@@ -19,7 +19,7 @@ namespace ConsoleServer
                 int parsedPort = Int32.Parse(serverPort);
                 ServerNetworkStreamHandler serverNetworkStreamHandler = new ServerNetworkStreamHandler(serverIpAddress, parsedPort);
 
-                await serverNetworkStreamHandler.CreateClientConectionTask();
+                serverNetworkStreamHandler.CreateClientConectionTask();
 
                 ServerMenuRenderer.LoadMainMenu();
                 ServerMenuHandler.HandleMainMenuResponse(serverNetworkStreamHandler);

@@ -23,7 +23,7 @@ namespace ConsoleServer
             _tcpListener = new TcpListener(IPAddress.Parse(ipAddress), port);
         }
 
-        public async Task CreateClientConectionTask()
+        public void CreateClientConectionTask()
         {
             Task.Run(async () => await ListenForConnections().ConfigureAwait(false));
         }
