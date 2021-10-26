@@ -4,13 +4,14 @@ using Common.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ListOwnedGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string emptyString = "";
             string responseMessage;
@@ -25,7 +26,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
         }
     }
 }

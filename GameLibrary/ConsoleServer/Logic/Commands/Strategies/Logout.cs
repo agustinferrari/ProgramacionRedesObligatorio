@@ -4,18 +4,19 @@ using Common.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class Logout : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
                 _clientHandler.RemoveClient(clientNetworkStreamHandler);
             string responseMessageResult = ResponseConstants.LogoutSuccess;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.Logout, responseMessageResult);
         }
     }
 }

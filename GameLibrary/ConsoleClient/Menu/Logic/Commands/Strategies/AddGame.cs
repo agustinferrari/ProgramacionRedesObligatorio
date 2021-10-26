@@ -3,12 +3,13 @@ using Common.FileUtils.Interfaces;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class AddGame : MenuStrategy
     {
-        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
+        public override async Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Ingrese el nombre del juego:");
             string name = Console.ReadLine();
@@ -27,12 +28,12 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
-                    clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
-                    bool imageSentCorrectly = clientNetworkStream.SendImage(path).Result;
+                    await clientNetworkStream .SendMessage(HeaderConstants.Request, CommandConstants.AddGame, gameData);
+                    bool imageSentCorrectly = await clientNetworkStream.SendImage(path);
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
 
-                    response = clientNetworkStream.RecieveResponse().Result;
+                    response = await clientNetworkStream.RecieveResponse();
                 }
                 else
                 {

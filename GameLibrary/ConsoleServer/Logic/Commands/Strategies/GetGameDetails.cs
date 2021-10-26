@@ -6,13 +6,14 @@ using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class GetGameDetails : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
             string responseMessageResult;
@@ -30,7 +31,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
         }
     }
 }

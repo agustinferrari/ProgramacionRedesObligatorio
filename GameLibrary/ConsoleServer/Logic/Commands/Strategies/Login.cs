@@ -4,15 +4,16 @@ using Common.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class Login : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string userName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string userName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
             if (_clientHandler.IsClientLogged(userName))
                 responseMessageResult = ResponseConstants.LoginErrorAlreadyLogged;
@@ -27,7 +28,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 else
                     responseMessageResult = ResponseConstants.LoginErrorSocketAlreadyInUse;
             }
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.Login, responseMessageResult);
         }
     }
 }

@@ -2,20 +2,21 @@
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Utils.CustomExceptions;
-
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ListFilteredGames : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string rawData = await clientNetworkStreamHandler.ReceiveString(header.IDataLength)
+                ;
             string responseMessageResult;
             try
             {
-             responseMessageResult = _gameController.GetGamesFiltered(rawData);
+                responseMessageResult = _gameController.GetGamesFiltered(rawData);
 
             }
             catch (InvalidGameException)
@@ -23,7 +24,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 responseMessageResult = ResponseConstants.NoAvailableGames;
             }
 
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListFilteredGames, responseMessageResult);
         }
     }
 }

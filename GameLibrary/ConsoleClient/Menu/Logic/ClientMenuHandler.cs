@@ -9,23 +9,24 @@ using ConsoleClient.Menu.Presentation;
 using System;
 using System.Net.Sockets;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic
 {
     public class ClientMenuHandler : IClientMenuHandler
     {
-        public void LoadMainMenu(INetworkStreamHandler clientNetworkStream)
+        public async Task LoadMainMenu(INetworkStreamHandler clientNetworkStream)
         {
             ClientMenuRenderer.RenderMainMenu();
-            HandleMainMenuResponse(clientNetworkStream);
+            await HandleMainMenuResponse(clientNetworkStream);
         }
-        public void LoadLoggedUserMenu(INetworkStreamHandler clientNetworkStream)
+        public async Task LoadLoggedUserMenu(INetworkStreamHandler clientNetworkStream)
         {
             ClientMenuRenderer.RenderLoggedUserMenu();
-            HandleLoggedUserMenuResponse(clientNetworkStream);
+            await HandleLoggedUserMenuResponse(clientNetworkStream);
         }
 
-        private void HandleMainMenuResponse(INetworkStreamHandler clientNetworkStream)
+        private async Task HandleMainMenuResponse(INetworkStreamHandler clientNetworkStream)
         {
             string selectedOption = Console.ReadLine();
             Console.Clear();
@@ -35,17 +36,17 @@ namespace ConsoleClient.Menu.Logic
                 if (parsedOption == CommandConstants.Login || parsedOption == CommandConstants.ListGames)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    string response = menuStrategy.HandleSelectedOption(clientNetworkStream);
+                    string response = await menuStrategy.HandleSelectedOption(clientNetworkStream);
                     Console.WriteLine(response);
                     if (response == ResponseConstants.LoginSuccess)
-                        LoadLoggedUserMenu(clientNetworkStream);
+                        await LoadLoggedUserMenu(clientNetworkStream);
                     else
-                        LoadMainMenu(clientNetworkStream);
+                        await LoadMainMenu(clientNetworkStream);
                 }
                 else
                 {
                     Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadMainMenu(clientNetworkStream);
+                    await LoadMainMenu(clientNetworkStream);
                 }
             }
             catch (Exception e) when (e is IOException || e is AggregateException)
@@ -54,7 +55,7 @@ namespace ConsoleClient.Menu.Logic
             }
         }
 
-        private void HandleLoggedUserMenuResponse(INetworkStreamHandler clientNetworkStream)
+        private async Task HandleLoggedUserMenuResponse(INetworkStreamHandler clientNetworkStream)
         {
             string selectedOption = Console.ReadLine();
             Console.Clear();
@@ -64,18 +65,18 @@ namespace ConsoleClient.Menu.Logic
                 if (parsedOption >= CommandConstants.ListGames && parsedOption <= CommandConstants.DeletePublishedGame)
                 {
                     MenuStrategy menuStrategy = MenuFactory.GetStrategy(parsedOption);
-                    string response = menuStrategy.HandleSelectedOption(clientNetworkStream);
+                    string response = await menuStrategy.HandleSelectedOption(clientNetworkStream);
                     Console.WriteLine(response);
                     if (response == ResponseConstants.LogoutSuccess || response == ResponseConstants.InvalidUsernameError
                         || response == ResponseConstants.AuthenticationError)
-                        LoadMainMenu(clientNetworkStream);
+                        await LoadMainMenu(clientNetworkStream);
                     else
-                        LoadLoggedUserMenu(clientNetworkStream);
+                        await LoadLoggedUserMenu(clientNetworkStream);
                 }
                 else
                 {
                     Console.WriteLine("La opcion seleccionada es invalida.");
-                    LoadLoggedUserMenu(clientNetworkStream);
+                    await LoadLoggedUserMenu(clientNetworkStream);
                 }
             }
             catch (Exception e) when (e is IOException || e is AggregateException)

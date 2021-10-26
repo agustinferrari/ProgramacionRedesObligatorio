@@ -2,22 +2,22 @@
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
-
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class GetGameDetails : MenuStrategy
     {
-        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
+        public override async Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
-            ListGamesAvailable(clientNetworkStream);
+            await ListGamesAvailable(clientNetworkStream);
             Console.WriteLine("Ingrese el nombre del juego para ver sus detalles:");
             string gameName = Console.ReadLine();
             string detailsResponse;
             string imageResponse = "";
             if (_menuValidator.ValidateNotEmptyFields(gameName))
             {
-                detailsResponse = ListGameDetails(clientNetworkStream, gameName);
+                detailsResponse = await ListGameDetails(clientNetworkStream, gameName);
 
                 if (detailsResponse != ResponseConstants.InvalidGameError && detailsResponse != ResponseConstants.AuthenticationError)
                 {
@@ -25,10 +25,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                     string option = Console.ReadLine();
                     if (option == "1")
                     {
-                        clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
-                        imageResponse = clientNetworkStream.RecieveResponse().Result;
+                        await clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameImage, gameName);
+                        imageResponse = await clientNetworkStream.RecieveResponse();
                         if (imageResponse != ResponseConstants.InvalidGameError && imageResponse != ResponseConstants.AuthenticationError)
-                            imageResponse = ReciveAndDownloadImage(clientNetworkStream);
+                            imageResponse = await ReciveAndDownloadImage(clientNetworkStream);
                     }
                     else
                         imageResponse = "La foto no fue descargada";
@@ -39,21 +39,21 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             return imageResponse;
         }
 
-        private string ListGameDetails(INetworkStreamHandler clientNetworkStream, string gameName)
+        private async Task<string> ListGameDetails(INetworkStreamHandler clientNetworkStream, string gameName)
         {
-            clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
-            Header header = clientNetworkStream.ReceiveHeader().Result;
-            string detailsResponse = clientNetworkStream.ReceiveString(header.IDataLength).Result;
+            await clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.GetGameDetails, gameName);
+            Header header = await clientNetworkStream.ReceiveHeader();
+            string detailsResponse = await clientNetworkStream.ReceiveString(header.IDataLength);
             Console.WriteLine(detailsResponse);
             return detailsResponse;
         }
 
-        private string ReciveAndDownloadImage(INetworkStreamHandler clientNetworkStream)
+        private async Task<string> ReciveAndDownloadImage(INetworkStreamHandler clientNetworkStream)
         {
-            string rawImageData = clientNetworkStream.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
+            string rawImageData = await clientNetworkStream.ReceiveString(SpecificationHelper.GetImageDataLength());
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ClientConfig.ClientPathToImages);
-            string pathToImageGame = clientNetworkStream.ReceiveImage(rawImageData, pathToImageFolder, "").Result;
+            string pathToImageGame = await clientNetworkStream.ReceiveImage(rawImageData, pathToImageFolder, "");
             string result = "";
             if (pathToImageGame != "")
                 result = "La foto fue guardada en: " + pathToImageGame;
@@ -62,10 +62,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             return result;
         }
 
-        private void ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
+        private async Task ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             ListGames listGames = new ListGames();
-            Console.WriteLine(listGames.ListGamesAvailable(clientNetworkStream));
+            Console.WriteLine(await listGames.ListGamesAvailable(clientNetworkStream));
         }
 
 

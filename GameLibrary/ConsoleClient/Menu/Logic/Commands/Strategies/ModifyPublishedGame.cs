@@ -4,12 +4,13 @@ using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using System;
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ModifyPublishedGame : MenuStrategy
     {
-        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
+        public override async Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Ingrese nombre del juego de su lista a modificar:");
             string actualGameName = Console.ReadLine();
@@ -28,11 +29,11 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             string response;
             if (actualGameName != "" && ValidateAtLeastOneField(changes))
             {
-                clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
+                await clientNetworkStream.SendMessage(HeaderConstants.Request, CommandConstants.ModifyPublishedGame, gameData);
                 IFileHandler fileStreamHandler = new FileHandler();
                 if (fileStreamHandler.FileExistsAndIsReadable(path) && fileStreamHandler.IsFilePNG(path))
                 {
-                    bool imageSentCorrectly = clientNetworkStream.SendImage(path).Result;
+                    bool imageSentCorrectly = await clientNetworkStream.SendImage(path);
                     if (!imageSentCorrectly)
                         Console.WriteLine("No se pudo leer la imagen correctamente, intente modificar el juego mas tarde.");
                 }
@@ -40,9 +41,9 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
                 {
                     string emptyPath = "";
                     int noData = 0;
-                    clientNetworkStream.SendImageProtocolData(emptyPath, noData);
+                    await clientNetworkStream.SendImageProtocolData(emptyPath, noData);
                 }
-                response = clientNetworkStream.RecieveResponse().Result;
+                response = await clientNetworkStream.RecieveResponse();
             }
             else
                 response = "Por favor ingrese el nombre del juego que quiere modificar y uno de los campos a modificar";

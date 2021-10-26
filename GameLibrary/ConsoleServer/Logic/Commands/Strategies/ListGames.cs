@@ -2,13 +2,13 @@
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Utils.CustomExceptions;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ListGames : CommandStrategy
     {
-
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string responseMessage;
             try
@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             {
                 responseMessage = ResponseConstants.NoAvailableGames;
             }
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListGames, responseMessage);
         }
     }
 }

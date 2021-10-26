@@ -3,14 +3,14 @@ using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
-
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class AddGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
@@ -18,12 +18,12 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 int firstElement = 0;
                 int secondElement = 1;
                 int thirdElement = 2;
-                string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+                string rawData = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
                 string[] gameData = rawData.Split('%');
                 string gameName = gameData[firstElement];
                 string genre = gameData[secondElement];
                 string synopsis = gameData[thirdElement];
-                string pathToImage = UploadImage(clientNetworkStreamHandler, gameName);
+                string pathToImage = await UploadImage(clientNetworkStreamHandler, gameName);
 
                 try
                 {
@@ -52,15 +52,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
         }
 
-        private string UploadImage(INetworkStreamHandler clientNetworkStreamHandler, string gameName)
+        private async Task<string> UploadImage(INetworkStreamHandler clientNetworkStreamHandler, string gameName)
         {
-            string rawImageData = clientNetworkStreamHandler.ReceiveString(SpecificationHelper.GetImageDataLength()).Result;
+            string rawImageData = await clientNetworkStreamHandler.ReceiveString(SpecificationHelper.GetImageDataLength());
             ISettingsManager SettingsMgr = new SettingsManager();
             string pathToImageFolder = SettingsMgr.ReadSetting(ServerConfig.ServerPathToImageFolder);
-            return clientNetworkStreamHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName).Result;
+            return await clientNetworkStreamHandler.ReceiveImage(rawImageData, pathToImageFolder, gameName);
         }
     }
 }

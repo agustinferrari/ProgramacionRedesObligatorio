@@ -6,17 +6,18 @@ using ConsoleServer.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ReviewGame : CommandStrategy
     {
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
             int firstElement = 0;
             int secondElement = 1;
             int thirdElement = 2;
-            string rawData = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string rawData = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string[] gameData = rawData.Split('%');
             string gameName = gameData[firstElement];
             string rating = gameData[secondElement];
@@ -53,7 +54,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
         }
     }
 }

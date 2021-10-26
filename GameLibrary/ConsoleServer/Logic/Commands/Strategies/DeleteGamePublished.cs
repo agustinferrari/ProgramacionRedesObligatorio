@@ -3,15 +3,16 @@ using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class DeleteGamePublished : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string responseMessage;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
@@ -39,7 +40,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
 
         }
     }

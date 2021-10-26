@@ -88,7 +88,7 @@ namespace ConsoleServer.Logic
                     else
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
-                        commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
+                        await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
                     }
                 }
                 catch (Exception e) when (e is IOException || e is AggregateException)

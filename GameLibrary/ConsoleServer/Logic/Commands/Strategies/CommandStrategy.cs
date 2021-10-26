@@ -4,6 +4,7 @@ using Common.Protocol;
 using ConsoleServer.BusinessLogic;
 using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Logic.Interfaces;
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
@@ -20,6 +21,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
+        public abstract Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
     }
 }

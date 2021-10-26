@@ -15,10 +15,9 @@ namespace ConsoleClient
             base()
         {
             _tcpClient = new TcpClient(clientIpEndPoint);
-            ConnectClient();
         }
 
-        private async Task ConnectClient()
+        public async Task ConnectClient()
         {
             await _tcpClient.ConnectAsync(
                 IPAddress.Parse(SettingsMgr.ReadSetting(ClientConfig.ServerIpConfigKey)),

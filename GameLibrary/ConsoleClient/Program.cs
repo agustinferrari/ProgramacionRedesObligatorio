@@ -12,16 +12,17 @@ namespace ConsoleClient
     public class Program
     {
         private static readonly ISettingsManager SettingsMgr = new SettingsManager();
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             try
             {
                 IPEndPoint clientIpEndPoint = new IPEndPoint(
                     IPAddress.Parse(SettingsMgr.ReadSetting(ClientConfig.ClientIpConfigKey)),
                     int.Parse(SettingsMgr.ReadSetting(ClientConfig.ClientPortConfigKey)));
-                INetworkStreamHandler networkStreamHandler = new ClientNetworkStreamHandler(clientIpEndPoint);
+                ClientNetworkStreamHandler networkStreamHandler = new ClientNetworkStreamHandler(clientIpEndPoint);
+                await networkStreamHandler.ConnectClient();
                 IClientMenuHandler menuHandler = new ClientMenuHandler();
-                menuHandler.LoadMainMenu(networkStreamHandler);
+                await menuHandler.LoadMainMenu(networkStreamHandler);
             }
             catch (ArgumentOutOfRangeException)
             {

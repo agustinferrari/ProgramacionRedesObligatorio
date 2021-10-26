@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Utils;
 using ConsoleClient.Menu.Utils.Interfaces;
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
@@ -12,6 +13,6 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
         {
             _menuValidator = new MenuValidator();
         }
-        public abstract string HandleSelectedOption(INetworkStreamHandler clientNetworkStream);
+        public abstract Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream);
     }
 }

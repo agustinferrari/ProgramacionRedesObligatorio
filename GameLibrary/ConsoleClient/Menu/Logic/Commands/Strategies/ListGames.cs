@@ -4,31 +4,32 @@ using Common.Protocol;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace ConsoleClient.Menu.Logic.Commands.Strategies
 {
     public class ListGames : MenuStrategy
     {
-        public override string HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
+        public override async Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Desea filtrar la lista de juegos ? \n Y/N");
             string filters = Console.ReadLine().ToLower();
             string response;
             if (filters == "y" || filters == "yes")
-                response = HandleListGamesFiltered(clientNetworkStream);
+                response = await HandleListGamesFiltered(clientNetworkStream);
             else
-                response = ListGamesAvailable(clientNetworkStream);
+                response = await ListGamesAvailable(clientNetworkStream);
             return response;
         }
 
-        public string ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
+        public async Task<string> ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             string sendNoData = "";
-            string response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData).Result;
+            string response = await clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListGames, sendNoData);
             return "Lista de juegos: \n" + response;
         }
 
-        private string HandleListGamesFiltered(INetworkStreamHandler clientNetworkStream)
+        private async Task<string> HandleListGamesFiltered(INetworkStreamHandler clientNetworkStream)
         {
             Console.WriteLine("Por favor ingrese titulo a filtrar, si no desea esta opción, ingrese enter:");
             string filterTitle = Console.ReadLine().ToLower();
@@ -37,7 +38,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             Console.WriteLine("Por favor ingrese rating minimo a filtrar, si no desea esta opción, ingrese enter:");
             string ratingTitle = Console.ReadLine().ToLower();
             string totalFilter = filterTitle + "%" + genreFIlter + "%" + ratingTitle;
-            string response = clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter).Result;
+            string response = await clientNetworkStream.SendMessageAndRecieveResponse(CommandConstants.ListFilteredGames, totalFilter);
             return "Lista de juegos: \n" + response;
         }
     }

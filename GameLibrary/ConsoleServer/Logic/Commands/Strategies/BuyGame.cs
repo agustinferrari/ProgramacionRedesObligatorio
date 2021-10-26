@@ -1,16 +1,16 @@
 ﻿using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
 using ConsoleServer.Utils.CustomExceptions;
-
+using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class BuyGame : CommandStrategy
     {
 
-        public override void HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string username;
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
@@ -36,7 +36,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             }
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
-            clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
+            await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.BuyGame, responseMessageResult);
         }
     }
 }
