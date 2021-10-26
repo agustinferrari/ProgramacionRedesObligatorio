@@ -15,7 +15,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
         public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            string gameName = clientNetworkStreamHandler.ReceiveString(header.IDataLength).Result;
+            string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {

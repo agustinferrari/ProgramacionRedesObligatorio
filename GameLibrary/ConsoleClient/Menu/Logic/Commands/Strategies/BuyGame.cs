@@ -9,7 +9,7 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
     {
         public override async Task<string> HandleSelectedOption(INetworkStreamHandler clientNetworkStream)
         {
-            ListGamesAvailable(clientNetworkStream);
+            await ListGamesAvailable(clientNetworkStream);
             Console.WriteLine("Por favor ingrese el nombre del juego para comprar:");
             string gameName = Console.ReadLine().ToLower();
             string response = "";
@@ -18,10 +18,10 @@ namespace ConsoleClient.Menu.Logic.Commands.Strategies
             return response;
         }
 
-        private void ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
+        private async Task ListGamesAvailable(INetworkStreamHandler clientNetworkStream)
         {
             ListGames listGames = new ListGames();
-            Console.WriteLine(listGames.ListGamesAvailable(clientNetworkStream));
+            Console.WriteLine(await listGames.ListGamesAvailable(clientNetworkStream));
         }
     }
 }
