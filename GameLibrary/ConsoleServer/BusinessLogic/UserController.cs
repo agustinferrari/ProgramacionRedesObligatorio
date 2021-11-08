@@ -1,5 +1,7 @@
-﻿using ConsoleServer.BusinessLogic.Interfaces;
+﻿using Common.Protocol;
+using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Domain;
+using ConsoleServer.Logic.Logs;
 using ConsoleServer.Utils.CustomExceptions;
 using System.Collections.Generic;
 
@@ -11,11 +13,13 @@ namespace ConsoleServer.BusinessLogic
         private List<User> _users;
         private IGameController _gameController;
         private static UserController _instance = null;
+        private LogLogic _logLogic;
 
         private UserController()
         {
             _users = new List<User>();
             _gameController = GameController.Instance;
+            _logLogic = LogLogic.Instance;
         }
 
         public static UserController Instance
@@ -92,7 +96,10 @@ namespace ConsoleServer.BusinessLogic
                 foreach (User user in _users)
                 {
                     if (user.OwnedGames != null && user.OwnedGames.Contains(gameToDelete))
+                    {
                         user.OwnedGames.Remove(gameToDelete);
+                    }
+
                 }
             }
         }

@@ -6,9 +6,14 @@ using ConsoleServer.Logic.Commands.Factory;
 using ConsoleServer.Logic.Commands.Strategies;
 using ConsoleServer.Logic.Interfaces;
 using System;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
+using System.Text;
+using System.Text.Json;
+using CommonLog;
 
 namespace ConsoleServer.Logic
 {

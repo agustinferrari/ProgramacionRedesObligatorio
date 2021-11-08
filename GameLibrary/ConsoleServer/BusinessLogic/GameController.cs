@@ -1,5 +1,7 @@
-﻿using ConsoleServer.BusinessLogic.Interfaces;
+﻿using Common.Protocol;
+using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Domain;
+using ConsoleServer.Logic.Logs;
 using ConsoleServer.Utils;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
@@ -12,11 +14,13 @@ namespace ConsoleServer.BusinessLogic
     {
         private static readonly object _padlock = new object();
         private static GameController _instance = null;
+        private LogLogic _logLogic;
         private List<Game> _games;
 
         private GameController()
         {
             _games = new List<Game>();
+            _logLogic = LogLogic.Instance;
             CatalogueLoader.AddGames(this);
         }
 
@@ -42,7 +46,11 @@ namespace ConsoleServer.BusinessLogic
                 if (_games != null && _games.Exists(game => game.Name.ToLower() == gameToAdd.Name.ToLower()))
                     throw new GameAlreadyAddedException();
                 else
+                {
                     _games.Add(gameToAdd);
+                    _logLogic.LogUserGame(gameToAdd.OwnerUser.Name, gameToAdd, CommandConstants.DeletePublishedGame);
+
+                }
             }
         }
 
@@ -132,6 +140,7 @@ namespace ConsoleServer.BusinessLogic
                     throw new InvalidGameException();
                 _userController.DeleteGameFromAllUsers(gameToDelete);
                 _games.Remove(gameToDelete);
+                _logLogic.LogUserGame(gameToDelete.OwnerUser.Name, gameToDelete, CommandConstants.DeletePublishedGame);
             }
         }
 

@@ -6,6 +6,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <PackageReference Include="RabbitMQ.Client" Version="6.2.2" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\CommonLog\CommonLog.csproj" />
 		<ProjectReference Include="..\Common\Common.csproj" />
 	</ItemGroup>
 
