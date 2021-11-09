@@ -13,13 +13,11 @@ namespace ConsoleServer.BusinessLogic
         private List<User> _users;
         private IGameController _gameController;
         private static UserController _instance = null;
-        private LogLogic _logLogic;
 
         private UserController()
         {
             _users = new List<User>();
             _gameController = GameController.Instance;
-            _logLogic = LogLogic.Instance;
         }
 
         public static UserController Instance

@@ -9,11 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleCli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{13DD2821-F300-41DC-BB5A-8E46369D37A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLogs", "ServerLogs\ServerLogs.csproj", "{5FB0CFF1-D1B8-4344-A13D-C0CE2B0BB03A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonLog", "CommonLog\CommonLog.csproj", "{863A60B2-0A50-4147-A70F-4A30AC6D082E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonLog", "CommonLog\CommonLog.csproj", "{863A60B2-0A50-4147-A70F-4A30AC6D082E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLogAux", "ServerLogAux\ServerLogAux.csproj", "{08516E6D-6D17-4F24-9E35-11A3EEFAF037}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerLogAux", "ServerLogAux\ServerLogAux.csproj", "{08516E6D-6D17-4F24-9E35-11A3EEFAF037}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,10 +31,6 @@ Global
 		{13DD2821-F300-41DC-BB5A-8E46369D37A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{13DD2821-F300-41DC-BB5A-8E46369D37A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13DD2821-F300-41DC-BB5A-8E46369D37A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5FB0CFF1-D1B8-4344-A13D-C0CE2B0BB03A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5FB0CFF1-D1B8-4344-A13D-C0CE2B0BB03A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5FB0CFF1-D1B8-4344-A13D-C0CE2B0BB03A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5FB0CFF1-D1B8-4344-A13D-C0CE2B0BB03A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{863A60B2-0A50-4147-A70F-4A30AC6D082E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{863A60B2-0A50-4147-A70F-4A30AC6D082E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{863A60B2-0A50-4147-A70F-4A30AC6D082E}.Release|Any CPU.ActiveCfg = Release|Any CPU

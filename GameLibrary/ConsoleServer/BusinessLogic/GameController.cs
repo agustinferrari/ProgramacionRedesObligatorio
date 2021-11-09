@@ -14,13 +14,11 @@ namespace ConsoleServer.BusinessLogic
     {
         private static readonly object _padlock = new object();
         private static GameController _instance = null;
-        private LogLogic _logLogic;
         private List<Game> _games;
 
         private GameController()
         {
             _games = new List<Game>();
-            _logLogic = LogLogic.Instance;
             CatalogueLoader.AddGames(this);
         }
 
@@ -48,8 +46,6 @@ namespace ConsoleServer.BusinessLogic
                 else
                 {
                     _games.Add(gameToAdd);
-                    _logLogic.LogUserGame(gameToAdd.OwnerUser.Name, gameToAdd, CommandConstants.DeletePublishedGame);
-
                 }
             }
         }
@@ -140,7 +136,6 @@ namespace ConsoleServer.BusinessLogic
                     throw new InvalidGameException();
                 _userController.DeleteGameFromAllUsers(gameToDelete);
                 _games.Remove(gameToDelete);
-                _logLogic.LogUserGame(gameToDelete.OwnerUser.Name, gameToDelete, CommandConstants.DeletePublishedGame);
             }
         }
 

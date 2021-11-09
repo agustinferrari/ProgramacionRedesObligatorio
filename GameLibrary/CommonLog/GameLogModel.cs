@@ -7,6 +7,8 @@ namespace CommonLog
     {
         public int CommandConstant { get; set; }
         public string User { get; set; }
-        public GameModel Game { get; set; }
+        public string Game { get; set; }
+        public DateTime Date { get; set; }
+        public bool Result { get; set; }
     }
 }
