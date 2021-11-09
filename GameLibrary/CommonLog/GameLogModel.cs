@@ -5,6 +5,7 @@ namespace CommonLog
 
     public class GameLogModel
     {
+        public int Id { get; set; }
         public int CommandConstant { get; set; }
         public string User { get; set; }
         public string Game { get; set; }
