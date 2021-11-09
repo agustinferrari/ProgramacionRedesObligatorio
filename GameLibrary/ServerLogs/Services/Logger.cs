@@ -5,6 +5,7 @@ using CommonLog;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using ServerLogs.LogsStorage.GameLogs;
 using ServerLogs.Services.RabbitMQService;
 
 namespace ServerLogs.Services
@@ -36,10 +37,9 @@ namespace ServerLogs.Services
             {
                 using (var scope = _serviceProvider.CreateScope()) // Creamos un contexto de invocacion
                 {
-                    // var db = new TodoContext(scope.ServiceProvider.GetRequiredService<DbContextOptions<TodoContext>>());
-                    // db.TodoItems.Add(gameLogModel);
-                    // var addedItems = db.SaveChanges();
-                    // _logger.LogInformation($"Add {addedItems} items");
+                    var context = Games.Instance;// new TodoContext(scope.ServiceProvider.GetRequiredService<DbContextOptions<TodoContext>>());
+                    context.AddGameLog(gameLogModel);
+                    _logger.LogInformation($"Add 1 items");
                 }
             }
             catch (Exception e)

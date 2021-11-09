@@ -38,7 +38,7 @@ namespace ServerLogs.Services.RabbitMQService
             {
                 var body = e.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
-                var item = JsonConvert.DeserializeObject<T>(message); //retorna el elemento deserializado o null en el caso de un error de sintaxis
+                var item = JsonConvert.DeserializeObject<T>(message);
                 onMessage(item);
                 await Task.Yield();
             };
