@@ -32,7 +32,7 @@ namespace ServerLogs.Services.RabbitMQService
 
         public async Task ReceiveAsync<T>(string queue, Action<T> onMessage)
         {
-            _channel.QueueDeclare(queue, false, false, false);
+            _channel.QueueDeclare(queue, false, false, false, null);
             var consumer = new AsyncEventingBasicConsumer(_channel);
             consumer.Received += async (s, e) =>
             {

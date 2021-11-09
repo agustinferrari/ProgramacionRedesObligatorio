@@ -35,12 +35,9 @@ namespace ServerLogs.Services
             _logger.LogInformation("Name: "+gameLogModel.Game+", Complete: {0}",gameLogModel.Result ? "YES":"NO");
             try
             {
-                using (var scope = _serviceProvider.CreateScope()) // Creamos un contexto de invocacion
-                {
-                    var context = Games.Instance;// new TodoContext(scope.ServiceProvider.GetRequiredService<DbContextOptions<TodoContext>>());
-                    context.AddGameLog(gameLogModel);
-                    _logger.LogInformation($"Add 1 items");
-                }
+                var context = Games.Instance;
+                context.AddGameLog(gameLogModel);
+                _logger.LogInformation($"Add 1 items");
             }
             catch (Exception e)
             {
