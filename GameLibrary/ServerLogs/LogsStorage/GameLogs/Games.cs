@@ -9,6 +9,7 @@ namespace ServerLogs.LogsStorage.GameLogs
         private static readonly object _padlock = new object();
         private static Games _instance = null;
         private readonly List<GameLogModel> _logs;
+        private int _idLog = 1;
 
         private Games()
         {
@@ -47,6 +48,7 @@ namespace ServerLogs.LogsStorage.GameLogs
         {
             lock (_padlock)
             {
+                gameToAdd.Id = _idLog++;
                 _logs.Add(gameToAdd);
             }
         }

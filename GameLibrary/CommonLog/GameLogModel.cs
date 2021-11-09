@@ -1,4 +1,5 @@
-﻿using System;
+﻿#nullable enable
+using System;
 
 namespace CommonLog
 {
@@ -14,7 +15,7 @@ namespace CommonLog
 
         public GameLogModel(int command)
         {
-            Date = DateTime.Today;
+            Date = DateTime.Now;
             Result = false;
             CommandConstant = command;
         }
