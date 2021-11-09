@@ -1,7 +1,6 @@
 ﻿using Common.Protocol;
 using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Domain;
-using ConsoleServer.Logic.Logs;
 using ConsoleServer.Utils;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
