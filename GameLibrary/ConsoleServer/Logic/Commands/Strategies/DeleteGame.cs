@@ -1,22 +1,26 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System.Threading.Tasks;
 
 namespace ConsoleServer.Logic.Commands.Strategies
 {
-    public class DeleteGamePublished : CommandStrategy
+    public class DeleteGame : CommandStrategy
     {
 
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
+            log.Game = gameName;
             string responseMessage;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
                 string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
+                log.User = userName;
                 try
                 {
                     User user = _userController.GetUser(userName);
@@ -25,6 +29,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     {
                         _gameController.DeletePublishedGameByUser(gameToDelete);
                         responseMessage = ResponseConstants.DeleteGameSuccess;
+                        log.Result = true;
                     }
                     else
                         responseMessage = ResponseConstants.UnauthorizedGame;
@@ -41,7 +46,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessage = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
-
+            return log;
         }
     }
 }

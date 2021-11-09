@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
 using CommonLog;
+using ConsoleServer.Logic.LogManager;
 
 namespace ConsoleServer.Logic
 {
@@ -24,12 +25,14 @@ namespace ConsoleServer.Logic
         private Dictionary<INetworkStreamHandler, string> _loggedClients;
         private static readonly object _padlock = new object();
         private static ClientHandler _instance;
+        private static LogLogic _logLogic;
         private int _clientClosedConnectionAbruptly = 0;
 
         private ClientHandler()
         {
             _loggedClients = new Dictionary<INetworkStreamHandler, string>();
             stopHandling = false;
+            _logLogic = LogLogic.Instance;
         }
 
         public static ClientHandler Instance
@@ -93,7 +96,8 @@ namespace ConsoleServer.Logic
                     else
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
-                        await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
+                        GameLogModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
+                        await _logLogic.SendLog(log);
                     }
                 }
                 catch (Exception e) when (e is IOException || e is AggregateException)

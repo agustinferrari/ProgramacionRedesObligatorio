@@ -10,5 +10,16 @@ namespace CommonLog
         public string Game { get; set; }
         public DateTime Date { get; set; }
         public bool Result { get; set; }
+
+        public GameLogModel(int command)
+        {
+            Date = DateTime.Today;
+            Result = false;
+            CommandConstant = command;
+        }
+
+        public GameLogModel()
+        {
+        }
     }
 }

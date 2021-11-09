@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
@@ -12,8 +13,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
 {
     public class ReviewGame : CommandStrategy
     {
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             int firstElement = 0;
             int secondElement = 1;
             int thirdElement = 2;
@@ -22,11 +24,13 @@ namespace ConsoleServer.Logic.Commands.Strategies
             string gameName = gameData[firstElement];
             string rating = gameData[secondElement];
             string comment = gameData[thirdElement];
+            log.Game = gameName;
 
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
                 string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
+                log.User = userName;
                 try
                 {
                     Review newReview = new Review
@@ -38,6 +42,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
 
                     _gameController.AddReview(gameName, newReview);
                     responseMessageResult = ResponseConstants.ReviewGameSuccess;
+                    log.Result = true;
                 }
                 catch (InvalidUsernameException)
                 {
@@ -55,6 +60,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ReviewGame, responseMessageResult);
+            return log;
         }
     }
 }

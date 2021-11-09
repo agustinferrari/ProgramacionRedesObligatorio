@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.BusinessLogic;
 using ConsoleServer.BusinessLogic.Interfaces;
 using ConsoleServer.Logic.Interfaces;
@@ -21,6 +22,6 @@ namespace ConsoleServer.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
+        public abstract Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System.Threading.Tasks;
@@ -10,8 +11,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class AddGame : CommandStrategy
     {
 
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
@@ -24,10 +26,12 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 string genre = gameData[secondElement];
                 string synopsis = gameData[thirdElement];
                 string pathToImage = await UploadImage(clientNetworkStreamHandler, gameName);
+                log.Game = gameName;
 
                 try
                 {
                     string username = _clientHandler.GetUsername(clientNetworkStreamHandler);
+                    log.User = username;
                     User ownerUser = _userController.GetUser(username);
                     Game newGame = new Game
                     {
@@ -39,6 +43,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                         PathToPhoto = pathToImage
                     };
                     _gameController.AddGame(newGame);
+                    log.Result = true;
                     responseMessageResult = ResponseConstants.AddGameSuccess;
                 }
                 catch (GameAlreadyAddedException)
@@ -53,6 +58,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.AddGame, responseMessageResult);
+            return log;
         }
 
         private async Task<string> UploadImage(INetworkStreamHandler clientNetworkStreamHandler, string gameName)

@@ -24,7 +24,7 @@ namespace ServerLogAux
                 var body = ea.Body.ToArray();
                 var message = Encoding.UTF8.GetString(body);
                 var log = JsonSerializer.Deserialize<GameLogModel>(message);
-                Console.WriteLine(" [x] Received log level [{0}], message [{1}]", log.User, log.Game.Name);
+                Console.WriteLine(" [x] Received log user [{0}], game [{1}], date [{2}], result [{3}]", log.User, log.Game, log.Date, log.Result);
             };
             channel.BasicConsume(queue: "log_queue",
                 autoAck: true,

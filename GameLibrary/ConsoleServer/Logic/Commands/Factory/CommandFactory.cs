@@ -20,7 +20,7 @@ namespace ConsoleServer.Logic.Commands.Factory
             { CommandConstants.GetGameImage, new GetGameImage() },
             { CommandConstants.ListOwnedGames, new ListOwnedGames() },
             { CommandConstants.ListFilteredGames, new ListFilteredGames() },
-            { CommandConstants.DeletePublishedGame, new DeleteGamePublished() },
+            { CommandConstants.DeletePublishedGame, new DeleteGame() },
             { CommandConstants.ModifyPublishedGame, new ModifyGamePublished() },
         };
 

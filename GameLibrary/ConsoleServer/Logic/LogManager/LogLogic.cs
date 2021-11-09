@@ -42,18 +42,9 @@ namespace ConsoleServer.Logic.LogManager
             }
         }
 
-        public async void LogUserGame(string userName, Game game, int commandConstant)
+        public Task<bool> SendLog(GameLogModel log)
         {
-            GameLogModel log = new GameLogModel();
-            log.User = userName;
-            log.Game = game.Name;
-            log.CommandConstant = commandConstant;
-            string stringLog = JsonSerializer.Serialize(log);
-            bool result = await SendMessage(stringLog);
-        }
-
-        private static Task<bool> SendMessage(string message)
-        {
+            string message = JsonSerializer.Serialize(log);
             bool returnVal;
             try
             {

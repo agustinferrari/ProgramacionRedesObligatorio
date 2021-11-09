@@ -3,6 +3,7 @@ using Common.FileUtils.Interfaces;
 using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System.Threading.Tasks;
@@ -12,8 +13,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ModifyGamePublished : CommandStrategy
     {
 
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             string responseMessage;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
             {
@@ -30,6 +32,8 @@ namespace ConsoleServer.Logic.Commands.Strategies
                 string newGameSynopsis = gameData[fouthElement];
                 string gameName = (newGameName == "") ? oldGameName : newGameName;
                 string pathToImage = await UpdateImage(clientNetworkStreamHandler, gameName);
+                log.User = userName;
+                log.Game = gameName;
 
                 User user = _userController.GetUser(userName);
                 Game newGame = new Game
@@ -40,14 +44,15 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     OwnerUser = user,
                     PathToPhoto = pathToImage
                 };
-                responseMessage = ModifyGame(newGame, user, oldGameName);
+                responseMessage = ModifyGame(newGame, user, oldGameName, log);
             }
             else
                 responseMessage = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            return log;
         }
 
-        private string ModifyGame(Game newGame, User user, string oldGameName)
+        private string ModifyGame(Game newGame, User user, string oldGameName, GameLogModel log)
         {
             string responseMessage;
             try
@@ -58,6 +63,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
                     DeletePreviousImage(gameToModify, newGame);
                     _gameController.ModifyGame(gameToModify, newGame);
                     responseMessage = ResponseConstants.ModifyPublishedGameSuccess;
+                    log.Result = true;
                 }
                 else
                 {

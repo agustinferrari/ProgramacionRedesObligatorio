@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using ConsoleServer.Domain;
 using ConsoleServer.Utils.CustomExceptions;
 using System;
@@ -13,8 +14,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class GetGameDetails : CommandStrategy
     {
 
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string responseMessageResult;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
@@ -32,6 +34,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessageResult = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.GetGameDetails, responseMessageResult);
+            return log;
         }
     }
 }

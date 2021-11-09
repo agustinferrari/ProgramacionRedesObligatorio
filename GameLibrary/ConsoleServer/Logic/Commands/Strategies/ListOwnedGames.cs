@@ -1,6 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
+using CommonLog;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,8 +12,9 @@ namespace ConsoleServer.Logic.Commands.Strategies
     public class ListOwnedGames : CommandStrategy
     {
 
-        public override async Task HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
+            GameLogModel log = new GameLogModel(header.ICommand);
             string emptyString = "";
             string responseMessage;
             if (_clientHandler.IsSocketInUse(clientNetworkStreamHandler))
@@ -27,6 +29,7 @@ namespace ConsoleServer.Logic.Commands.Strategies
             else
                 responseMessage = ResponseConstants.AuthenticationError;
             await clientNetworkStreamHandler.SendMessage(HeaderConstants.Response, CommandConstants.ListOwnedGames, responseMessage);
+            return log;
         }
     }
 }
