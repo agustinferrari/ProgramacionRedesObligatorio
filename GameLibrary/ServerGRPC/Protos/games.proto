@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "ServerGRPC";
+package games;
+
+// The greeting service definition.
+service GameProto {
+  // Sends a greeting
+  rpc GetGames (GamesRequest) returns (GamesReply);
+}
+
+// The request message containing the user's name.
+message GamesRequest {
+  string user = 1;
+  string command = 2;
+}
+
+// The response message containing the greetings.
+message GamesReply {
+  string games = 1;
+}

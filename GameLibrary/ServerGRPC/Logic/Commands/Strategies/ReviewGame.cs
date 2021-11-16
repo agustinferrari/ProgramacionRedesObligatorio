@@ -1,7 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using CommonLog;
+using CommonModels;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;
 using System;
@@ -13,9 +13,9 @@ namespace ServerGRPC.Logic.Commands.Strategies
 {
     public class ReviewGame : CommandStrategy
     {
-        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            GameLogModel log = new GameLogModel(header.ICommand);
+            GameModel log = new GameModel(header.ICommand);
             int firstElement = 0;
             int secondElement = 1;
             int thirdElement = 2;

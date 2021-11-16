@@ -1,5 +1,5 @@
 ﻿using Common.Protocol;
-using CommonLog;
+using CommonModels;
 using ServerGRPC.Domain;
 using RabbitMQ.Client;
 using System;
@@ -42,7 +42,7 @@ namespace ServerGRPC.Logic.LogManager
             }
         }
 
-        public Task<bool> SendLog(GameLogModel log)
+        public Task<bool> SendLog(GameModel log)
         {
             string message = JsonSerializer.Serialize(log);
             bool returnVal;

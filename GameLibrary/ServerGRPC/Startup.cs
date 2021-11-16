@@ -32,7 +32,7 @@ namespace ServerGRPC
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapGrpcService<GreeterService>();
+                endpoints.MapGrpcService<GameService>();
                 endpoints.MapGrpcService<UserService>();
 
                 endpoints.MapGet("/",

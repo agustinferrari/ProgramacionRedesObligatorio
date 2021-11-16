@@ -1,10 +1,10 @@
 ﻿#nullable enable
 using System;
 
-namespace CommonLog
+namespace CommonModels
 {
 
-    public class GameLogModel
+    public class GameModel
     {
         public int Id { get; set; }
         public int CommandConstant { get; set; }
@@ -13,14 +13,14 @@ namespace CommonLog
         public DateTime Date { get; set; }
         public bool Result { get; set; }
 
-        public GameLogModel(int command)
+        public GameModel(int command)
         {
             Date = DateTime.Now;
             Result = false;
             CommandConstant = command;
         }
 
-        public GameLogModel()
+        public GameModel()
         {
         }
     }

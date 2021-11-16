@@ -5,6 +5,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <Protobuf Include="Protos\games.proto" GrpcServices="Server"/>
         <Protobuf Include="Protos\greet.proto" GrpcServices="Server" />
         <Protobuf Include="Protos\user.proto">
           <GrpcServices>Server</GrpcServices>
@@ -17,7 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CommonLog\CommonLog.csproj" />
+      <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
     </ItemGroup>
 

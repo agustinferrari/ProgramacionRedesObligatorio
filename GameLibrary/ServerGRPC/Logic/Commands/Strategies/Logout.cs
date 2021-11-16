@@ -1,7 +1,7 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using CommonLog;
+using CommonModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,9 +12,9 @@ namespace ServerGRPC.Logic.Commands.Strategies
     public class Logout : CommandStrategy
     {
 
-        public override async Task<GameLogModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<GameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            GameLogModel log = new GameLogModel(header.ICommand);
+            GameModel log = new GameModel(header.ICommand);
             string userName = _clientHandler.GetUsername(clientNetworkStreamHandler);
             log.User = userName;
             if (userName != "")

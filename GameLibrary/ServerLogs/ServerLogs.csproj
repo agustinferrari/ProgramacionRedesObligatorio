@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\CommonLog\CommonLog.csproj" />
+      <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
     </ItemGroup>
 
 </Project>

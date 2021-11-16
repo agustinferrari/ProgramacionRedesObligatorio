@@ -9,7 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CommonLog;
+using CommonModels;
 using ServerGRPC.Logic.LogManager;
 
 namespace ServerGRPC.Logic
@@ -92,7 +92,7 @@ namespace ServerGRPC.Logic
                     else
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
-                        GameLogModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
+                        GameModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
                         await _logLogic.SendLog(log);
                     }
                 }
