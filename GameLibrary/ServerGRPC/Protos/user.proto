@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option csharp_namespace = "ServerGRPC";
+package user;
+
+// The greeting service definition.
+service UserProto {
+  // Sends a greeting
+  rpc AddUser (NewUserRequest) returns (NewUserReply);
+}
+
+// The request message containing the user's name.
+message NewUserRequest {
+  string name = 1;
+  string password = 2;
+}
+
+// The response message containing the greetings.
+message NewUserReply {
+  string message = 1;
+}
