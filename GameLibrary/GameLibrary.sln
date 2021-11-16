@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLogs", "ServerLogs\Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerGRPC", "ServerGRPC\ServerGRPC.csproj", "{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdmin", "ServerAdmin\ServerAdmin.csproj", "{661F6599-CEFB-42EA-8218-37018EB9ADC9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{661F6599-CEFB-42EA-8218-37018EB9ADC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{661F6599-CEFB-42EA-8218-37018EB9ADC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{661F6599-CEFB-42EA-8218-37018EB9ADC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{661F6599-CEFB-42EA-8218-37018EB9ADC9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
