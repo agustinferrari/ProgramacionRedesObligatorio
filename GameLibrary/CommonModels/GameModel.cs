@@ -3,23 +3,15 @@ using System;
 
 namespace CommonModels
 {
-
     public class GameModel
     {
-        public int Id { get; set; }
-        public int CommandConstant { get; set; }
-        public string User { get; set; }
-        public string Game { get; set; }
-        public DateTime Date { get; set; }
-        public bool Result { get; set; }
-
-        public GameModel(int command)
-        {
-            Date = DateTime.Now;
-            Result = false;
-            CommandConstant = command;
-        }
-
+        public string Name { get; set; }
+        public int Rating { get; set; }
+        public string Genre { get; set; }
+        public string Synopsis { get; set; }
+        public string PathToPhoto { get; set; }
+        public string OwnerUserName { get; set; }
+        
         public GameModel()
         {
         }

@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using CommonModels;
-using Microsoft.Extensions.DependencyInjection;
+using LogsModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using ServerLogs.LogsStorage.GameLogs;
 using ServerLogs.Services.RabbitMQService;
 
@@ -25,19 +23,19 @@ namespace ServerLogs.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            await _busControl.ReceiveAsync<GameModel>(Queue.ProcessingQueueName, x =>
+            await _busControl.ReceiveAsync<LogGameModel>(Queue.ProcessingQueueName, x =>
             {
                 Task.Run(() => { ReceiveItem(x); }, stoppingToken);
             });
         }
 
-        private void ReceiveItem(GameModel gameModel)
+        private void ReceiveItem(LogGameModel logGameModel)
         {
-            _logger.LogInformation(PrintLog(gameModel));
+            _logger.LogInformation(PrintLog(logGameModel));
             try
             {
                 var context = Games.Instance;
-                context.AddGameLog(gameModel);
+                context.AddGameLog(logGameModel);
                 _logger.LogInformation($"Add 1 item");
             }
             catch (Exception e)
@@ -46,13 +44,13 @@ namespace ServerLogs.Services
             }
         }
 
-        private string PrintLog(GameModel gameModel)
+        private string PrintLog(LogGameModel logGameModel)
         {
-            string message = "User: " + gameModel.User;
-            message += ", Accion: "+ gameModel.CommandConstant;
-            message += ", Juego: "+ gameModel.Game == "" ? "": gameModel.Game;
-            message += ", Completado: "+ (gameModel.Result ? "YES" : "NO");
-            message += ", Date: "+ gameModel.Date;
+            string message = "User: " + logGameModel.User;
+            message += ", Accion: "+ logGameModel.CommandConstant;
+            message += ", Juego: "+ logGameModel.Game == "" ? "": logGameModel.Game;
+            message += ", Completado: "+ (logGameModel.Result ? "YES" : "NO");
+            message += ", Date: "+ logGameModel.Date;
             return message;
         }
     }

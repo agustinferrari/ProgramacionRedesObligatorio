@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CommonModels;
+using LogsModels;
 
 namespace ServerLogs.LogsStorage.GameLogs
 {
@@ -8,15 +8,15 @@ namespace ServerLogs.LogsStorage.GameLogs
     {
         private static readonly object _padlock = new object();
         private static Games _instance = null;
-        private readonly List<GameModel> _logs;
+        private readonly List<LogGameModel> _logs;
         private int _idLog = 1;
 
         private Games()
         {
-            _logs = new List<GameModel>();
+            _logs = new List<LogGameModel>();
         }
 
-        public List<GameModel> GetLogs()
+        public List<LogGameModel> GetLogs()
         {
             return _logs;
         }
@@ -36,7 +36,7 @@ namespace ServerLogs.LogsStorage.GameLogs
             }
         }
 
-        public GameModel GetLog(int id)
+        public LogGameModel GetLog(int id)
         {
             lock (_padlock)
                 if (_logs != null)
@@ -44,21 +44,21 @@ namespace ServerLogs.LogsStorage.GameLogs
             return null;
         }
         
-        public void AddGameLog(GameModel gameToAdd)
+        public void AddGameLog(LogGameModel logGameToAdd)
         {
             lock (_padlock)
             {
-                gameToAdd.Id = _idLog++;
-                _logs.Add(gameToAdd);
+                logGameToAdd.Id = _idLog++;
+                _logs.Add(logGameToAdd);
             }
         }
 
-        public GameModel DeleteLog(int id)
+        public LogGameModel DeleteLog(int id)
         {
             lock (_padlock)
                 if (_logs != null)
                 {
-                    GameModel log = _logs.FirstOrDefault(g => g.Id == id);
+                    LogGameModel log = _logs.FirstOrDefault(g => g.Id == id);
                     _logs.Remove(log);
                     return log;
                 }

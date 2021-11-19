@@ -1,21 +1,18 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using CommonModels;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using LogsModels;
 
 namespace ServerGRPC.Logic.Commands.Strategies
 {
     public class GetGameImage : CommandStrategy
     {
-        public override async Task<GameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<LogGameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            GameModel log = new GameModel(header.ICommand);
+            LogGameModel log = new LogGameModel(header.ICommand);
             string gameName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             string responseMessageResult = "";
             Game game = null;

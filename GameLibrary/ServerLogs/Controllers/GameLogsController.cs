@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CommonModels;
-using Microsoft.AspNetCore.Http;
+using LogsModels;
 using Microsoft.AspNetCore.Mvc;
 using ServerLogs.LogsStorage.GameLogs;
 
@@ -21,13 +20,13 @@ namespace ServerLogs.Controllers
         }
         
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<GameModel>>> GetGameLogs()
+        public async Task<ActionResult<IEnumerable<LogGameModel>>> GetGameLogs()
         {
             return _context.GetLogs();
         }
         
         [HttpGet("{id}")]
-        public async Task<ActionResult<GameModel>> GetGameLogs(int id)
+        public async Task<ActionResult<LogGameModel>> GetGameLogs(int id)
         {
             var gameLog = _context.GetLog(id);
             if (gameLog == null)
@@ -39,15 +38,15 @@ namespace ServerLogs.Controllers
         }
         
         [HttpPost]
-        public async Task<ActionResult<GameModel>> PostGameLogs(GameModel game)
+        public async Task<ActionResult<LogGameModel>> PostGameLogs(LogGameModel logGame)
         {
-            _context.AddGameLog(game);
+            _context.AddGameLog(logGame);
 
-            return CreatedAtAction(nameof(GetGameLogs), new { id = game.Id }, game);
+            return CreatedAtAction(nameof(GetGameLogs), new { id = logGame.Id }, logGame);
         }
         
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GameModel>> DeleteGameLog(int id)
+        public async Task<ActionResult<LogGameModel>> DeleteGameLog(int id)
         {
             var gameLog = _context.DeleteLog(id);
             if (gameLog == null)

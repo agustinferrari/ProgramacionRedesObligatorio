@@ -1,8 +1,10 @@
 
 using System;
 using System.Threading.Tasks;
+using CommonModels;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
+using ServerGRPC.BusinessLogic;
 using ServerGRPC.Domain;
 
 
@@ -19,16 +21,49 @@ namespace ServerGRPC.Services
         
         public override Task<GamesReply> GetGames(GamesRequest request, ServerCallContext context)
         {
-            //_logger.LogInformation("Received request with data: " + request.Name);
-            System.Diagnostics.Debug.WriteLine
-                ("Llegue a serviesGame !!!!!!!!!!!!!!!");         
-            System.Diagnostics.Debug.WriteLine
-                ("Received request with data: " + request.User);
-
+            // TODO Logear que este usuario hizo el request request.User
+            GameController gamesController = GameController.Instance;
             return Task.FromResult(new GamesReply
             {
-                Games = "Hola cliente: " + request.Command
+                Games = gamesController.GetGames()
             });
+        }
+        
+        public override Task<AddUpdateGameReply> AddModifyGames(AddUpdateGameRequest addGameModel, ServerCallContext context)
+        {
+            GameController gamesController = GameController.Instance;
+            Game newGame = parseGameModelToGame(addGameModel);
+            gamesController.AddGame(newGame);
+            
+            return Task.FromResult(new AddUpdateGameReply
+            {
+                Response = "El juego " + addGameModel.Name + " fue creado correctamente"
+            });
+        }
+
+        public override Task<DeleteGameReply> DeleteGame(DeleteGameRequest deleteRequest, ServerCallContext context)
+        {
+            GameController gamesController = GameController.Instance;
+            Game game = gamesController.GetGame(deleteRequest.GameToDelete);
+            gamesController.DeletePublishedGameByUser(game);
+            return Task.FromResult(new DeleteGameReply
+            {
+                 DeletedGame= "El juego " + deleteRequest.GameToDelete + " fue borrado correctamente"
+            });
+        }
+
+        private Game parseGameModelToGame(AddUpdateGameRequest model)
+        {
+            User user = UserController.Instance.GetUser(model.OwnerUserName);
+            return new Game
+            {
+              Name = model.Name,
+              Genre = model.Genre,
+              Rating = model.Rating,
+              Synopsis = model.Synopsis,
+              OwnerUser = user,
+              PathToPhoto = model.PathToPhoto
+            };
         }
     
     }

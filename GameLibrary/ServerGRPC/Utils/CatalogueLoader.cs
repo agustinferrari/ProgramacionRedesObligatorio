@@ -5,7 +5,7 @@ namespace ServerGRPC.Utils
 {
     public class CatalogueLoader
     {
-        public static void AddGames(GameController gameController)
+        public static void AddGames(UserController userController)
         {
             User user = new User
             {
@@ -47,10 +47,11 @@ namespace ServerGRPC.Utils
                 Rating = 7,
                 OwnerUser = user
             };
-            gameController.AddGame(newGame);
-            gameController.AddGame(newGame1);
-            gameController.AddGame(newGame2);
-            gameController.AddGame(newGame3);
+            userController.TryAddUser(user.Name);
+            GameController.Instance.AddGame(newGame);
+            GameController.Instance.AddGame(newGame1);
+            GameController.Instance.AddGame(newGame2);
+            GameController.Instance.AddGame(newGame3);
         }
     }
 }

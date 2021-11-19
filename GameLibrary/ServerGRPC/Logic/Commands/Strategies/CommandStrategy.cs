@@ -1,11 +1,11 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using CommonModels;
 using ServerGRPC.BusinessLogic;
 using ServerGRPC.BusinessLogic.Interfaces;
 using ServerGRPC.Logic.Interfaces;
 using System.Threading.Tasks;
+using LogsModels;
 
 namespace ServerGRPC.Logic.Commands.Strategies
 {
@@ -22,6 +22,6 @@ namespace ServerGRPC.Logic.Commands.Strategies
             _userController = UserController.Instance;
         }
 
-        public abstract Task<GameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
+        public abstract Task<LogGameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler);
     }
 }

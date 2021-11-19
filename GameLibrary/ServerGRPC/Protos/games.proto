@@ -7,15 +7,39 @@ package games;
 service GameProto {
   // Sends a greeting
   rpc GetGames (GamesRequest) returns (GamesReply);
+  rpc AddModifyGames (AddUpdateGameRequest) returns (AddUpdateGameReply);
+  rpc DeleteGame (DeleteGameRequest) returns (DeleteGameReply);
+
 }
 
 // The request message containing the user's name.
 message GamesRequest {
   string user = 1;
-  string command = 2;
 }
 
 // The response message containing the greetings.
 message GamesReply {
   string games = 1;
+}
+
+message AddUpdateGameRequest{
+  string Name = 1;
+  int32 Rating = 2;
+  string Genre = 3 ;
+  string Synopsis = 4 ;
+  string PathToPhoto = 5 ;
+  string OwnerUserName = 6 ;
+}
+
+message AddUpdateGameReply {
+  string response = 1;
+}
+
+message DeleteGameRequest {
+  string user = 1;
+  string gameToDelete = 2;
+}
+
+message DeleteGameReply {
+  string deletedGame = 1;
 }

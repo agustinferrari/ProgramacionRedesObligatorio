@@ -1,7 +1,6 @@
 ﻿using Common.Protocol;
 using ServerGRPC.BusinessLogic.Interfaces;
 using ServerGRPC.Domain;
-using ServerGRPC.Utils;
 using ServerGRPC.Utils.CustomExceptions;
 using System;
 using System.Collections.Generic;
@@ -18,7 +17,6 @@ namespace ServerGRPC.BusinessLogic
         private GameController()
         {
             _games = new List<Game>();
-            CatalogueLoader.AddGames(this);
         }
 
         public static GameController Instance

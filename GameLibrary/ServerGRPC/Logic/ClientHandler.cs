@@ -1,7 +1,6 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using Common.Utils.CustomExceptions;
 using ServerGRPC.Logic.Commands.Factory;
 using ServerGRPC.Logic.Commands.Strategies;
 using ServerGRPC.Logic.Interfaces;
@@ -9,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using CommonModels;
+using LogsModels;
 using ServerGRPC.Logic.LogManager;
 
 namespace ServerGRPC.Logic
@@ -92,7 +91,7 @@ namespace ServerGRPC.Logic
                     else
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
-                        GameModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
+                        LogGameModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
                         await _logLogic.SendLog(log);
                     }
                 }

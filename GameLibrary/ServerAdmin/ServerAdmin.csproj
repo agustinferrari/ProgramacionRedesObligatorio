@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
+      <ProjectReference Include="..\LogsModels\LogsModels.csproj" />
     </ItemGroup>
 
     <ItemGroup>
@@ -23,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="GrpcControllers" />
       <Folder Include="Models" />
     </ItemGroup>
 

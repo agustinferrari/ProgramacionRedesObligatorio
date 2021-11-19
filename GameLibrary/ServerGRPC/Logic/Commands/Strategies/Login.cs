@@ -1,20 +1,17 @@
 ﻿using Common.NetworkUtils;
 using Common.NetworkUtils.Interfaces;
 using Common.Protocol;
-using CommonModels;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using LogsModels;
 
 namespace ServerGRPC.Logic.Commands.Strategies
 {
     public class Login : CommandStrategy
     {
 
-        public override async Task<GameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
+        public override async Task<LogGameModel> HandleRequest(Header header, INetworkStreamHandler clientNetworkStreamHandler)
         {
-            GameModel log = new GameModel(header.ICommand);
+            LogGameModel log = new LogGameModel(header.ICommand);
             string userName = await clientNetworkStreamHandler.ReceiveString(header.IDataLength);
             log.User = userName;
             string responseMessageResult;

@@ -3,6 +3,7 @@ using ServerGRPC.BusinessLogic.Interfaces;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;
 using System.Collections.Generic;
+using ServerGRPC.Utils;
 
 namespace ServerGRPC.BusinessLogic
 {
@@ -17,6 +18,7 @@ namespace ServerGRPC.BusinessLogic
         {
             _users = new List<User>();
             _gameController = GameController.Instance;
+            CatalogueLoader.AddGames(this);
         }
 
         public static UserController Instance
@@ -57,7 +59,7 @@ namespace ServerGRPC.BusinessLogic
             lock (_padlock)
                 foreach (User user in _users)
                 {
-                    if (user.Name == username)
+                    if (user.Name.ToLower() == username.ToLower())
                         return user;
                 }
             throw new InvalidUsernameException();
