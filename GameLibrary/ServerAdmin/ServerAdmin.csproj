@@ -22,4 +22,8 @@
       <Protobuf Include="Protos\games.proto" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>

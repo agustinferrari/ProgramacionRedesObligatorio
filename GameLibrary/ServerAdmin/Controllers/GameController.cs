@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿
 using System.Threading.Tasks;
-using CommonModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ServerAdmin.GrpcControllers;
@@ -13,17 +10,18 @@ namespace ServerAdmin.Controllers
     [ApiController]
     public class GameController
     {
-        private GameGrpc gamesController;
-        public GameController(GameGrpc gameController)
+        private GameGrpc gamesController = new GameGrpc();
+        public GameController()
         {
-            gamesController = gameController;
+            //gamesController = gameController;
         }
 
-        // [HttpGet]
-        // public IEnumerable<GameModel> Get()
-        // {
-        //     //var games = gamesController.GetGames();
-        //     //return games;
-        // }
+        [HttpGet]
+        //hay que hacerlos await? entonces el GetGames de controller tambien?
+        public async Task<IActionResult> Get()
+        {
+            string games = await gamesController.GetGames();
+            return new OkObjectResult(games);
+        }
     }
 }
