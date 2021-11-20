@@ -86,6 +86,17 @@ namespace ServerGRPC.BusinessLogic
             return result;
         }
         
+        public void DeleteUser(string userToDelete)
+        {
+            lock (_padlock)
+            {
+                if (_users == null)
+                    throw new InvalidUsernameException();
+                User user = GetUser(userToDelete);
+                _users.Remove(user);
+            }
+        }
+        
 
         public string ListOwnedGameByUser(string username)
         {

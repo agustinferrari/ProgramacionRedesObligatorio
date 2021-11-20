@@ -8,7 +8,7 @@ service UserProto {
   // Sends a greeting
   rpc GetUsers (UsersRequest) returns (UsersReply);
   rpc AddModifyUsers (AddModifyUserRequest) returns (AddModifyUserReply);
-  rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
+  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
 
 }
 
@@ -23,7 +23,8 @@ message UsersReply {
 }
 
 message AddModifyUserRequest{
-  string Name = 1;
+  string user = 1;
+  string userToAdd = 2;
 }
 
 message AddModifyUserReply {

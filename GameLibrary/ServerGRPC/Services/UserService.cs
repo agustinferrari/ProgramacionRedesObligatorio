@@ -20,16 +20,27 @@ namespace ServerGRPC.Services
             });
         }
         
-        public override Task<AddModifyUserReply> AddModifyUsers(AddModifyUserRequest userToAdd, ServerCallContext context)
+        public override Task<AddModifyUserReply> AddModifyUsers(AddModifyUserRequest userToAddRequest, ServerCallContext context)
         {
+            // TODO Agregar log con userToAddRequest.User
             UserController usersController = UserController.Instance;
-            usersController.TryAddUser(userToAdd.Name);
+            usersController.TryAddUser(userToAddRequest.UserToAdd);
             
             return Task.FromResult(new AddModifyUserReply
             {
-                Response = "El usuario " + userToAdd.Name + " fue creado correctamente"
+                Response = "El usuario " + userToAddRequest.UserToAdd + " fue creado correctamente"
             });
         }
-    
+
+        public override Task<DeleteUserReply> DeleteUser(DeleteUserRequest request, ServerCallContext context)
+        {
+            UserController usersController = UserController.Instance;
+            usersController.DeleteUser(request.UserToDelete);
+            
+            return Task.FromResult(new DeleteUserReply
+            {
+                DeletedUser = "El usuario " + request.UserToDelete + " fue borrado correctamente"
+            });
+        }
     }
 }

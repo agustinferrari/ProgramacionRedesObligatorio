@@ -22,11 +22,17 @@ namespace ServerAdmin.ServicesGrpc
             return  response.Users;
         }
 
-        public async Task<string> AddModifyUser(UserModel user)
+        public async Task<string> AddModifyUser(string user, UserModel userToAdd)
         {
-            var response =  await _client.AddModifyUsersAsync(new AddModifyUserRequest(){ Name = user.Name});
+            var response =  await _client.AddModifyUsersAsync(
+                new AddModifyUserRequest(){User = user, UserToAdd = userToAdd.Name});
             return response.Response;
         }
-        
+
+        public async Task<string> DeleteUser(string user , string userToDelete)
+        {
+            var response =  await _client.DeleteUserAsync(new DeleteUserRequest(){ User = user,UserToDelete = userToDelete});
+            return response.DeletedUser;
+        }
     }
 }
