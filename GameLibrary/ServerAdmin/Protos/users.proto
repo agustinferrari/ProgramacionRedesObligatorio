@@ -6,12 +6,10 @@ package users;
 
 service UserProto {
   rpc GetUsers (UsersRequest) returns (UsersReply);
-//  rpc AddUsers (AddUserRequest) returns (AddUserReply);
-//  rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
+  rpc AddModifyUsers (AddModifyUserRequest) returns (AddModifyUserReply);
+  rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
 
 }
-
-// The request message containing the user's name.
 message UsersRequest {
   string user = 1;
 }
@@ -21,11 +19,11 @@ message UsersReply {
   string users = 1;
 }
 
-message AddUserRequest{
-   string Name = 1;
+message AddModifyUserRequest{
+  string Name = 1;
 }
 
-message AddUserReply {
+message AddModifyUserReply {
   string response = 1;
 }
 

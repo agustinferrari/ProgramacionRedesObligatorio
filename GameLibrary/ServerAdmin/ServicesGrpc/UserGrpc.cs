@@ -19,8 +19,14 @@ namespace ServerAdmin.ServicesGrpc
         public async Task<string> GetUsers(string user)
         {
             var response =  await _client.GetUsersAsync(new UsersRequest(){ User = user});
-            return "Usuarios en el sistema: " + response.Users;
+            return  response.Users;
         }
-       
+
+        public async Task<string> AddModifyUser(UserModel user)
+        {
+            var response =  await _client.AddModifyUsersAsync(new AddModifyUserRequest(){ Name = user.Name});
+            return response.Response;
+        }
+        
     }
 }

@@ -7,7 +7,7 @@ package users;
 service UserProto {
   // Sends a greeting
   rpc GetUsers (UsersRequest) returns (UsersReply);
-  rpc AddUsers (AddUserRequest) returns (AddUserReply);
+  rpc AddModifyUsers (AddModifyUserRequest) returns (AddModifyUserReply);
   rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
 
 }
@@ -22,11 +22,11 @@ message UsersReply {
   string users = 1;
 }
 
-message AddUserRequest{
+message AddModifyUserRequest{
   string Name = 1;
 }
 
-message AddUserReply {
+message AddModifyUserReply {
   string response = 1;
 }
 

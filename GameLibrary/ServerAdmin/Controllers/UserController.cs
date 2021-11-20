@@ -18,13 +18,13 @@ namespace ServerAdmin.Controllers
             return new OkObjectResult(games);
         }
         
-        //
-        // [HttpPost]
-        // public async Task<IActionResult> Post([FromBody] GameModel Game)
-        // {
-        //     string response = await gamesController.AddGame(Game);
-        //     return new OkObjectResult(response);
-        // }
+        
+        [HttpPost]
+        public async Task<IActionResult> Post([FromBody] UserModel User)
+        {
+            string response = await _userServiceGrpc.AddModifyUser(User);
+            return new OkObjectResult(response);
+        }
         //
         // [HttpDelete]
         // public async Task<IActionResult> Delete([FromHeader] string user, [FromQuery] string game)

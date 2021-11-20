@@ -19,7 +19,7 @@ namespace ServerAdmin.ServicesGrpc
         public async Task<string> GetGames(string user)
         {
             var response =  await _client.GetGamesAsync(new GamesRequest(){ User = user});
-            return "Juegos en el sistema: " + response.Games;
+            return response.Games;
         }
 
         public async Task<string> AddGame(GameModel model)
