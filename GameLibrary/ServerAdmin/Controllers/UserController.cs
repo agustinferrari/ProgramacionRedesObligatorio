@@ -33,6 +33,13 @@ namespace ServerAdmin.Controllers
             return new OkObjectResult(userDeleted);
         }
         
+        [HttpPost ("{gameToBuy}")]
+        public async Task<IActionResult> Post([FromHeader] string userAsking, string gameToBuy)
+        {
+            string response = await _userServiceGrpc.BuyGame(userAsking, gameToBuy);
+            return new OkObjectResult(response);
+        }
+        
         // [HttpPut]
         // public async Task<IActionResult> Put()
         // {

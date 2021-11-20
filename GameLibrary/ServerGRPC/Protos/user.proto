@@ -9,12 +9,12 @@ service UserProto {
   rpc GetUsers (UsersRequest) returns (UsersReply);
   rpc AddModifyUsers (AddModifyUserRequest) returns (AddModifyUserReply);
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
+  rpc BuyGame (BuyGameRequest) returns (BuyGameReply);
 
 }
 
-// The request message containing the user's name.
 message UsersRequest {
-  string user = 1;
+  string userAsking = 1;
 }
 
 // The response message containing the greetings.
@@ -23,7 +23,7 @@ message UsersReply {
 }
 
 message AddModifyUserRequest{
-  string user = 1;
+  string userAsking = 1;
   string userToAdd = 2;
 }
 
@@ -32,10 +32,19 @@ message AddModifyUserReply {
 }
 
 message DeleteUserRequest {
-  string user = 1;
+  string userAsking = 1;
   string userToDelete = 2;
 }
 
 message DeleteUserReply {
   string deletedUser = 1;
+}
+
+message BuyGameRequest {
+  string userAsking = 1;
+  string gameToBuy = 2;
+}
+
+message BuyGameReply {
+  string response = 1;
 }

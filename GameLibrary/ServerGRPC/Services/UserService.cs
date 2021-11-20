@@ -16,7 +16,7 @@ namespace ServerGRPC.Services
             UserController usersController = UserController.Instance;
             return Task.FromResult(new UsersReply
             {
-                Users = "Usuarios en el sistema: " + usersController.GetAllUsers()
+                Users = "Usuarios en el sistema: \n" + usersController.GetAllUsers()
             });
         }
         
@@ -40,6 +40,19 @@ namespace ServerGRPC.Services
             return Task.FromResult(new DeleteUserReply
             {
                 DeletedUser = "El usuario " + request.UserToDelete + " fue borrado correctamente"
+            });
+        }
+
+        public override Task<BuyGameReply> BuyGame(BuyGameRequest request, ServerCallContext context)
+        {
+            UserController usersController = UserController.Instance;
+            usersController.BuyGame(request.UserAsking, request.GameToBuy);
+            string ownedGames = usersController.ListOwnedGameByUser(request.UserAsking);
+            return Task.FromResult(new BuyGameReply
+            {
+                Response = "El usuario " + request.UserAsking + " ha adquirido " + request.GameToBuy + " correctamente.\n" +
+                           "Sus juegos son: \n"
+                + ownedGames
             });
         }
     }
