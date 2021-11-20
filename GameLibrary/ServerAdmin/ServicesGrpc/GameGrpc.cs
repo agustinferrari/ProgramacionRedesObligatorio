@@ -41,8 +41,8 @@ namespace ServerAdmin.ServicesGrpc
 
         public async Task<string> DeleteGame(string userAsking, string game)
         {
-            if (userAsking == null)
-                return "Por favor ingrese su nombre de usuario para realizar este pedido";
+            if (userAsking == null || game == null)
+                return "Por favor ingrese parametros requeridos para realizar este pedido";
             var response =  await _client.DeleteGameAsync(new DeleteGameRequest(){ User = userAsking, GameToDelete = game});
              return response.DeletedGame;
         }
