@@ -43,7 +43,8 @@ namespace ServerGRPC.BusinessLogic
             lock (_padlock)
                 if (_users != null && !_users.Contains(newUser))
                     _users.Add(newUser);
-            throw new UserAlreadyAddedException();
+                else
+                 throw new UserAlreadyAddedException();
         }
 
         public void BuyGame(string username, string gameName)
@@ -133,7 +134,6 @@ namespace ServerGRPC.BusinessLogic
                     {
                         user.OwnedGames.Remove(gameToDelete);
                     }
-
                 }
             }
         }

@@ -17,9 +17,9 @@ namespace ServerAdmin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromHeader] string user)
+        public async Task<IActionResult> GetAll([FromHeader] string userAsking)
         {
-            string games = await _gameServiceGrpc.GetGames(user);
+            string games = await _gameServiceGrpc.GetGames(userAsking);
             return new OkObjectResult(games);
         }
         
@@ -31,17 +31,17 @@ namespace ServerAdmin.Controllers
         }
         
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromHeader] string user, [FromQuery] string game)
+        public async Task<IActionResult> Delete([FromHeader] string userAsking, [FromQuery] string game)
         {
-            string gameDeleted = await _gameServiceGrpc.DeleteGame(user, game);
+            string gameDeleted = await _gameServiceGrpc.DeleteGame(userAsking, game);
             return new OkObjectResult(gameDeleted);
         }
         
-        // [HttpPut]
-        // public async Task<IActionResult> Put()
-        // {
-        //     // string games = await GameServiceGrpc.GetGames();
-        //     // return new OkObjectResult(games);
-        // }
+        [HttpPut ("{gameToModify}")]
+        public async Task<IActionResult> Put(string gameToModify ,[FromBody] GameModel Game)
+        {
+            string response = await _gameServiceGrpc.ModifyGame(gameToModify,Game);
+            return new OkObjectResult(response);
+        }
     }
 }

@@ -1,11 +1,9 @@
-
-using System;
 using System.Threading.Tasks;
-using CommonModels;
 using Grpc.Core;
 using Microsoft.Extensions.Logging;
 using ServerGRPC.BusinessLogic;
 using ServerGRPC.Domain;
+using ServerGRPC.Utils.CustomExceptions;
 
 
 namespace ServerGRPC.Services
@@ -22,47 +20,115 @@ namespace ServerGRPC.Services
         public override Task<GamesReply> GetGames(GamesRequest request, ServerCallContext context)
         {
             // TODO Logear que este usuario hizo el request request.User
-            GameController gamesController = GameController.Instance;
+            string response;
+            try
+            {
+                GameController gamesController = GameController.Instance;
+                response = "Juegos en el sistema: \n" + gamesController.GetAllGames();
+            }
+            catch (InvalidGameException e)
+            {
+                response = e.Message;
+            }
             return Task.FromResult(new GamesReply
             {
-                Games = "Juegos en el sistema: " + gamesController.GetAllGames()
+                Games = response
+            });
+        }
+
+        public override Task<AddGameReply> AddGame(AddGameRequest addGameModelRequest, ServerCallContext context)
+        {
+            string response;
+            try
+            {
+                GameController gamesController = GameController.Instance;
+                Game newGame = parseGameModelToGame(addGameModelRequest);
+                gamesController.AddGame(newGame);
+                response = "El juego " + addGameModelRequest.Name + " fue creado correctamente";
+            }
+            catch (InvalidUsernameException e)
+            {
+                response = e.Message;
+            }
+            catch (GameAlreadyAddedException e)
+            {
+                response = e.Message;
+            }
+            return Task.FromResult(new AddGameReply
+            {
+                Response = response
             });
         }
         
-        public override Task<AddUpdateGameReply> AddModifyGames(AddUpdateGameRequest addGameModel, ServerCallContext context)
+        public override Task<ModifyGameReply> ModifyGame(ModifyGameRequest modifyGameModelRequest, ServerCallContext context)
         {
-            GameController gamesController = GameController.Instance;
-            Game newGame = parseGameModelToGame(addGameModel);
-            gamesController.AddGame(newGame);
-            
-            return Task.FromResult(new AddUpdateGameReply
+            string response;
+            try
             {
-                Response = "El juego " + addGameModel.Name + " fue creado correctamente"
+                GameController gamesController = GameController.Instance;
+                Game newGame = parseGameModelToGame(modifyGameModelRequest);
+                Game oldGame = gamesController.GetGame(modifyGameModelRequest.GameToModify);
+                gamesController.ModifyGame(oldGame,newGame);
+                response ="El juego " + modifyGameModelRequest.Name + " fue modificado correctamente";
+            }
+            catch (InvalidUsernameException e)
+            {
+                response = e.Message;
+            }
+            catch (InvalidGameException e)
+            {
+                response = e.Message;
+            }
+            return Task.FromResult(new ModifyGameReply
+            {
+                Response = response
             });
         }
+       
 
         public override Task<DeleteGameReply> DeleteGame(DeleteGameRequest deleteRequest, ServerCallContext context)
         {
-            GameController gamesController = GameController.Instance;
-            Game game = gamesController.GetGame(deleteRequest.GameToDelete);
-            gamesController.DeletePublishedGameByUser(game);
+            string response;
+            try
+            {
+                GameController gamesController = GameController.Instance;
+                Game game = gamesController.GetGame(deleteRequest.GameToDelete);
+                gamesController.DeletePublishedGameByUser(game);
+                response = "El juego " + deleteRequest.GameToDelete + " fue borrado correctamente";
+            }
+            catch (InvalidGameException e)
+            {
+                response = e.Message;
+            }
             return Task.FromResult(new DeleteGameReply
             {
-                 DeletedGame= "El juego " + deleteRequest.GameToDelete + " fue borrado correctamente"
+                DeletedGame = response
             });
         }
 
-        private Game parseGameModelToGame(AddUpdateGameRequest model)
+        private Game parseGameModelToGame(AddGameRequest model)
         {
             User user = UserController.Instance.GetUser(model.OwnerUserName);
             return new Game
             {
               Name = model.Name,
               Genre = model.Genre,
-              Rating = model.Rating,
               Synopsis = model.Synopsis,
               OwnerUser = user,
               PathToPhoto = model.PathToPhoto
+            };
+        }
+        
+        private Game parseGameModelToGame(ModifyGameRequest model)
+        {
+            User user = UserController.Instance.GetUser(model.OwnerUserName);
+            return new Game
+            {
+                Name = model.Name,
+                Genre = model.Genre,
+                Synopsis = model.Synopsis,
+                OwnerUser = user,
+                PathToPhoto = model.PathToPhoto
             };
         }
     

@@ -28,7 +28,6 @@ namespace ServerGRPC.Services
             {
                 Users = response
             });
-            
         }
         
         public override Task<AddModifyUserReply> AddUser(AddModifyUserRequest userToAddRequest, ServerCallContext context)
@@ -111,7 +110,6 @@ namespace ServerGRPC.Services
                 usersController.ModifyUserName(request.UserAsking, request.UserToAddModify);
                 response = "El usuario " + request.UserAsking + " ha sido modificado correctaente.\n" +
                            "Su nuevo nombre es: " + request.UserToAddModify;
-           
             }
             catch (InvalidUsernameException e)
             {

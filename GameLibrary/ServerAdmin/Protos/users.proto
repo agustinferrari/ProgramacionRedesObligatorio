@@ -10,7 +10,6 @@ service UserProto {
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
   rpc BuyGame (BuyGameRequest) returns (BuyGameReply);
   rpc ModifyUser (AddModifyUserRequest) returns (AddModifyUserReply);
-
 }
 
 message UsersRequest {
