@@ -21,10 +21,11 @@
 
     <ItemGroup>
       <Protobuf Include="Protos\games.proto" />
+      <Protobuf Include="Protos\users.proto">
+      </Protobuf>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="GrpcControllers" />
       <Folder Include="Models" />
     </ItemGroup>
 

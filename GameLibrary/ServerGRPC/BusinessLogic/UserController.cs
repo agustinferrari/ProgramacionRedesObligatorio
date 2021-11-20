@@ -64,6 +64,28 @@ namespace ServerGRPC.BusinessLogic
                 }
             throw new InvalidUsernameException();
         }
+        
+        public string GetAllUsers()
+        {
+            lock (_padlock)
+                if (_users != null)
+                    return UserListToString(_users);
+            throw new InvalidUsernameException();
+        }
+        
+        private string UserListToString(List<User> usersToString)
+        {
+            string result = "";
+            for (int i = 0; i < usersToString.Count; i++)
+            {
+                User user = usersToString[i];
+                result += user.Name;
+                if (i < usersToString.Count - 1)
+                    result += "\n";
+            }
+            return result;
+        }
+        
 
         public string ListOwnedGameByUser(string username)
         {

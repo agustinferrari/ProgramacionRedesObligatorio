@@ -1,14 +1,13 @@
 syntax = "proto3";
 
-option csharp_namespace = "ServerGRPC";
+option csharp_namespace = "ServerAdmin";
 package users;
 
-// The greeting service definition.
+
 service UserProto {
-  // Sends a greeting
   rpc GetUsers (UsersRequest) returns (UsersReply);
-  rpc AddUsers (AddUserRequest) returns (AddUserReply);
-  rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
+//  rpc AddUsers (AddUserRequest) returns (AddUserReply);
+//  rpc DeleteGame (DeleteUserRequest) returns (DeleteUserReply);
 
 }
 
@@ -23,7 +22,7 @@ message UsersReply {
 }
 
 message AddUserRequest{
-  string Name = 1;
+   string Name = 1;
 }
 
 message AddUserReply {

@@ -24,11 +24,10 @@ message GamesReply {
 
 message AddUpdateGameRequest{
    string Name = 1;
-   int32 Rating = 2;
-   string Genre = 3 ;
-   string Synopsis = 4 ;
-   string PathToPhoto = 5 ;
-   string OwnerUserName = 6 ;
+   string Genre = 2 ;
+   string Synopsis = 3 ;
+   string PathToPhoto = 4 ;
+   string OwnerUserName = 5 ;
 }
 
 message AddUpdateGameReply {

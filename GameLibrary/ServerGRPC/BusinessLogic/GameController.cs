@@ -47,7 +47,7 @@ namespace ServerGRPC.BusinessLogic
             }
         }
 
-        public string GetGames()
+        public string GetAllGames()
         {
             lock (_padlock)
                 if (_games != null)

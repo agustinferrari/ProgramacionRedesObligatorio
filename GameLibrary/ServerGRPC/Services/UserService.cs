@@ -1,20 +1,21 @@
 
 using System.Threading.Tasks;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
+using ServerGRPC.BusinessLogic;
 
 
 namespace ServerGRPC.Services
 {
-    public class UserService
+    public class UserService: UserProto.UserProtoBase
     {
         
-        public Task<NewUserReply> AddUser(NewUserRequest request, ServerCallContext context)
+        public override Task<UsersReply> GetUsers(UsersRequest request, ServerCallContext context)
         {
-            //_logger.LogInformation("Received request with data: " + request.Name);
-            return Task.FromResult(new NewUserReply
+            // TODO Logear que este usuario hizo el request request.User
+            UserController usersController = UserController.Instance;
+            return Task.FromResult(new UsersReply
             {
-                Message = "Hola cliente: " + request.Name
+                Users = usersController.GetAllUsers()
             });
         }
     

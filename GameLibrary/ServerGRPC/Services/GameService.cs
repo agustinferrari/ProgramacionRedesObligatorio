@@ -25,7 +25,7 @@ namespace ServerGRPC.Services
             GameController gamesController = GameController.Instance;
             return Task.FromResult(new GamesReply
             {
-                Games = gamesController.GetGames()
+                Games = gamesController.GetAllGames()
             });
         }
         

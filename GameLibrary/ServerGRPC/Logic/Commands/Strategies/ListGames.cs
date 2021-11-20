@@ -15,7 +15,7 @@ namespace ServerGRPC.Logic.Commands.Strategies
             string responseMessage;
             try
             {
-                string gameList = _gameController.GetGames();
+                string gameList = _gameController.GetAllGames();
                 responseMessage = gameList;
             }
             catch (InvalidGameException)
