@@ -40,11 +40,11 @@ namespace ServerAdmin.Controllers
             return new OkObjectResult(response);
         }
         
-        // [HttpPut]
-        // public async Task<IActionResult> Put()
-        // {
-        //     // string games = await gamesController.GetGames();
-        //     // return new OkObjectResult(games);
-        // }
+        [HttpPut]
+        public async Task<IActionResult> Put([FromHeader] string userAsking, UserModel NewUserName)
+        {
+            string response = await _userServiceGrpc.ModifyUser(userAsking, NewUserName);
+            return new OkObjectResult(response);
+        }
     }
 }

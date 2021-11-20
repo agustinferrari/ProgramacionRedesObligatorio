@@ -1,4 +1,5 @@
-﻿using Common.Protocol;
+﻿using System;
+using Common.Protocol;
 using ServerGRPC.BusinessLogic.Interfaces;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;
@@ -42,6 +43,7 @@ namespace ServerGRPC.BusinessLogic
             lock (_padlock)
                 if (_users != null && !_users.Contains(newUser))
                     _users.Add(newUser);
+            throw new UserAlreadyAddedException();
         }
 
         public void BuyGame(string username, string gameName)
@@ -158,6 +160,12 @@ namespace ServerGRPC.BusinessLogic
                         }
                     }
                 }
+        }
+
+        public void ModifyUserName(string userToModify, string newUserName)
+        {
+            User user = GetUser(userToModify);
+            user.Name = newUserName;
         }
     }
 }

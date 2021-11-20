@@ -31,8 +31,8 @@ namespace ServerAdmin.ServicesGrpc
             string userVerified = verifyUserAsking(userAsking);
             if (userVerified != null)
                 return userVerified;
-            var response =  await _client.AddModifyUsersAsync(
-                new AddModifyUserRequest(){UserAsking = userAsking, UserToAdd = userToAdd.Name});
+            var response =  await _client.AddUserAsync(
+                new AddModifyUserRequest(){UserAsking = userAsking, UserToAddModify = userToAdd.Name});
             return response.Response;
         }
 
@@ -55,6 +55,16 @@ namespace ServerAdmin.ServicesGrpc
                 new BuyGameRequest(){UserAsking = userAsking, GameToBuy = gameToBuy});
             return response.Response;
         }
+        
+        public async Task<string> ModifyUser(string userAsking, UserModel newUserName)
+        {
+            string userVerified = verifyUserAsking(userAsking);
+            if (userVerified != null)
+                return userVerified;
+            var response =  await _client.ModifyUserAsync(
+                new AddModifyUserRequest(){UserAsking = userAsking, UserToAddModify = newUserName.Name});
+            return response.Response;
+        }
 
         private string verifyUserAsking(string userAsking)
         {
@@ -62,5 +72,7 @@ namespace ServerAdmin.ServicesGrpc
                 return "Por favor ingrese su nombre de usuario para realizar este pedido";
             return null;
         }
+
+   
     }
 }
