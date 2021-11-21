@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonModels", "CommonModel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerLogs", "ServerLogs\ServerLogs.csproj", "{0C763864-626A-4C60-9566-0E9A3CAE8513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerGRPC", "ServerGRPC\ServerGRPC.csproj", "{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server", "Server\Server.csproj", "{0356AAAD-DBFC-429F-8061-008A8F1DBE7A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdmin", "ServerAdmin\ServerAdmin.csproj", "{661F6599-CEFB-42EA-8218-37018EB9ADC9}"
 EndProject
