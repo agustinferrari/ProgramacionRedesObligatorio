@@ -1,4 +1,5 @@
-﻿using Common.Protocol;
+﻿using System;
+using Common.Protocol;
 using ServerGRPC.BusinessLogic.Interfaces;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;
@@ -41,7 +42,13 @@ namespace ServerGRPC.BusinessLogic
             User newUser = new User { Name = name.ToLower() };
             lock (_padlock)
                 if (_users != null && !_users.Contains(newUser))
+                {
                     _users.Add(newUser);
+                    newUser.OwnedGames = new List<Game>();
+                }
+                    
+                else
+                 throw new UserAlreadyAddedException();
         }
 
         public void BuyGame(string username, string gameName)
@@ -64,6 +71,39 @@ namespace ServerGRPC.BusinessLogic
                 }
             throw new InvalidUsernameException();
         }
+        
+        public string GetAllUsers()
+        {
+            lock (_padlock)
+                if (_users != null)
+                    return UserListToString(_users);
+            throw new InvalidUsernameException();
+        }
+        
+        private string UserListToString(List<User> usersToString)
+        {
+            string result = "";
+            for (int i = 0; i < usersToString.Count; i++)
+            {
+                User user = usersToString[i];
+                result += user.Name;
+                if (i < usersToString.Count - 1)
+                    result += "\n";
+            }
+            return result;
+        }
+        
+        public void DeleteUser(string userToDelete)
+        {
+            lock (_padlock)
+            {
+                if (_users == null)
+                    throw new InvalidUsernameException();
+                User user = GetUser(userToDelete);
+                _users.Remove(user);
+            }
+        }
+        
 
         public string ListOwnedGameByUser(string username)
         {
@@ -98,7 +138,6 @@ namespace ServerGRPC.BusinessLogic
                     {
                         user.OwnedGames.Remove(gameToDelete);
                     }
-
                 }
             }
         }
@@ -125,6 +164,22 @@ namespace ServerGRPC.BusinessLogic
                         }
                     }
                 }
+        }
+
+        public void ModifyUserName(string userToModify, string newUserName)
+        {
+            User user = GetUser(userToModify);
+            user.Name = newUserName;
+        }
+
+        public void DeleteGameForUser(string userToDeleteGameFrom, string gameToDeleteName)
+        {
+            lock (_padlock)
+            {
+                User user = GetUser(userToDeleteGameFrom);
+                Game game = _gameController.GetGame(gameToDeleteName);
+              user.DeleteGame(game);
+            }
         }
     }
 }

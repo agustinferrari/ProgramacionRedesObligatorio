@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommonModels;
 using Microsoft.AspNetCore.Mvc;
 using ServerAdmin.ServicesGrpc;
+using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.Controllers
 {
@@ -10,38 +11,38 @@ namespace ServerAdmin.Controllers
     [ApiController]
     public class GameController
     {
-        private GameGrpc gamesController = new GameGrpc();
-        public GameController()
+        private readonly IGameGrpc _gameServiceGrpc;
+        public GameController(IGameGrpc service)
         {
-            //gamesController = gameController;
+            _gameServiceGrpc = service;
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromHeader] string user)
+        public async Task<IActionResult> GetAll([FromHeader] string userAsking)
         {
-            string games = await gamesController.GetGames(user);
+            string games = await _gameServiceGrpc.GetGames(userAsking);
             return new OkObjectResult(games);
         }
         
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] GameModel Game)
         {
-            string response = await gamesController.AddGame(Game);
+            string response = await _gameServiceGrpc.AddGame(Game);
             return new OkObjectResult(response);
         }
         
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromHeader] string user, [FromQuery] string game)
+        public async Task<IActionResult> Delete([FromHeader] string userAsking, [FromQuery] string game)
         {
-            string gameDeleted = await gamesController.DeleteGame(user, game);
+            string gameDeleted = await _gameServiceGrpc.DeleteGame(userAsking, game);
             return new OkObjectResult(gameDeleted);
         }
         
-        // [HttpPut]
-        // public async Task<IActionResult> Put()
-        // {
-        //     // string games = await gamesController.GetGames();
-        //     // return new OkObjectResult(games);
-        // }
+        [HttpPut ("{gameToModify}")]
+        public async Task<IActionResult> Put(string gameToModify ,[FromBody] GameModel Game)
+        {
+            string response = await _gameServiceGrpc.ModifyGame(gameToModify,Game);
+            return new OkObjectResult(response);
+        }
     }
 }

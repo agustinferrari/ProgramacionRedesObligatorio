@@ -47,7 +47,7 @@ namespace ServerGRPC.BusinessLogic
             }
         }
 
-        public string GetGames()
+        public string GetAllGames()
         {
             lock (_padlock)
                 if (_games != null)
@@ -125,13 +125,13 @@ namespace ServerGRPC.BusinessLogic
 
         public void DeletePublishedGameByUser(Game gameToDelete)
         {
-            IUserController _userController = UserController.Instance;
+            IUserController userController = UserController.Instance;
 
             lock (_padlock)
             {
                 if (_games == null)
                     throw new InvalidGameException();
-                _userController.DeleteGameFromAllUsers(gameToDelete);
+                userController.DeleteGameFromAllUsers(gameToDelete);
                 _games.Remove(gameToDelete);
             }
         }

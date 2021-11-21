@@ -10,7 +10,7 @@ namespace ServerGRPC.BusinessLogic.Interfaces
 
         public void AddGame(Game gameToAdd);
 
-        public string GetGames();
+        public string GetAllGames();
 
         public Game GetGame(string gameName);
 

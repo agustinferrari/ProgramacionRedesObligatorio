@@ -19,12 +19,18 @@ namespace ServerGRPC.Domain
 
         public void AddGame(Game game)
         {
-            if (OwnedGames == null)
-                OwnedGames = new List<Game>();
             if (!OwnedGames.Contains(game))
                 OwnedGames.Add(game);
             else
                 throw new GameAlreadyBoughtException();
+        }
+        
+        public void DeleteGame(Game game)
+        {
+            if (OwnedGames.Contains(game))
+                OwnedGames.Remove(game);
+            else
+                throw new InvalidDeleteGameForUserException();
         }
     }
 }
