@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using CommonLog;
 using ServerLogs.Models;
@@ -10,15 +11,16 @@ namespace ServerLogs.LogsStorage.GameLogs
         private static readonly object _padlock = new object();
         private static Games _instance = null;
         private readonly List<GameLogModel> _logs;
-        private readonly IDictionary<string, List<GameLogModel>> _userLogs;
-        private readonly IDictionary<string, IDictionary<string, List<GameLogModel>>> _compositeLog;
+        private readonly IDictionary<string, IDictionary<string, List<GameLogModel>>> _userGameLog;
+        private readonly IDictionary<string, IDictionary<DateTime, List<GameLogModel>>> _gameDateLog;
+        private readonly IDictionary<string, List<GameLogModel>> _dateLog;
         private int _idLog = 1;
 
         private Games()
         {
             _logs = new List<GameLogModel>();
-            _userLogs = new Dictionary<string, List<GameLogModel>>();
-            _compositeLog = new Dictionary<string, IDictionary<string, List<GameLogModel>>>();
+            _userGameLog = new Dictionary<string, IDictionary<string, List<GameLogModel>>>();
+            _gameDateLog = new Dictionary<string, IDictionary<DateTime, List<GameLogModel>>>();
         }
 
         public List<GameLogModel> GetLogs()
@@ -46,9 +48,11 @@ namespace ServerLogs.LogsStorage.GameLogs
             lock (_padlock)
             {
                 if (filters.User != "" && filters.Game != "")
-                    return GetCompositeLogs(filters);
+                    return GetUserGameLogs(filters);
                 if (filters.User != "")
                     return GetUserLogs(filters.User);
+                if (filters.Game != "")
+                    return GetGameLogs(filters.Game);
                 return _logs;
             }
         }
@@ -59,61 +63,57 @@ namespace ServerLogs.LogsStorage.GameLogs
             {
                 gameToAdd.Id = _idLog++;
                 _logs.Add(gameToAdd);
-                AddUserLog(gameToAdd);
-                AddCompositeLog(gameToAdd);
+                AddUserGameLog(gameToAdd);
+                AddGameDateLog(gameToAdd);
             }
         }
 
-        /*public GameLogModel DeleteLog(int id)
+        private void AddGameDateLog(GameLogModel log)
         {
-            lock (_padlock)
-                if (_logs != null)
-                {
-                    GameLogModel log = _logs.FirstOrDefault(g => g.Id == id);
-                    _logs.Remove(log);
-                    return log;
-                }
-            return null;
-        }*/
-
-        private void AddUserLog(GameLogModel log)
-        {
-            string user = log.User;
-            List<GameLogModel> userLogs = null;
-            if (!_userLogs.ContainsKey(user))
+            string game = log.Game;
+            DateTime date = log.Date.Date;
+            IDictionary<DateTime, List<GameLogModel>> compositeLogs = null;
+            if (!_gameDateLog.ContainsKey(game))
             {
-                userLogs = new List<GameLogModel>();
-                _userLogs.Add(user, null);
+                compositeLogs = new Dictionary<DateTime, List<GameLogModel>>();
+                _gameDateLog.Add(game, null);
             }
             else
-                userLogs = _userLogs[user];
-            userLogs.Add(log);
-            _userLogs[user] = userLogs;
+                compositeLogs = _gameDateLog[game];
+            _gameDateLog[game] = UpadateCompositeGameLog(compositeLogs, date, log);
         }
 
-        private List<GameLogModel> GetUserLogs(string user)
+        private IDictionary<DateTime, List<GameLogModel>> UpadateCompositeGameLog(IDictionary<DateTime, List<GameLogModel>> compositeGameLog, DateTime date, GameLogModel log)
         {
-            if (_userLogs != null && _userLogs.ContainsKey(user))
+            List<GameLogModel> dateLogs = null;
+            if (compositeGameLog == null)
+                compositeGameLog = new Dictionary<DateTime, List<GameLogModel>>();
+
+            if (!compositeGameLog.ContainsKey(date))
             {
-                List<GameLogModel> userLogs = _userLogs[user];
-                return userLogs;
+                dateLogs = new List<GameLogModel>();
+                compositeGameLog.Add(date, null);
             }
-            return null;
+            else
+                dateLogs = compositeGameLog[date];
+            dateLogs.Add(log);
+            compositeGameLog[date] = dateLogs;
+            return compositeGameLog;
         }
 
-        private void AddCompositeLog(GameLogModel log)
+        private void AddUserGameLog(GameLogModel log)
         {
             string user = log.User;
             string game = log.Game;
             IDictionary<string, List<GameLogModel>> compositeLogs = null;
-            if (!_compositeLog.ContainsKey(user))
+            if (!_userGameLog.ContainsKey(user))
             {
                 compositeLogs = new Dictionary<string, List<GameLogModel>>();
-                _compositeLog.Add(user, null);
+                _userGameLog.Add(user, null);
             }
             else
-                compositeLogs = _compositeLog[user];
-            _compositeLog[user] = UpadateCompositeGameLog(compositeLogs, game, log);
+                compositeLogs = _userGameLog[user];
+            _userGameLog[user] = UpadateCompositeGameLog(compositeLogs, game, log);
         }
 
         private IDictionary<string, List<GameLogModel>> UpadateCompositeGameLog(IDictionary<string, List<GameLogModel>> compositeGameLog, string game, GameLogModel log)
@@ -121,6 +121,8 @@ namespace ServerLogs.LogsStorage.GameLogs
             List<GameLogModel> gameLogs = null;
             if (compositeGameLog == null)
                 compositeGameLog = new Dictionary<string, List<GameLogModel>>();
+            if (game == null)
+                game = "";
 
             if (!compositeGameLog.ContainsKey(game))
             {
@@ -134,11 +136,31 @@ namespace ServerLogs.LogsStorage.GameLogs
             return compositeGameLog;
         }
 
-        private List<GameLogModel> GetCompositeLogs(FilterModel filters)
+        private List<GameLogModel> GetUserLogs(string user)
         {
-            if (_compositeLog != null && _compositeLog.ContainsKey(filters.User))
+            if (_userGameLog != null && _userGameLog.ContainsKey(user))
             {
-                IDictionary<string, List<GameLogModel>> userLogs = _compositeLog[filters.User];
+                List<GameLogModel> userLogs = _userGameLog[user].Values.SelectMany(x => x).ToList();
+                return userLogs;
+            }
+            return null;
+        }
+
+        private List<GameLogModel> GetGameLogs(string game)
+        {
+            if (_gameDateLog != null && _gameDateLog.ContainsKey(game))
+            {
+                List<GameLogModel> userLogs = _gameDateLog[game].Values.SelectMany(x => x).ToList();
+                return userLogs;
+            }
+            return null;
+        }
+
+        private List<GameLogModel> GetUserGameLogs(FilterModel filters)
+        {
+            if (_userGameLog != null && _userGameLog.ContainsKey(filters.User))
+            {
+                IDictionary<string, List<GameLogModel>> userLogs = _userGameLog[filters.User];
                 if (userLogs != null && userLogs.ContainsKey(filters.Game))
                 {
                     List<GameLogModel> gameLogs = userLogs[filters.Game];
