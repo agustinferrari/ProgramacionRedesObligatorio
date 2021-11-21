@@ -35,8 +35,6 @@ namespace ServerLogs.Services
         private void ReceiveItem(GameLogModel gameLogModel)
         {
             _logger.LogInformation(PrintLog(gameLogModel));
-            gameLogModel.Game = gameLogModel.Game.ToLower();
-            gameLogModel.User = gameLogModel.User.ToLower();
             try
             {
                 var context = Games.Instance;
