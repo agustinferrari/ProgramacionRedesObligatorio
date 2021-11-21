@@ -14,8 +14,9 @@ namespace ServerLogs.Services
         private readonly ILogger<Logger> _logger;
         private readonly IBus _busControl;
         private readonly IServiceProvider _serviceProvider;
-        
-        public Logger(ILogger<Logger> logger, IServiceProvider serviceProvider){
+
+        public Logger(ILogger<Logger> logger, IServiceProvider serviceProvider)
+        {
             _serviceProvider = serviceProvider;
             _logger = logger;
             _busControl = RabbitHutch.CreateBus();
@@ -29,13 +30,14 @@ namespace ServerLogs.Services
             });
         }
 
-        private void ReceiveItem(LogGameModel logGameModel)
+        private void ReceiveItem(LogGameModel gameLogModel)
         {
-            _logger.LogInformation(PrintLog(logGameModel));
+            _logger.LogInformation(PrintLog(gameLogModel));
             try
             {
                 var context = Games.Instance;
-                context.AddGameLog(logGameModel);
+                gameLogModel.Date = gameLogModel.Date.Date;
+                context.AddLog(gameLogModel);
                 _logger.LogInformation($"Add 1 item");
             }
             catch (Exception e)
@@ -44,13 +46,13 @@ namespace ServerLogs.Services
             }
         }
 
-        private string PrintLog(LogGameModel logGameModel)
+        private string PrintLog(LogGameModel gameLogModel)
         {
-            string message = "User: " + logGameModel.User;
-            message += ", Accion: "+ logGameModel.CommandConstant;
-            message += ", Juego: "+ logGameModel.Game == "" ? "": logGameModel.Game;
-            message += ", Completado: "+ (logGameModel.Result ? "YES" : "NO");
-            message += ", Date: "+ logGameModel.Date;
+            string message = "User: " + gameLogModel.User;
+            message += ", Accion: " + gameLogModel.CommandConstant;
+            message += ", Juego: " + gameLogModel.Game == "" ? "" : gameLogModel.Game;
+            message += ", Completado: " + (gameLogModel.Result ? "YES" : "NO");
+            message += ", Date: " + gameLogModel.Date;
             return message;
         }
     }

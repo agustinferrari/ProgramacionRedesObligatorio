@@ -173,9 +173,7 @@ namespace Server.BusinessLogic
                     newUser.OwnedGames = new List<Game>();
                 }
                 else
-                {
                     throw new UserAlreadyAddedException();
-                }
         }
 
 
