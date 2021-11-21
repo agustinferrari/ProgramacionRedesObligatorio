@@ -170,7 +170,7 @@ namespace ServerLogs.LogsStorage.GameLogs
                 List<LogGameModel> userLogs = _userGameLog[user].Values.SelectMany(x => x).ToList();
                 if (filters.Date != null)
                 {
-                    DateTime convertedDateTime = filters.Date.Value;
+                    DateTime convertedDateTime = filters.Date.Value.Date;
                     return userLogs.Where(x => x.Date == convertedDateTime).ToList();
                 }
                 return userLogs;
@@ -186,7 +186,7 @@ namespace ServerLogs.LogsStorage.GameLogs
                 List<LogGameModel> gameLogs = _gameDateLog[game].Values.SelectMany(x => x).ToList();
                 if (filters.Date != null)
                 {
-                    DateTime convertedDateTime = filters.Date.Value;
+                    DateTime convertedDateTime = filters.Date.Value.Date;
                     return gameLogs.Where(x => x.Date == convertedDateTime).ToList();
                 }
                 return gameLogs;
