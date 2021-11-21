@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using CommonModels;
 using Microsoft.AspNetCore.Mvc;
 using ServerAdmin.ServicesGrpc;
+using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.Controllers
 {
@@ -10,10 +11,10 @@ namespace ServerAdmin.Controllers
     [ApiController]
     public class GameController
     {
-        private readonly GameGrpc _gameServiceGrpc = new GameGrpc();
-        public GameController()
+        private readonly IGameGrpc _gameServiceGrpc;
+        public GameController(IGameGrpc service)
         {
-            //GameServiceGrpc = gameController;
+            _gameServiceGrpc = service;
         }
 
         [HttpGet]

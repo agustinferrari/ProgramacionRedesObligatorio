@@ -2,12 +2,13 @@
 using System.Threading.Tasks;
 using CommonModels;
 using Grpc.Net.Client;
+using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.ServicesGrpc
 {
-    public class GameGrpc
+    public class GameGrpc : IGameGrpc
     {
-        private GameProto.GameProtoClient _client;
+        private readonly GameProto.GameProtoClient _client;
         public GameGrpc()
         {
             AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
@@ -34,7 +35,6 @@ namespace ServerAdmin.ServicesGrpc
                 OwnerUserName = model.OwnerUserName,
                 PathToPhoto = model.PathToPhoto
             };
-
             var response = await _client.AddGameAsync(request);
             return response.Response;
         }

@@ -10,12 +10,9 @@ namespace ServerGRPC.Services
 {
     public class GameService : GameProto.GameProtoBase
     {
-        private readonly ILogger<GameService> _logger;
+        private readonly GameController _gamesController =  GameController.Instance;
+        private readonly UserController _usersController =  UserController.Instance;
 
-        public GameService(ILogger<GameService> logger)
-        {
-            _logger = logger;
-        }
         
         public override Task<GamesReply> GetGames(GamesRequest request, ServerCallContext context)
         {
@@ -23,8 +20,7 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                GameController gamesController = GameController.Instance;
-                response = "Juegos en el sistema: \n" + gamesController.GetAllGames();
+                response = "Juegos en el sistema: \n" + _gamesController.GetAllGames();
             }
             catch (InvalidGameException e)
             {
@@ -41,9 +37,8 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                GameController gamesController = GameController.Instance;
-                Game newGame = parseGameModelToGame(addGameModelRequest);
-                gamesController.AddGame(newGame);
+                Game newGame = ParseGameModelToGame(addGameModelRequest);
+                _gamesController.AddGame(newGame);
                 response = "El juego " + addGameModelRequest.Name + " fue creado correctamente";
             }
             catch (InvalidUsernameException e)
@@ -65,10 +60,9 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                GameController gamesController = GameController.Instance;
-                Game newGame = parseGameModelToGame(modifyGameModelRequest);
-                Game oldGame = gamesController.GetGame(modifyGameModelRequest.GameToModify);
-                gamesController.ModifyGame(oldGame,newGame);
+                Game newGame = ParseGameModelToGame(modifyGameModelRequest);
+                Game oldGame = _gamesController.GetGame(modifyGameModelRequest.GameToModify);
+                _gamesController.ModifyGame(oldGame,newGame);
                 response ="El juego " + modifyGameModelRequest.Name + " fue modificado correctamente";
             }
             catch (InvalidUsernameException e)
@@ -91,9 +85,8 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                GameController gamesController = GameController.Instance;
-                Game game = gamesController.GetGame(deleteRequest.GameToDelete);
-                gamesController.DeletePublishedGameByUser(game);
+                Game game = _gamesController.GetGame(deleteRequest.GameToDelete);
+                _gamesController.DeletePublishedGameByUser(game);
                 response = "El juego " + deleteRequest.GameToDelete + " fue borrado correctamente";
             }
             catch (InvalidGameException e)
@@ -106,9 +99,9 @@ namespace ServerGRPC.Services
             });
         }
 
-        private Game parseGameModelToGame(AddGameRequest model)
+        private Game ParseGameModelToGame(AddGameRequest model)
         {
-            User user = UserController.Instance.GetUser(model.OwnerUserName);
+            User user = _usersController.GetUser(model.OwnerUserName);
             return new Game
             {
               Name = model.Name,
@@ -119,9 +112,9 @@ namespace ServerGRPC.Services
             };
         }
         
-        private Game parseGameModelToGame(ModifyGameRequest model)
+        private Game ParseGameModelToGame(ModifyGameRequest model)
         {
-            User user = UserController.Instance.GetUser(model.OwnerUserName);
+            User user = _usersController.GetUser(model.OwnerUserName);
             return new Game
             {
                 Name = model.Name,

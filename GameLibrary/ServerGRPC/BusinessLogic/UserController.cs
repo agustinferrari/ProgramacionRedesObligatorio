@@ -42,7 +42,11 @@ namespace ServerGRPC.BusinessLogic
             User newUser = new User { Name = name.ToLower() };
             lock (_padlock)
                 if (_users != null && !_users.Contains(newUser))
+                {
                     _users.Add(newUser);
+                    newUser.OwnedGames = new List<Game>();
+                }
+                    
                 else
                  throw new UserAlreadyAddedException();
         }
@@ -166,6 +170,16 @@ namespace ServerGRPC.BusinessLogic
         {
             User user = GetUser(userToModify);
             user.Name = newUserName;
+        }
+
+        public void DeleteGameForUser(string userToDeleteGameFrom, string gameToDeleteName)
+        {
+            lock (_padlock)
+            {
+                User user = GetUser(userToDeleteGameFrom);
+                Game game = _gameController.GetGame(gameToDeleteName);
+              user.DeleteGame(game);
+            }
         }
     }
 }

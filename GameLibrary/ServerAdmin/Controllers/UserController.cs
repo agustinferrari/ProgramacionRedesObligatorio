@@ -2,6 +2,7 @@
 using CommonModels;
 using Microsoft.AspNetCore.Mvc;
 using ServerAdmin.ServicesGrpc;
+using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.Controllers
 {  
@@ -9,7 +10,12 @@ namespace ServerAdmin.Controllers
     [ApiController]
     public class UserController
     {
-        private readonly UserGrpc _userServiceGrpc = new UserGrpc();
+        private readonly IUserGrpc _userServiceGrpc;
+        
+        public UserController(IUserGrpc users)
+        {
+            _userServiceGrpc = users;
+        }
         
         [HttpGet]
         public async Task<IActionResult> GetAll([FromHeader] string userAsking)
@@ -37,6 +43,13 @@ namespace ServerAdmin.Controllers
         public async Task<IActionResult> Post([FromHeader] string userAsking, string gameToBuy)
         {
             string response = await _userServiceGrpc.BuyGame(userAsking, gameToBuy);
+            return new OkObjectResult(response);
+        }
+        
+        [HttpDelete ("{gameToDeleteForUser}")]
+        public async Task<IActionResult> DeleteGameForUser([FromHeader] string userAsking, string gameToDeleteForUser)
+        {
+            string response = await _userServiceGrpc.DeleteGameForUser(userAsking, gameToDeleteForUser);
             return new OkObjectResult(response);
         }
         

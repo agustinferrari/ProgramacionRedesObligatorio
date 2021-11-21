@@ -8,8 +8,9 @@ service UserProto {
   rpc GetUsers (UsersRequest) returns (UsersReply);
   rpc AddUser (AddModifyUserRequest) returns (AddModifyUserReply);
   rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
-  rpc BuyGame (BuyGameRequest) returns (BuyGameReply);
+  rpc BuyGame (BuyDeleteGameRequest) returns (BuyDeleteGameReply);
   rpc ModifyUser (AddModifyUserRequest) returns (AddModifyUserReply);
+  rpc DeleteGameForUser (BuyDeleteGameRequest) returns (BuyDeleteGameReply);
 }
 
 message UsersRequest {
@@ -39,11 +40,11 @@ message DeleteUserReply {
   string deletedUser = 1;
 }
 
-message BuyGameRequest {
+message BuyDeleteGameRequest {
   string userAsking = 1;
-  string gameToBuy = 2;
+  string game = 2;
 }
 
-message BuyGameReply {
+message BuyDeleteGameReply {
   string response = 1;
 }

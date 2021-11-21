@@ -2,11 +2,11 @@
 using System.Threading.Tasks;
 using CommonModels;
 using Grpc.Net.Client;
-using Microsoft.AspNetCore.Mvc;
+using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.ServicesGrpc
 {
-    public class UserGrpc
+    public class UserGrpc : IUserGrpc
     {
         private UserProto.UserProtoClient _client;
         public UserGrpc()
@@ -52,7 +52,7 @@ namespace ServerAdmin.ServicesGrpc
             if (userVerified != null)
                 return userVerified;
             var response =  await _client.BuyGameAsync(
-                new BuyGameRequest(){UserAsking = userAsking, GameToBuy = gameToBuy});
+                new BuyDeleteGameRequest(){UserAsking = userAsking, Game = gameToBuy});
             return response.Response;
         }
         
@@ -63,6 +63,16 @@ namespace ServerAdmin.ServicesGrpc
                 return userVerified;
             var response =  await _client.ModifyUserAsync(
                 new AddModifyUserRequest(){UserAsking = userAsking, UserToAddModify = newUserName.Name});
+            return response.Response;
+        }
+
+        public async Task<string> DeleteGameForUser(string userAsking, string gameToDeleteForUser)
+        {
+            string userVerified = verifyUserAsking(userAsking);
+            if (userVerified != null)
+                return userVerified;
+            var response =  await _client.DeleteGameForUserAsync(
+                new BuyDeleteGameRequest(){UserAsking = userAsking, Game = gameToDeleteForUser});
             return response.Response;
         }
 

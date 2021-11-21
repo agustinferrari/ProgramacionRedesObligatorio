@@ -10,6 +10,7 @@ namespace ServerGRPC.Services
 {
     public class UserService: UserProto.UserProtoBase
     {
+        private readonly UserController _usersController = UserController.Instance;
         
         public override Task<UsersReply> GetUsers(UsersRequest request, ServerCallContext context)
         {
@@ -17,8 +18,7 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                UserController usersController = UserController.Instance;
-                response = "Usuarios en el sistema: \n" + usersController.GetAllUsers();
+                response = "Usuarios en el sistema: \n" + _usersController.GetAllUsers();
             }
             catch (InvalidUsernameException e)
             {
@@ -36,8 +36,7 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                UserController usersController = UserController.Instance;
-                usersController.TryAddUser(userToAddRequest.UserToAddModify);
+                _usersController.TryAddUser(userToAddRequest.UserToAddModify);
                 response = "El usuario " + userToAddRequest.UserToAddModify + " fue creado correctamente";
             }
             catch (UserAlreadyAddedException e)
@@ -55,8 +54,7 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                UserController usersController = UserController.Instance;
-                usersController.DeleteUser(request.UserToDelete);
+                _usersController.DeleteUser(request.UserToDelete);
 
                 response = "El usuario " + request.UserToDelete + " fue borrado correctamente";
             }
@@ -70,15 +68,14 @@ namespace ServerGRPC.Services
             });
         }
 
-        public override Task<BuyGameReply> BuyGame(BuyGameRequest request, ServerCallContext context)
+        public override Task<BuyDeleteGameReply> BuyGame(BuyDeleteGameRequest request, ServerCallContext context)
         {
-            UserController usersController = UserController.Instance;
             string response;
             try
             {
-                usersController.BuyGame(request.UserAsking, request.GameToBuy);
-                string ownedGames = usersController.ListOwnedGameByUser(request.UserAsking);
-                response = "El usuario " + request.UserAsking + " ha adquirido " + request.GameToBuy +
+                _usersController.BuyGame(request.UserAsking, request.Game);
+                string ownedGames = _usersController.ListOwnedGameByUser(request.UserAsking);
+                response = "El usuario " + request.UserAsking + " ha adquirido " + request.Game +
                            " correctamente.\n" +
                            "Sus juegos son: \n"
                            + ownedGames;
@@ -95,10 +92,40 @@ namespace ServerGRPC.Services
             {
                 response = gameAlreadyBoughtException.Message;
             }
-            return Task.FromResult(new BuyGameReply
+            return Task.FromResult(new BuyDeleteGameReply
                 {
                     Response = response
                 });
+        }
+
+        public override Task<BuyDeleteGameReply> DeleteGameForUser(BuyDeleteGameRequest request, ServerCallContext context)
+        {
+            string response;
+            try
+            {
+                _usersController.DeleteGameForUser(request.UserAsking, request.Game);
+                string ownedGames = _usersController.ListOwnedGameByUser(request.UserAsking);
+                response = "El usuario " + request.UserAsking + " ha eliminado " + request.Game +
+                           " correctamente de su biblioteca.\n" +
+                           "Sus juegos son: \n"
+                           + ownedGames;
+            }
+            catch (InvalidDeleteGameForUserException gameException)
+            {
+                response = gameException.Message;
+            }
+            catch (InvalidUsernameException usernameException)
+            {
+                response = usernameException.Message;
+            }
+            catch (InvalidGameException e)
+            {
+                response = e.Message;
+            }
+            return Task.FromResult(new BuyDeleteGameReply
+            {
+                Response = response
+            });
         }
 
         public override Task<AddModifyUserReply> ModifyUser(AddModifyUserRequest request, ServerCallContext context)
@@ -106,8 +133,7 @@ namespace ServerGRPC.Services
             string response;
             try
             {
-                UserController usersController = UserController.Instance;
-                usersController.ModifyUserName(request.UserAsking, request.UserToAddModify);
+                _usersController.ModifyUserName(request.UserAsking, request.UserToAddModify);
                 response = "El usuario " + request.UserAsking + " ha sido modificado correctaente.\n" +
                            "Su nuevo nombre es: " + request.UserToAddModify;
             }

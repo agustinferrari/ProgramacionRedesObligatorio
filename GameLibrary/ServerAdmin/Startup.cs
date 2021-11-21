@@ -1,4 +1,5 @@
 
+using Factory.Factories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -26,6 +27,8 @@ namespace ServerAdmin
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "ServerAdmin", Version = "v1"});
             });
+            var factory = new ServiceFactory(services);
+            factory.AddCustomServicesServerAdmin();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
