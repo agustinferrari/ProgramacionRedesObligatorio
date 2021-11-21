@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using LogsModels;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using ServerLogs.LogsStorage.GameLogs;
+using ServerLogs.Logs;
 using ServerLogs.Services.RabbitMQService;
 
 namespace ServerLogs.Services
