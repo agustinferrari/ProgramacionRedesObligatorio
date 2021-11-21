@@ -19,13 +19,7 @@ namespace ServerLogs.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<LogGameModel>>> GetGameLogs()
-        {
-            return _context.GetLogs();
-        }
-
-        [HttpPost]
-        public ActionResult<List<LogGameModel>> GetGameLogs(FilterModel filters)
+        public ActionResult<List<LogGameModel>> GetGameLogs([FromQuery] FilterModel filters)
         {
             var gameLog = _context.GetLogs(filters);
             if (gameLog == null)
