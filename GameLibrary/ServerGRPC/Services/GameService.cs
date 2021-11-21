@@ -1,6 +1,5 @@
 using System.Threading.Tasks;
 using Grpc.Core;
-using Microsoft.Extensions.Logging;
 using ServerGRPC.BusinessLogic;
 using ServerGRPC.Domain;
 using ServerGRPC.Utils.CustomExceptions;

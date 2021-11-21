@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 using CommonModels;
 using Grpc.Net.Client;
 using ServerAdmin.ServicesGrpcInterfaces;
@@ -9,11 +11,13 @@ namespace ServerAdmin.ServicesGrpc
     public class GameGrpc : IGameGrpc
     {
         private readonly GameProto.GameProtoClient _client;
+        private static readonly ISettingsManager SettingsMgr = new SettingsManager();
         public GameGrpc()
         {
-            AppContext.SetSwitch("System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport",true);
-            Console.WriteLine("Starting gRPC client ......");
-            var channel = GrpcChannel.ForAddress("http://localhost:5004");
+            string appContext = SettingsMgr.ReadSetting(ServerConfig.SeverAppContextConfigKey);
+            string grpcChannel = SettingsMgr.ReadSetting(ServerConfig.ServerChannelPortConfigKey);
+            AppContext.SetSwitch(appContext,true);
+            var channel = GrpcChannel.ForAddress(grpcChannel);
             _client = new GameProto.GameProtoClient(channel);
         }
         
