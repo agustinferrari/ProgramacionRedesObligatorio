@@ -92,7 +92,7 @@ namespace Server.Logic
                     {
                         CommandStrategy commandStrategy = CommandFactory.GetStrategy(header.ICommand);
                         LogGameModel log = await commandStrategy.HandleRequest(header, clientNetworkStreamHandler);
-                        await _logLogic.SendLog(log);
+                        _logLogic.SendLog(log);
                     }
                 }
                 catch (Exception e) when (e is IOException || e is AggregateException)

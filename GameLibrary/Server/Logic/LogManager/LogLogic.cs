@@ -5,6 +5,8 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LogsModels;
+using Common.Protocol;
+using System.Collections.Generic;
 
 namespace Server.Logic.LogManager
 {
@@ -14,6 +16,9 @@ namespace Server.Logic.LogManager
         private static readonly object _padlock = new object();
         private static LogLogic _instance = null;
         private static IModel _channel = null;
+        private List<int> _unwantedCommands = new List<int>{CommandConstants.GetGameDetails, CommandConstants.GetGameImage,
+                                                        CommandConstants.ListFilteredGames, CommandConstants.ListGames,
+                                                        CommandConstants.ListOwnedGames };
 
         private LogLogic()
         {
@@ -40,26 +45,25 @@ namespace Server.Logic.LogManager
             }
         }
 
-        public Task<bool> SendLog(LogGameModel log)
+        public async Task SendLog(LogGameModel log)
         {
-            string message = JsonSerializer.Serialize(log);
-            bool returnVal;
-            try
+            if (!_unwantedCommands.Contains(log.CommandConstant))
             {
-                byte[] body = Encoding.UTF8.GetBytes(message);
-                _channel.BasicPublish(exchange: "",
-                    routingKey: "log_queue",
-                    basicProperties: null,
-                    body: body);
-                returnVal = true;
+                string message = JsonSerializer.Serialize(log);
+                try
+                {
+                    byte[] body = Encoding.UTF8.GetBytes(message);
+                    _channel.BasicPublish(exchange: "",
+                        routingKey: "log_queue",
+                        basicProperties: null,
+                        body: body);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                returnVal = false;
-            }
-
-            return Task.FromResult(returnVal);
         }
+
     }
 }
