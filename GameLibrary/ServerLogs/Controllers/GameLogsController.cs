@@ -6,6 +6,7 @@ using CommonLog;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ServerLogs.LogsStorage.GameLogs;
+using ServerLogs.Models;
 
 namespace ServerLogs.Controllers
 {
@@ -26,10 +27,10 @@ namespace ServerLogs.Controllers
             return _context.GetLogs();
         }
 
-        [HttpGet("{id}")]
-        public ActionResult<GameLogModel> GetGameLogs(int id)
+        [HttpPost]
+        public ActionResult<List<GameLogModel>> GetGameLogs(FilterModel filters)
         {
-            var gameLog = _context.GetLog(id);
+            var gameLog = _context.GetLogs(filters);
             if (gameLog == null)
             {
                 return NotFound();
