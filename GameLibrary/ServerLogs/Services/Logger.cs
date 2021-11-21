@@ -16,8 +16,9 @@ namespace ServerLogs.Services
         private readonly ILogger<Logger> _logger;
         private readonly IBus _busControl;
         private readonly IServiceProvider _serviceProvider;
-        
-        public Logger(ILogger<Logger> logger, IServiceProvider serviceProvider){
+
+        public Logger(ILogger<Logger> logger, IServiceProvider serviceProvider)
+        {
             _serviceProvider = serviceProvider;
             _logger = logger;
             _busControl = RabbitHutch.CreateBus();
@@ -34,6 +35,8 @@ namespace ServerLogs.Services
         private void ReceiveItem(GameLogModel gameLogModel)
         {
             _logger.LogInformation(PrintLog(gameLogModel));
+            gameLogModel.Game = gameLogModel.Game.ToLower();
+            gameLogModel.User = gameLogModel.User.ToLower();
             try
             {
                 var context = Games.Instance;
@@ -49,10 +52,10 @@ namespace ServerLogs.Services
         private string PrintLog(GameLogModel gameLogModel)
         {
             string message = "User: " + gameLogModel.User;
-            message += ", Accion: "+ gameLogModel.CommandConstant;
-            message += ", Juego: "+ gameLogModel.Game == "" ? "": gameLogModel.Game;
-            message += ", Completado: "+ (gameLogModel.Result ? "YES" : "NO");
-            message += ", Date: "+ gameLogModel.Date;
+            message += ", Accion: " + gameLogModel.CommandConstant;
+            message += ", Juego: " + gameLogModel.Game == "" ? "" : gameLogModel.Game;
+            message += ", Completado: " + (gameLogModel.Result ? "YES" : "NO");
+            message += ", Date: " + gameLogModel.Date;
             return message;
         }
     }

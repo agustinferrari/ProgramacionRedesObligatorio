@@ -43,6 +43,8 @@ namespace ServerLogs.LogsStorage.GameLogs
 
         public List<GameLogModel> GetLogs(FilterModel filters)
         {
+            filters.Game = filters.Game.ToLower();
+            filters.User = filters.User.ToLower();
             lock (_padlock)
             {
                 if (filters.User != "" && filters.Game != "")
