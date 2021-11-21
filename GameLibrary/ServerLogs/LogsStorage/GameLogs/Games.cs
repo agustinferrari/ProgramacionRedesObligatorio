@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using CommonLog;
+using ServerLogs.Models;
 
 namespace ServerLogs.LogsStorage.GameLogs
 {
@@ -36,14 +37,14 @@ namespace ServerLogs.LogsStorage.GameLogs
             }
         }
 
-        public GameLogModel GetLog(int id)
+        public GameLogModel GetLog(FilterModel filters)
         {
             lock (_padlock)
                 if (_logs != null)
-                    return _logs.FirstOrDefault(g => g.Id == id);
+                    return _logs.FirstOrDefault(g => g.Id == 1);
             return null;
         }
-        
+
         public void AddGameLog(GameLogModel gameToAdd)
         {
             lock (_padlock)

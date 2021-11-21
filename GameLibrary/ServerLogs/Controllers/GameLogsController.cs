@@ -13,32 +13,32 @@ namespace ServerLogs.Controllers
     [ApiController]
     public class GameLogsController : ControllerBase
     {
-       private readonly Games _context;
+        private readonly Games _context;
 
         public GameLogsController()
         {
             _context = Games.Instance;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GameLogModel>>> GetGameLogs()
         {
             return _context.GetLogs();
         }
-        
+
         [HttpGet("{id}")]
-        public async Task<ActionResult<GameLogModel>> GetGameLogs(int id)
+        public ActionResult<GameLogModel> GetGameLogs(int id)
         {
             var gameLog = _context.GetLog(id);
             if (gameLog == null)
             {
                 return NotFound();
             }
-            
+
             return gameLog;
         }
-        
-        [HttpPost]
+
+        /*[HttpPost]
         public async Task<ActionResult<GameLogModel>> PostGameLogs(GameLogModel gameLog)
         {
             _context.AddGameLog(gameLog);
@@ -55,6 +55,6 @@ namespace ServerLogs.Controllers
                 return NotFound();
             }
             return gameLog;
-        }
+        }*/
     }
 }
