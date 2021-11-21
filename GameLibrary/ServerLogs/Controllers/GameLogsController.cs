@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using LogsModels;
 using Microsoft.AspNetCore.Mvc;
-using ServerLogs.LogsStorage.GameLogs;
+using ServerLogs.Logs;
 using ServerLogs.Models;
 
 namespace ServerLogs.Controllers
@@ -11,11 +11,11 @@ namespace ServerLogs.Controllers
     [ApiController]
     public class GameLogsController : ControllerBase
     {
-        private readonly Games _context;
+        private readonly LogsLogic _context;
 
         public GameLogsController()
         {
-            _context = Games.Instance;
+            _context = LogsLogic.Instance;
         }
 
         [HttpGet]

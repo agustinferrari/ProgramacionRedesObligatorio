@@ -35,7 +35,7 @@ namespace ServerLogs.Services
             _logger.LogInformation(PrintLog(gameLogModel));
             try
             {
-                var context = Games.Instance;
+                var context = LogsLogic.Instance;
                 gameLogModel.Date = gameLogModel.Date.Date;
                 context.AddLog(gameLogModel);
                 _logger.LogInformation($"Add 1 item");
