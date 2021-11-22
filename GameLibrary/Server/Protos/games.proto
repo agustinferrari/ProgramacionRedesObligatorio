@@ -4,20 +4,16 @@ option csharp_namespace = "Server";
 package games;
 
 service GameProto {
-  // Sends a greeting
   rpc GetGames (GamesRequest) returns (GamesReply);
   rpc AddGame (AddGameRequest) returns (GamesReply);
   rpc DeleteGame (DeleteGameRequest) returns (GamesReply);
   rpc ModifyGame (ModifyGameRequest) returns (GamesReply);
-
 }
 
-// The request message containing the user's name.
 message GamesRequest {
   string user = 1;
 }
 
-// The response message containing the greetings.
 message GamesReply {
   string response = 1;
 }

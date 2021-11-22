@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using CommonModels;
 using Microsoft.AspNetCore.Mvc;
 using ServerAdmin.Filters;
-using ServerAdmin.ServicesGrpc;
 using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.Controllers

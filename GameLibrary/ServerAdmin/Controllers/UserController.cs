@@ -1,11 +1,13 @@
 ﻿using System.Threading.Tasks;
 using CommonModels;
 using Microsoft.AspNetCore.Mvc;
+using ServerAdmin.Filters;
 using ServerAdmin.ServicesGrpcInterfaces;
 
 namespace ServerAdmin.Controllers
 {
     [Route("api/users")]
+    [ExceptionFilter]
     [ApiController]
     public class UserController
     {
