@@ -14,8 +14,6 @@ namespace CommonProtocol.NetworkUtils
     public class NetworkStreamHandler : INetworkStreamHandler
     {
         protected NetworkStream _networkStream;
-        protected string _ipAddress;
-        protected int _port;
         private IFileHandler _fileHandler;
         private IFileStreamHandler _fileStreamHandler;
 
