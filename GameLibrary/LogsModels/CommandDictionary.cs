@@ -20,6 +20,10 @@ namespace LogsModels
             { 10, "DeletePublishedGame"},
             { 11, "GetGameImage" },
             { 12, "ListFilteredGames"},
+            { 13, "AddUser"},
+            { 14, "ModifyUser"},
+            { 15, "DeleteUser"},
+            { 16, "DeleteOwnedGame"},
         };
 
         public static string ParseCommand(int command)
