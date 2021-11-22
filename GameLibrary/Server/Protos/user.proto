@@ -3,24 +3,21 @@ syntax = "proto3";
 option csharp_namespace = "Server";
 package users;
 
-// The greeting service definition.
-
 service UserProto {
   rpc GetUsers (UsersRequest) returns (UsersReply);
-  rpc AddUser (AddModifyUserRequest) returns (AddModifyUserReply);
-  rpc DeleteUser (DeleteUserRequest) returns (DeleteUserReply);
-  rpc BuyGame (BuyDeleteGameRequest) returns (BuyDeleteGameReply);
-  rpc ModifyUser (AddModifyUserRequest) returns (AddModifyUserReply);
-  rpc DeleteGameForUser (BuyDeleteGameRequest) returns (BuyDeleteGameReply);
+  rpc AddUser (AddModifyUserRequest) returns (UsersReply);
+  rpc DeleteUser (DeleteUserRequest) returns (UsersReply);
+  rpc BuyGame (BuyDeleteGameRequest) returns (UsersReply);
+  rpc ModifyUser (AddModifyUserRequest) returns (UsersReply);
+  rpc DeleteGameForUser (BuyDeleteGameRequest) returns (UsersReply);
 }
 
 message UsersRequest {
   string userAsking = 1;
 }
 
-// The response message containing the greetings.
 message UsersReply {
-  string users = 1;
+  string response = 1;
 }
 
 message AddModifyUserRequest{
@@ -28,24 +25,12 @@ message AddModifyUserRequest{
   string userToAddModify = 2;
 }
 
-message AddModifyUserReply {
-  string response = 1;
-}
-
 message DeleteUserRequest {
   string userAsking = 1;
   string userToDelete = 2;
 }
 
-message DeleteUserReply {
-  string deletedUser = 1;
-}
-
 message BuyDeleteGameRequest {
   string userAsking = 1;
   string game = 2;
-}
-
-message BuyDeleteGameReply {
-  string response = 1;
 }

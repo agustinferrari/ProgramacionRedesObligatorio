@@ -6,9 +6,9 @@ package games;
 service GameProto {
   // Sends a greeting
   rpc GetGames (GamesRequest) returns (GamesReply);
-  rpc AddGame (AddGameRequest) returns (AddGameReply);
-  rpc DeleteGame (DeleteGameRequest) returns (DeleteGameReply);
-  rpc ModifyGame (ModifyGameRequest) returns (ModifyGameReply);
+  rpc AddGame (AddGameRequest) returns (GamesReply);
+  rpc DeleteGame (DeleteGameRequest) returns (GamesReply);
+  rpc ModifyGame (ModifyGameRequest) returns (GamesReply);
 
 }
 
@@ -19,7 +19,7 @@ message GamesRequest {
 
 // The response message containing the greetings.
 message GamesReply {
-  string games = 1;
+  string response = 1;
 }
 
 message AddGameRequest{
@@ -30,17 +30,9 @@ message AddGameRequest{
   string OwnerUserName = 5 ;
 }
 
-message AddGameReply {
-  string response = 1;
-}
-
 message DeleteGameRequest {
   string user = 1;
   string gameToDelete = 2;
-}
-
-message DeleteGameReply {
-  string deletedGame = 1;
 }
 
 message ModifyGameRequest{
@@ -50,8 +42,4 @@ message ModifyGameRequest{
   string PathToPhoto = 4 ;
   string OwnerUserName = 5 ;
   string GameToModify = 6;
-}
-
-message ModifyGameReply {
-  string response = 1;
 }

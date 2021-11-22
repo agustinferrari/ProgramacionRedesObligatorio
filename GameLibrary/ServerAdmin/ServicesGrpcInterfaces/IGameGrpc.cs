@@ -13,6 +13,6 @@ namespace ServerAdmin.ServicesGrpcInterfaces
         public Task<string> DeleteGame(string userAsking, string game);
 
         public Task<string> ModifyGame(string gameToModify, GameModel model);
-        
+
     }
 }
