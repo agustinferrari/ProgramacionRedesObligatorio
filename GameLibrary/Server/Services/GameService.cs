@@ -1,6 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Common.Protocol;
+using CommonProtocol.Protocol;
 using Grpc.Core;
 using LogsModels;
 using Server.BusinessLogic;
