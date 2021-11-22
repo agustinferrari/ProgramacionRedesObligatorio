@@ -32,28 +32,17 @@ namespace ServerLogs.Services
 
         private void ReceiveItem(LogGameModel gameLogModel)
         {
-            _logger.LogInformation(PrintLog(gameLogModel));
             try
             {
                 var context = LogsLogic.Instance;
                 gameLogModel.Date = gameLogModel.Date.Date;
                 context.AddLog(gameLogModel);
-                _logger.LogInformation($"Add 1 item");
+                _logger.LogInformation($"Adds 1 item");
             }
             catch (Exception e)
             {
                 _logger.LogInformation($"Exception {e.Message} -> {e.StackTrace}");
             }
-        }
-
-        private string PrintLog(LogGameModel gameLogModel)
-        {
-            string message = "User: " + gameLogModel.User;
-            message += ", Accion: " + gameLogModel.CommandConstant;
-            message += ", Juego: " + gameLogModel.Game == "" ? "" : gameLogModel.Game;
-            message += ", Completado: " + (gameLogModel.Result ? "YES" : "NO");
-            message += ", Date: " + gameLogModel.Date;
-            return message;
         }
     }
 }
