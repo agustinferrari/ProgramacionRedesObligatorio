@@ -66,7 +66,7 @@ namespace Server.Services
         public override Task<UsersReply> DeleteUser(DeleteUserRequest request, ServerCallContext context)
         {
             LogGameModel log = new LogGameModel(CommandConstants.DeleteUser);
-            log.User = request.UserAsking;
+            log.User = request.UserToDelete;
             string response;
             try
             {

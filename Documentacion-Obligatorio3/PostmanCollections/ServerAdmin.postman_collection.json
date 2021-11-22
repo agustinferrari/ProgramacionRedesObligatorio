@@ -1,0 +1,2662 @@
+{
+	"info": {
+		"_postman_id": "547b7dea-a492-41b9-a648-a48e195e7cd2",
+		"name": "ServerAdmin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "api",
+			"item": [
+				{
+					"name": "users",
+					"item": [
+						{
+							"name": "GET Users",
+							"item": [
+								{
+									"name": "Success",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success Getting users",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:23:37 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "Usuarios en el sistema: \npepe"
+										}
+									]
+								},
+								{
+									"name": "Error",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Error no params",
+											"originalRequest": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:24:32 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "65"
+												}
+											],
+											"cookie": [],
+											"body": "Por favor ingrese parametros requeridos para realizar este pedido"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "POST Users",
+							"item": [
+								{
+									"name": "Create user Kaka",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success creating User kaka ",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:25:49 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario kaka fue creado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Create user Luis",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Luis\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success creating User kaka ",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:25:49 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario kaka fue creado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Create user Kaka Error duplicate",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "kaka"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Create user Kaka Error duplicate",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "kaka"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:26:59 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "42"
+												}
+											],
+											"cookie": [],
+											"body": "Este usuario ya se encuentre en el sistema"
+										}
+									]
+								},
+								{
+									"name": "Create user Kaka Error no params",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Create user Kaka Error duplicate",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "kaka"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:26:59 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "42"
+												}
+											],
+											"cookie": [],
+											"body": "Este usuario ya se encuentre en el sistema"
+										},
+										{
+											"name": "Success creating User kaka ",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:25:49 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario kaka fue creado correctamente"
+										},
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "ex "
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"minim pariatur\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "text",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain"
+												}
+											],
+											"cookie": [],
+											"body": ""
+										},
+										{
+											"name": "Create user Kaka Error no params",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": ""
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:27:34 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "65"
+												}
+											],
+											"cookie": [],
+											"body": "Por favor ingrese parametros requeridos para realizar este pedido"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "PUT User's name",
+							"item": [
+								{
+									"name": "Put User",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "Luis"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Luisito\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Put User Success",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Pepito\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:32:19 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario pepe ha sido modificado correctaente.\nSu nuevo nombre es: Pepito"
+										},
+										{
+											"name": "Put User Luis",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "Luis"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Luisito\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 23:08:53 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario Luis ha sido modificado correctaente.\nSu nuevo nombre es: Luisito"
+										}
+									]
+								},
+								{
+									"name": "Put User Error",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": ""
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"pepe\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/users",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Put User Success",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													},
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Pepito\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/users",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:32:19 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario pepe ha sido modificado correctaente.\nSu nuevo nombre es: Pepito"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "DEL User",
+							"item": [
+								{
+									"name": "Delete User Success",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users?userToDelete=Luisito",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userToDelete",
+													"value": "Luisito"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete User Success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users?userToDelete=kaka",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													],
+													"query": [
+														{
+															"key": "userToDelete",
+															"value": "kaka"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:29:24 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario kaka fue borrado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Delete User Error User does not exist",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users?userToDelete=j1234",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userToDelete",
+													"value": "j1234"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete User Error User does not exist",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users?userToDelete=j1234",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													],
+													"query": [
+														{
+															"key": "userToDelete",
+															"value": "j1234"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "32"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:39:18 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Usuario no registrado en sistema"
+										}
+									]
+								},
+								{
+									"name": "Delete User Error no parms",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": ""
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users?userToDelete=",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users"
+											],
+											"query": [
+												{
+													"key": "userToDelete",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete User Error no parms",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": ""
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users?userToDelete=",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users"
+													],
+													"query": [
+														{
+															"key": "userToDelete",
+															"value": ""
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:30:50 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "65"
+												}
+											],
+											"cookie": [],
+											"body": "Por favor ingrese parametros requeridos para realizar este pedido"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "POST BuyGame",
+							"item": [
+								{
+									"name": "BuyGame Success",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToBuy",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToBuy"
+											],
+											"variable": [
+												{
+													"key": "gameToBuy",
+													"value": "hades",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "BuyGame Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepito"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToBuy",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToBuy"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToBuy",
+															"value": "hades"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:36:23 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario pepito ha adquirido hades correctamente.\nSus juegos son: \nHades"
+										}
+									]
+								},
+								{
+									"name": "BuyGame Error Game do not exist",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToBuy",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToBuy"
+											],
+											"variable": [
+												{
+													"key": "gameToBuy",
+													"value": "Diablo3",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "BuyGame Error Game do not exist",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepito"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToBuy",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToBuy"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToBuy",
+															"value": "Diablo3"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:37:42 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "33"
+												}
+											],
+											"cookie": [],
+											"body": "Juego no registrado en el sistema"
+										}
+									]
+								},
+								{
+									"name": "BuyGame Error no params",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": ""
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToBuy",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToBuy"
+											],
+											"variable": [
+												{
+													"key": "gameToBuy",
+													"value": "Diablo3",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "BuyGame Error no params",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": ""
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToBuy",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToBuy"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToBuy",
+															"value": "Diablo3"
+														}
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:38:11 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "65"
+												}
+											],
+											"cookie": [],
+											"body": "Por favor ingrese parametros requeridos para realizar este pedido"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "DEL DeleteGameForUser",
+							"item": [
+								{
+									"name": "Delete game for user",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToDeleteForUser"
+											],
+											"variable": [
+												{
+													"key": "gameToDeleteForUser",
+													"value": "hades",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete game for user success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepito"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToDeleteForUser"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToDeleteForUser",
+															"value": "hades"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:41:04 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												}
+											],
+											"cookie": [],
+											"body": "El usuario pepito ha eliminado hades correctamente de su biblioteca.\nSus juegos son: \n"
+										}
+									]
+								},
+								{
+									"name": "Delete game for user error no game",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToDeleteForUser"
+											],
+											"variable": [
+												{
+													"key": "gameToDeleteForUser",
+													"value": "fifa",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete game for user error no game owned",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepito"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToDeleteForUser"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToDeleteForUser",
+															"value": "fifa"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:42:10 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "35"
+												}
+											],
+											"cookie": [],
+											"body": "Juego no adquirido por este usuario"
+										}
+									]
+								},
+								{
+									"name": "Delete game for user error no game Copy",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"users",
+												":gameToDeleteForUser"
+											],
+											"variable": [
+												{
+													"key": "gameToDeleteForUser",
+													"value": "Diablo3",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Delete game for user error no game on system",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepito"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/users/:gameToDeleteForUser",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"users",
+														":gameToDeleteForUser"
+													],
+													"variable": [
+														{
+															"description": "(Required) ",
+															"key": "gameToDeleteForUser",
+															"value": "Diablo3"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:42:49 GMT"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Kestrel"
+												},
+												{
+													"key": "Content-Length",
+													"value": "33"
+												}
+											],
+											"cookie": [],
+											"body": "Juego no registrado en el sistema"
+										}
+									]
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "games",
+					"item": [
+						{
+							"name": "GET Games",
+							"item": [
+								{
+									"name": "Success",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/games",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/games",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Content-Encoding",
+													"value": "gzip"
+												},
+												{
+													"key": "Vary",
+													"value": "Accept-Encoding"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:12:27 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Juegos en el sistema: \nMinecraft\nCall of Duty\nFifa\nHades"
+										}
+									]
+								},
+								{
+									"name": "Error no params",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "userAsking",
+												"value": ""
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/games",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Error no params",
+											"originalRequest": {
+												"method": "GET",
+												"header": [
+													{
+														"key": "userAsking",
+														"value": ""
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/games",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													]
+												}
+											},
+											"status": "Bad Request",
+											"code": 400,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "65"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:13:52 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Por favor ingrese parametros requeridos para realizar este pedido"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "POST Games",
+							"item": [
+								{
+									"name": "Success",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft II\",\n    \"genre\": \"Estrategia\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"pepe\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Starcraft II\",\n    \"genre\": \"Estrategia\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"pepe\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/games",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Content-Encoding",
+													"value": "gzip"
+												},
+												{
+													"key": "Vary",
+													"value": "Accept-Encoding"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:17:17 GMT"
+												},
+												{
+													"key": "Content-Length",
+													"value": "158"
+												}
+											],
+											"cookie": [],
+											"body": "El juego Starcraft II fue creado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Error already added",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft II\",\n    \"genre\": \"Estrategia\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"invalid path\",\n    \"ownerUserName\": \"pepe\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success Copy",
+											"originalRequest": {
+												"method": "POST",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Starcraft II\",\n    \"genre\": \"Estrategia\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"pepe\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/games",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													]
+												}
+											},
+											"status": "Conflict",
+											"code": 409,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "40"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:26:13 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Este juego ya se encuentre en el sistema"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "DEL Games",
+							"item": [
+								{
+									"name": "Success",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userOwner",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/games?game=Minecraft",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											],
+											"query": [
+												{
+													"key": "game",
+													"value": "Minecraft"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userOwner",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/games?game=Minecraft",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													],
+													"query": [
+														{
+															"key": "game",
+															"value": "Minecraft"
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Content-Encoding",
+													"value": "gzip"
+												},
+												{
+													"key": "Vary",
+													"value": "Accept-Encoding"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:27:06 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "El juego Minecraft fue borrado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Error game does not exist",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "userOwner",
+												"value": "pepe"
+											}
+										],
+										"url": {
+											"raw": "{{baseUrl}}/api/games?game=Minecraft",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games"
+											],
+											"query": [
+												{
+													"key": "game",
+													"value": "Minecraft"
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Error",
+											"originalRequest": {
+												"method": "DELETE",
+												"header": [
+													{
+														"key": "userOwner",
+														"value": "pepe"
+													}
+												],
+												"url": {
+													"raw": "{{baseUrl}}/api/games?game=Minecraft",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games"
+													],
+													"query": [
+														{
+															"key": "game",
+															"value": "Minecraft"
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "33"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:29:08 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Juego no registrado en el sistema"
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "PUT Games",
+							"item": [
+								{
+									"name": "Success Modify Genre",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft II\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games/:gameToModify",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games",
+												":gameToModify"
+											],
+											"variable": [
+												{
+													"key": "gameToModify",
+													"value": "Starcraft II",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Success Modify Name",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada online\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games/:gameToModify",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games",
+												":gameToModify"
+											],
+											"variable": [
+												{
+													"key": "gameToModify",
+													"value": "Starcraft II",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Success",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/games/:gameToModify",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games",
+														":gameToModify"
+													],
+													"variable": [
+														{
+															"key": "gameToModify",
+															"value": "Starcraft II",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "OK",
+											"code": 200,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Transfer-Encoding",
+													"value": "chunked"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Content-Encoding",
+													"value": "gzip"
+												},
+												{
+													"key": "Vary",
+													"value": "Accept-Encoding"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:36:00 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "El juego Starcraft III fue modificado correctamente"
+										}
+									]
+								},
+								{
+									"name": "Error Inexistent Game",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"kaka\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games/:gameToModify",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games",
+												":gameToModify"
+											],
+											"variable": [
+												{
+													"key": "gameToModify",
+													"value": "Inexistent Game",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Error Inexistent Game",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"kaka\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/games/:gameToModify",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games",
+														":gameToModify"
+													],
+													"variable": [
+														{
+															"key": "gameToModify",
+															"value": "Inexistent Game",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "33"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:38:26 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Juego no registrado en el sistema"
+										}
+									]
+								},
+								{
+									"name": "Error Inexistent User",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"unregistered user\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{baseUrl}}/api/games/:gameToModify",
+											"host": [
+												"{{baseUrl}}"
+											],
+											"path": [
+												"api",
+												"games",
+												":gameToModify"
+											],
+											"variable": [
+												{
+													"key": "gameToModify",
+													"value": "Starcraft II",
+													"description": "(Required) "
+												}
+											]
+										}
+									},
+									"response": [
+										{
+											"name": "Error Inexistent User",
+											"originalRequest": {
+												"method": "PUT",
+												"header": [
+													{
+														"key": "Content-Type",
+														"value": "application/json"
+													}
+												],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Starcraft III\",\n    \"genre\": \"Estrategia mejorada\",\n    \"synopsis\": \"veniam officia dolor mollit non\",\n    \"pathToPhoto\": \"D:\\\\onedrive\\\\Escritorio\\\\Acceso_rapido\\\\Cap2ture.PNG\",\n    \"ownerUserName\": \"unregistered user\"\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "{{baseUrl}}/api/games/:gameToModify",
+													"host": [
+														"{{baseUrl}}"
+													],
+													"path": [
+														"api",
+														"games",
+														":gameToModify"
+													],
+													"variable": [
+														{
+															"key": "gameToModify",
+															"value": "Starcraft II",
+															"description": "(Required) "
+														}
+													]
+												}
+											},
+											"status": "Not Found",
+											"code": 404,
+											"_postman_previewlanguage": "plain",
+											"header": [
+												{
+													"key": "Content-Length",
+													"value": "32"
+												},
+												{
+													"key": "Content-Type",
+													"value": "text/plain; charset=utf-8"
+												},
+												{
+													"key": "Server",
+													"value": "Microsoft-IIS/10.0"
+												},
+												{
+													"key": "X-Powered-By",
+													"value": "ASP.NET"
+												},
+												{
+													"key": "Date",
+													"value": "Mon, 22 Nov 2021 22:42:41 GMT"
+												}
+											],
+											"cookie": [],
+											"body": "Usuario no registrado en sistema"
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:5000"
+		}
+	]
+}

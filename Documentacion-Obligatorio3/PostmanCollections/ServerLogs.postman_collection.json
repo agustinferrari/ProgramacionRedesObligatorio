@@ -1,0 +1,435 @@
+{
+	"info": {
+		"_postman_id": "70ff5046-7171-4c8e-a220-ad86e7096884",
+		"name": "ServerLogs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get all logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get all logs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gamelogs",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gamelogs"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 22 Nov 2021 23:17:34 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 1,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 2,\n        \"commandConstant\": 13,\n        \"command\": \"AddUser\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 3,\n        \"commandConstant\": 13,\n        \"command\": \"AddUser\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 4,\n        \"commandConstant\": 13,\n        \"command\": \"AddUser\",\n        \"user\": \"kaka\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 5,\n        \"commandConstant\": 14,\n        \"command\": \"ModifyUser\",\n        \"user\": \"luis\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 6,\n        \"commandConstant\": 15,\n        \"command\": \"DeleteUser\",\n        \"user\": \"luisito\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 7,\n        \"commandConstant\": 15,\n        \"command\": \"DeleteUser\",\n        \"user\": \"j1234\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 8,\n        \"commandConstant\": 4,\n        \"command\": \"BuyGame\",\n        \"user\": \"pepe\",\n        \"game\": \"hades\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 9,\n        \"commandConstant\": 4,\n        \"command\": \"BuyGame\",\n        \"user\": \"pepe\",\n        \"game\": \"diablo3\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 10,\n        \"commandConstant\": 16,\n        \"command\": \"DeleteOwnedGame\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 11,\n        \"commandConstant\": 16,\n        \"command\": \"DeleteOwnedGame\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 12,\n        \"commandConstant\": 16,\n        \"command\": \"DeleteOwnedGame\",\n        \"user\": \"pepe\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 13,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 14,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    },\n    {\n        \"id\": 15,\n        \"commandConstant\": 10,\n        \"command\": \"DeletePublishedGame\",\n        \"user\": \"pepe\",\n        \"game\": \"minecraft\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 16,\n        \"commandConstant\": 10,\n        \"command\": \"DeletePublishedGame\",\n        \"user\": \"pepe\",\n        \"game\": \"minecraft\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    },\n    {\n        \"id\": 17,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 18,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft iii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 19,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft iii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    },\n    {\n        \"id\": 20,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"unregistered user\",\n        \"game\": \"starcraft iii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Starcraft II Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs?User=&Game=Starcraft II&Date=",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": ""
+						},
+						{
+							"key": "Game",
+							"value": "Starcraft II"
+						},
+						{
+							"key": "Date",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Starcraft II Logs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gamelogs?User=&Game=Starcraft II&Date=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gamelogs"
+							],
+							"query": [
+								{
+									"key": "User",
+									"value": ""
+								},
+								{
+									"key": "Game",
+									"value": "Starcraft II"
+								},
+								{
+									"key": "Date",
+									"value": ""
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 22 Nov 2021 23:18:06 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 13,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 14,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    },\n    {\n        \"id\": 17,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Kaka Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs?User=kaka&Game=&Date=",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": "kaka"
+						},
+						{
+							"key": "Game",
+							"value": ""
+						},
+						{
+							"key": "Date",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Kaka Logs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gamelogs?User=kaka&Game=&Date=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gamelogs"
+							],
+							"query": [
+								{
+									"key": "User",
+									"value": "kaka"
+								},
+								{
+									"key": "Game",
+									"value": ""
+								},
+								{
+									"key": "Date",
+									"value": ""
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 22 Nov 2021 23:14:06 GMT"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 4,\n        \"commandConstant\": 13,\n        \"command\": \"AddUser\",\n        \"user\": \"kaka\",\n        \"game\": null,\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 17,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 18,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft iii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 19,\n        \"commandConstant\": 9,\n        \"command\": \"ModifyPublishedGame\",\n        \"user\": \"kaka\",\n        \"game\": \"starcraft iii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get Pepe Starcraft II Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs?User=pepe&Game=Starcraft II&Date=",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": "pepe"
+						},
+						{
+							"key": "Game",
+							"value": "Starcraft II"
+						},
+						{
+							"key": "Date",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Get Pepe Starcraft II Logs",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/api/gamelogs?User=pepe&Game=Starcraft II&Date=",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"api",
+								"gamelogs"
+							],
+							"query": [
+								{
+									"key": "User",
+									"value": "pepe"
+								},
+								{
+									"key": "Game",
+									"value": "Starcraft II"
+								},
+								{
+									"key": "Date",
+									"value": ""
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Server",
+							"value": "Microsoft-IIS/10.0"
+						},
+						{
+							"key": "X-Powered-By",
+							"value": "ASP.NET"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 22 Nov 2021 23:14:16 GMT"
+						},
+						{
+							"key": "Content-Length",
+							"value": "272"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 13,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": true\n    },\n    {\n        \"id\": 14,\n        \"commandConstant\": 5,\n        \"command\": \"AddGame\",\n        \"user\": \"pepe\",\n        \"game\": \"starcraft ii\",\n        \"date\": \"2021-11-22T00:00:00-03:00\",\n        \"result\": false\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "Get luisito Logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs?User=luisito&Game=&Date=",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": "luisito"
+						},
+						{
+							"key": "Game",
+							"value": ""
+						},
+						{
+							"key": "Date",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get inexistent logs",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/api/gamelogs?User=dolor dolore ut elit&Game=dolor dolore ut elit&Date=2018-03-18T10:40:06.351Z",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api",
+						"gamelogs"
+					],
+					"query": [
+						{
+							"key": "User",
+							"value": "dolor dolore ut elit"
+						},
+						{
+							"key": "Game",
+							"value": "dolor dolore ut elit"
+						},
+						{
+							"key": "Date",
+							"value": "2018-03-18T10:40:06.351Z"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://localhost:44335"
+		}
+	]
+}
