@@ -18,6 +18,10 @@ namespace CommonProtocol.Protocol
         public const int DeletePublishedGame = 10;
         public const int GetGameImage = 11;
         public const int ListFilteredGames = 12;
+        public const int AddUser = 13;
+        public const int ModifyUser = 14;
+        public const int DeleteUser = 15;
+        public const int DeleteOwnedGame = 16;
         public const int InvalidOption = -1;
     }
 }

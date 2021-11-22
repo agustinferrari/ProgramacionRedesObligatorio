@@ -1,4 +1,5 @@
 using System;
+using Common.Settings.Interfaces;
 using RabbitMQ.Client;
 
 namespace ServerLogs.Services.RabbitMQService
