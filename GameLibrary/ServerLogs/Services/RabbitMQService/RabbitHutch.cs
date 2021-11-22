@@ -8,11 +8,13 @@ namespace ServerLogs.Services.RabbitMQService
         private static ConnectionFactory _factory;
         private static IConnection _connection;
         private static IModel _channel;
+        private static readonly ISettingsManager SettingsManager = new SettingsManager();
+
 
         public static IBus CreateBus()
         {
             _factory = new ConnectionFactory{ DispatchConsumersAsync = true };
-            _factory.HostName = "localhost";
+            _factory.HostName = SettingsManager.ReadSetting(ServerLogsConfig.Host);
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
 

@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using LogsModels;
 using Common.Protocol;
 using System.Collections.Generic;
+using Common.NetworkUtils;
+using Common.NetworkUtils.Interfaces;
 
 namespace Server.Logic.LogManager
 {
@@ -20,9 +22,11 @@ namespace Server.Logic.LogManager
                                                         CommandConstants.ListFilteredGames, CommandConstants.ListGames,
                                                         CommandConstants.ListOwnedGames };
 
+        private ISettingsManager _settingsManager = new SettingsManager();
+
         private LogLogic()
         {
-            _channel = new ConnectionFactory() { HostName = "localhost" }.CreateConnection().CreateModel();
+            _channel = new ConnectionFactory() { HostName = _settingsManager.ReadSetting(ServerConfig.Host) }.CreateConnection().CreateModel();
             _channel.QueueDeclare(queue: "log_queue",
                 durable: false,
                 exclusive: false,
