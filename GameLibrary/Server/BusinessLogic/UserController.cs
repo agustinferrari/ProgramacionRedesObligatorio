@@ -68,7 +68,7 @@ namespace Server.BusinessLogic
                 }
             throw new InvalidUsernameException();
         }
-        
+
         public string GetAllUsers()
         {
             lock (_padlock)
@@ -76,7 +76,7 @@ namespace Server.BusinessLogic
                     return UserListToString(_users);
             throw new InvalidUsernameException();
         }
-        
+
         private string UserListToString(List<User> usersToString)
         {
             string result = "";
@@ -89,7 +89,7 @@ namespace Server.BusinessLogic
             }
             return result;
         }
-        
+
         public void DeleteUser(string userToDelete)
         {
             lock (_padlock)
@@ -100,7 +100,7 @@ namespace Server.BusinessLogic
                 _users.Remove(user);
             }
         }
-        
+
 
         public string ListOwnedGameByUser(string username)
         {
@@ -162,7 +162,7 @@ namespace Server.BusinessLogic
                     }
                 }
         }
-        
+
         public void AddUser(string name)
         {
             User newUser = new User { Name = name.ToLower() };
@@ -189,9 +189,9 @@ namespace Server.BusinessLogic
             {
                 User user = GetUser(userToDeleteGameFrom);
                 Game game = _gameController.GetGame(gameToDeleteName);
-              user.DeleteGame(game);
+                user.DeleteGame(game);
             }
         }
-        
+
     }
 }

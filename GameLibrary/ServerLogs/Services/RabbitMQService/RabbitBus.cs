@@ -16,19 +16,6 @@ namespace ServerLogs.Services.RabbitMQService
             _channel = channel;
         }
 
-        public async Task SendAsync<T>(string queue, T message)
-        {
-            await Task.Run(() =>
-            {
-                _channel.QueueDeclare(queue, false, false, false);
-
-                var properties = _channel.CreateBasicProperties();
-                properties.Persistent = false;
-
-                var output = JsonConvert.SerializeObject(message);
-                _channel.BasicPublish(string.Empty, queue, null, Encoding.UTF8.GetBytes(output));
-            });
-        }
 
         public async Task ReceiveAsync<T>(string queue, Action<T> onMessage)
         {
