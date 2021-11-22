@@ -1,7 +1,7 @@
-﻿using Common.NetworkUtils.Interfaces;
-using System;
+﻿using System;
+using CommonProtocol.NetworkUtils.Interfaces;
 
-namespace Common.NetworkUtils
+namespace CommonProtocol.NetworkUtils
 {
     public class PortValidator : IPortValidator
     {

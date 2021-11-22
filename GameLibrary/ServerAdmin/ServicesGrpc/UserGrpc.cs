@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+using Common.Settings.Interfaces;
 using CommonModels;
 using Grpc.Net.Client;
 using ServerAdmin.ServicesGrpcInterfaces;

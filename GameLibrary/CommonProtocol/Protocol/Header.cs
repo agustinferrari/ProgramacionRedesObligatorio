@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Common.Protocol
+namespace CommonProtocol.Protocol
 {
     public class Header
     {

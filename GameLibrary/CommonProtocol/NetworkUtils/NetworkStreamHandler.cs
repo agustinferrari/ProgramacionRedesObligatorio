@@ -1,15 +1,15 @@
-﻿using Common.FileUtils;
-using Common.FileUtils.Interfaces;
-using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
-using Common.Utils.CustomExceptions;
-using System;
+﻿using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using CommonProtocol.FileUtils;
+using CommonProtocol.FileUtils.Interfaces;
+using CommonProtocol.NetworkUtils.Interfaces;
+using CommonProtocol.Protocol;
+using CommonProtocol.Utils.CustomExceptions;
 
-namespace Common.NetworkUtils
+namespace CommonProtocol.NetworkUtils
 {
     public class NetworkStreamHandler : INetworkStreamHandler
     {

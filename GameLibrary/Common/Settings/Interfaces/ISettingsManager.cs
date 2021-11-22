@@ -1,5 +1,5 @@
 ﻿
-namespace Common.NetworkUtils.Interfaces
+namespace Common.Settings.Interfaces
 {
     public interface ISettingsManager
     {

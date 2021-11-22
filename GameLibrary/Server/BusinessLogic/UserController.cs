@@ -1,5 +1,5 @@
 ﻿using System;
-using Common.Protocol;
+using CommonProtocol.Protocol;
 using System.Collections.Generic;
 using Server.BusinessLogic.Interfaces;
 using Server.Domain;

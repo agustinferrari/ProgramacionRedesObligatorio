@@ -1,11 +1,11 @@
-﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+﻿
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic;
 using System;
 using System.IO;
 using System.Net;
 using System.Threading.Tasks;
+using Common.Settings.Interfaces;
 
 namespace ConsoleClient
 {

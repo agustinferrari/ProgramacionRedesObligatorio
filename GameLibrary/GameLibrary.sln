@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31624.102
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleClient", "ConsoleClient\ConsoleClient.csproj", "{E040440B-80CB-42E1-9FB6-FE6D76F98106}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common", "Common\Common.csproj", "{13DD2821-F300-41DC-BB5A-8E46369D37A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonProtocol", "CommonProtocol\CommonProtocol.csproj", "{13DD2821-F300-41DC-BB5A-8E46369D37A6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommonModels", "CommonModels\CommonModels.csproj", "{863A60B2-0A50-4147-A70F-4A30AC6D082E}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerAdmin", "ServerAdmin\ServerAdmin.csproj", "{661F6599-CEFB-42EA-8218-37018EB9ADC9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LogsModels", "LogsModels\LogsModels.csproj", "{2DEF8E56-D127-4A86-9868-AC6A43D22A5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{83F91B74-17FF-4D27-9B0F-C99321D16269}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2DEF8E56-D127-4A86-9868-AC6A43D22A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2DEF8E56-D127-4A86-9868-AC6A43D22A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2DEF8E56-D127-4A86-9868-AC6A43D22A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83F91B74-17FF-4D27-9B0F-C99321D16269}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83F91B74-17FF-4D27-9B0F-C99321D16269}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83F91B74-17FF-4D27-9B0F-C99321D16269}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83F91B74-17FF-4D27-9B0F-C99321D16269}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
-﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+﻿using CommonProtocol.NetworkUtils;
+using CommonProtocol.NetworkUtils.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Net;

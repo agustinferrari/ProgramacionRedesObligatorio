@@ -1,7 +1,7 @@
-﻿using Common.FileUtils;
-using Common.FileUtils.Interfaces;
-using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
+﻿using CommonProtocol.FileUtils;
+using CommonProtocol.FileUtils.Interfaces;
+using CommonProtocol.NetworkUtils.Interfaces;
+using CommonProtocol.Protocol;
 using ConsoleClient.Menu.Logic.Commands.Factory;
 using ConsoleClient.Menu.Logic.Interfaces;
 using ConsoleClient.Menu.Logic.Commands.Strategies;

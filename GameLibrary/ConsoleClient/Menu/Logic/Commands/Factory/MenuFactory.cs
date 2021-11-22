@@ -1,4 +1,4 @@
-﻿using Common.Protocol;
+﻿using CommonProtocol.Protocol;
 using ConsoleClient.Menu.Logic.Commands.Strategies;
 using System.Collections.Generic;
 

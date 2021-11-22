@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Common.Utils.CustomExceptions
+namespace CommonProtocol.Utils.CustomExceptions
 {
     public class SocketClientException : Exception
     {

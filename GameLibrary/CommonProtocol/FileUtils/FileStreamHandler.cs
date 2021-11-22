@@ -1,10 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using Common.FileUtils.Interfaces;
-using Common.Utils.CustomExceptions;
+using CommonProtocol.Utils.CustomExceptions;
+using CommonProtocol.FileUtils.Interfaces;
 
-namespace Common.FileUtils
+namespace CommonProtocol.FileUtils
 {
     public class FileStreamHandler : IFileStreamHandler
     {

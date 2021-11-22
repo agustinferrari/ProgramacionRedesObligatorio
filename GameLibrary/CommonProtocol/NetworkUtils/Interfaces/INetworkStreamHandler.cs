@@ -1,8 +1,8 @@
 ﻿using System.Threading.Tasks;
-using Common.Protocol;
+using CommonProtocol.Protocol;
 
 
-namespace Common.NetworkUtils.Interfaces
+namespace CommonProtocol.NetworkUtils.Interfaces
 {
     public interface INetworkStreamHandler
     {

@@ -1,4 +1,4 @@
-﻿namespace Common.FileUtils.Interfaces
+﻿namespace CommonProtocol.FileUtils.Interfaces
 {
     public interface IFileHandler
     {

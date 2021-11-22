@@ -1,4 +1,4 @@
-﻿using Common.NetworkUtils.Interfaces;
+﻿using CommonProtocol.NetworkUtils.Interfaces;
 using ConsoleClient.Menu.Utils;
 using ConsoleClient.Menu.Utils.Interfaces;
 using System.Threading.Tasks;

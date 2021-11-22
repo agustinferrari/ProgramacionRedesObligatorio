@@ -1,6 +1,6 @@
-﻿using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
+﻿using CommonProtocol.NetworkUtils;
+using CommonProtocol.NetworkUtils.Interfaces;
+using CommonProtocol.Protocol;
 using System.Threading.Tasks;
 using LogsModels;
 using Server.Utils.CustomExceptions;

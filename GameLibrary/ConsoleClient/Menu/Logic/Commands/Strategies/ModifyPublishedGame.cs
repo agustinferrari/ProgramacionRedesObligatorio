@@ -1,8 +1,8 @@
-﻿using Common.FileUtils;
-using Common.FileUtils.Interfaces;
-using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
+﻿using CommonProtocol.FileUtils;
+using CommonProtocol.FileUtils.Interfaces;
+using CommonProtocol.NetworkUtils;
+using CommonProtocol.NetworkUtils.Interfaces;
+using CommonProtocol.Protocol;
 using System;
 using System.Threading.Tasks;
 

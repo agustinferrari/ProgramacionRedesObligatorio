@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
-using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+using CommonProtocol.NetworkUtils;
+using CommonProtocol.NetworkUtils.Interfaces;
 
 namespace Server.Logic.Interfaces
 {

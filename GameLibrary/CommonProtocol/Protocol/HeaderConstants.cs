@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Common.Protocol
+namespace CommonProtocol.Protocol
 
 {
     public static class HeaderConstants

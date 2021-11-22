@@ -1,6 +1,6 @@
 ﻿
 
-namespace Common.Protocol
+namespace CommonProtocol.Protocol
 {
     public static class Specification
     {

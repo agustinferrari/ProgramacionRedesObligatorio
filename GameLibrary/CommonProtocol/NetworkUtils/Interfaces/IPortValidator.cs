@@ -1,5 +1,5 @@
 ﻿
-namespace Common.NetworkUtils.Interfaces
+namespace CommonProtocol.NetworkUtils.Interfaces
 {
     public interface IPortValidator
     {

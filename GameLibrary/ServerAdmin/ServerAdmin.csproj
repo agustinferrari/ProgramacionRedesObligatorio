@@ -17,7 +17,6 @@
     <ItemGroup>
       <ProjectReference Include="..\CommonModels\CommonModels.csproj" />
       <ProjectReference Include="..\Common\Common.csproj" />
-      <ProjectReference Include="..\LogsModels\LogsModels.csproj" />
     </ItemGroup>
 
     <ItemGroup>

@@ -1,7 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Common.NetworkUtils;
-using Common.NetworkUtils.Interfaces;
+using Common.Settings.Interfaces;
+using CommonProtocol.NetworkUtils;
+using CommonProtocol.NetworkUtils.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Server.Presentation;

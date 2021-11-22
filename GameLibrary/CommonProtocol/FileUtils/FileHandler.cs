@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using Common.FileUtils.Interfaces;
-using Common.Utils.CustomExceptions;
+using CommonProtocol.Utils.CustomExceptions;
+using CommonProtocol.FileUtils.Interfaces;
 
-namespace Common.FileUtils
+namespace CommonProtocol.FileUtils
 {
     public class FileHandler : IFileHandler
     {

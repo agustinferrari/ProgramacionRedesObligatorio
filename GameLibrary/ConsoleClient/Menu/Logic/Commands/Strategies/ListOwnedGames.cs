@@ -1,5 +1,5 @@
-﻿using Common.NetworkUtils.Interfaces;
-using Common.Protocol;
+﻿using CommonProtocol.NetworkUtils.Interfaces;
+using CommonProtocol.Protocol;
 using System;
 using System.Threading.Tasks;
 

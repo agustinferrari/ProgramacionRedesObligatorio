@@ -1,8 +1,8 @@
-﻿using Common.NetworkUtils;
+﻿using CommonProtocol.NetworkUtils;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading.Tasks;
-using Common.NetworkUtils.Interfaces;
+using Common.Settings.Interfaces;
 
 namespace ConsoleClient
 {

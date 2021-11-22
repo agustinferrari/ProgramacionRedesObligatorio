@@ -1,9 +1,8 @@
-﻿using Common.NetworkUtils.Interfaces;
-using System;
-using System.Configuration;
+﻿using System;
 using System.Collections.Specialized;
+using System.Configuration;
 
-namespace Common.NetworkUtils
+namespace Common.Settings.Interfaces
 {
     public class SettingsManager : ISettingsManager
     {
