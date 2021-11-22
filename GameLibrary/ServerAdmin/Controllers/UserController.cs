@@ -29,7 +29,7 @@ namespace ServerAdmin.Controllers
         [HttpPost]
         public async Task<IActionResult> Post([FromHeader] string userAsking, [FromBody] UserModel UserToAdd)
         {
-            string response = await _userServiceGrpc.AddModifyUser(userAsking, UserToAdd);
+            string response = await _userServiceGrpc.AddUser(userAsking, UserToAdd);
             return new OkObjectResult(response);
         }
 

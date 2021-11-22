@@ -16,7 +16,6 @@ namespace Server.Services
 
         public override Task<GamesReply> GetGames(GamesRequest request, ServerCallContext context)
         {
-            // TODO Logear que este usuario hizo el request request.User
             string response;
             try
             {

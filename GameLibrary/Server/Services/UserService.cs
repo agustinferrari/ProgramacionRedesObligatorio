@@ -14,7 +14,6 @@ namespace Server.Services
 
         public override Task<UsersReply> GetUsers(UsersRequest request, ServerCallContext context)
         {
-            // TODO Logear que este usuario hizo el request request.User
             string response;
             try
             {
@@ -32,7 +31,6 @@ namespace Server.Services
 
         public override Task<UsersReply> AddUser(AddModifyUserRequest userToAddRequest, ServerCallContext context)
         {
-            // TODO Agregar log con userToAddRequest.User
             string response;
             try
             {

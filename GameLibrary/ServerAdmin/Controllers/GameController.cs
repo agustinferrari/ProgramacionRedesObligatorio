@@ -33,9 +33,9 @@ namespace ServerAdmin.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete([FromHeader] string userAsking, [FromQuery] string game)
+        public async Task<IActionResult> Delete([FromHeader] string userOwner, [FromQuery] string game)
         {
-            string gameDeleted = await _gameServiceGrpc.DeleteGame(userAsking, game);
+            string gameDeleted = await _gameServiceGrpc.DeleteGame(userOwner, game);
             return new OkObjectResult(gameDeleted);
         }
 

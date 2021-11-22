@@ -28,7 +28,7 @@ namespace ServerAdmin.ServicesGrpc
             return response.Response;
         }
 
-        public async Task<string> AddModifyUser(string userAsking, UserModel userToAdd)
+        public async Task<string> AddUser(string userAsking, UserModel userToAdd)
         {
             UsersReply response = await _client.AddUserAsync(
                 new AddModifyUserRequest() { UserAsking = userAsking, UserToAddModify = userToAdd.Name });
